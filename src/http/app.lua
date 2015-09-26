@@ -1,7 +1,7 @@
 _ENV = nil
 
 
-local M, mt = {}, {}
+local App, AppMeta = {}, {}
 local http_verbs = {
     delete = 'DELETE',
     get = 'GET',
@@ -11,54 +11,12 @@ local http_verbs = {
     put = 'PUT'
 }
 
-
-local http_method_wrapper = function(mapping)
-    return function(w, req)
-        local handler = mapping[req.method]
-        if not handler then
-            return w:set_status_code(405)
-        end
-        return handler(w, req)
-    end
-end
-
 local pack_wrappers = function(handlers)
     local h = handlers[#handlers]
     for i = #handlers - 1, 1, -1 do
         h = handlers[i](h)
     end
     return h
-end
-
-local function new(self, options)
-    if not self then
-        self = {}
-    end
-    self.options = options or {}
-    if not self.options.urls then
-        self.options.urls = {}
-    end
-    self.middlewares = {}
-    self.ordered = {}
-    self.mapping = {}
-    return setmetatable(self, mt)
-end
-
--- app:all('pattern', ['route_name',] [function(following), ...] function(w, req)
-function M:all(pattern, name_or_func, ...)
-    local r
-    local handlers = {...}
-    if type(name_or_func) == 'string' then
-        r = {pattern, pack_wrappers(handlers), name=name_or_func}
-    else
-        table.insert(handlers, 1, name_or_func)
-        r = {pattern, pack_wrappers(handlers)}
-    end
-    self.options.urls[#self.options.urls+1] = r
-end
-
-function M:use(middleware)
-    self.middlewares[#self.middlewares+1] = middleware
 end
 
 local RouteBuilder = {}
@@ -91,8 +49,49 @@ function RouteBuilder:__index(method)
     end
 end
 
+local http_method_wrapper = function(mapping)
+    return function(w, req)
+        local handler = mapping[req.method]
+        if not handler then
+            return w:set_status_code(405)
+        end
+        return handler(w, req)
+    end
+end
+
+local function new(self, options)
+    if not self then
+        self = {}
+    end
+    self.options = options or {}
+    if not self.options.urls then
+        self.options.urls = {}
+    end
+    self.middlewares = {}
+    self.ordered = {}
+    self.mapping = {}
+    return setmetatable(self, AppMeta)
+end
+
+function App:use(middleware)
+    self.middlewares[#self.middlewares+1] = middleware
+end
+
+-- app:all('pattern', ['route_name',] [function(following), ...] function(w, req)
+function App:all(pattern, name_or_func, ...)
+    local r
+    local handlers = {...}
+    if type(name_or_func) == 'string' then
+        r = {pattern, pack_wrappers(handlers), name=name_or_func}
+    else
+        table.insert(handlers, 1, name_or_func)
+        r = {pattern, pack_wrappers(handlers)}
+    end
+    self.options.urls[#self.options.urls+1] = r
+end
+
 -- app:route('pattern' [, 'name']):post(function(w, req) ...
-function M:route(pattern, name)
+function App:route(pattern, name)
     return setmetatable({
         pattern = pattern,
         name = name,
@@ -102,8 +101,8 @@ function M:route(pattern, name)
 end
 
 -- app:post(pattern, [route_name,] function(w, req) ...
-function mt:__index(name)
-    return M[name] or function(_, pattern, ...)
+function AppMeta:__index(name)
+    return App[name] or function(_, pattern, ...)
         local r = self:route(pattern)
         return r[name](r, ...)
     end
@@ -137,7 +136,7 @@ local function chain_middlewares(self)
     return following
 end
 
-function mt:__call()
+function AppMeta:__call()
     build_url_mapping(self)
     return chain_middlewares(self)
 end
