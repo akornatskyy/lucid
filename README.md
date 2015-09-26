@@ -7,6 +7,8 @@ A playground for lua web API toolkit.
 Install development dependencies:
 
     make env nginx
+    make test
+    eval "$(env/bin/luarocks path --bin)"
 
 # Run
 
