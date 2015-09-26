@@ -11,6 +11,11 @@ local w = setmetatable({
 local req = setmetatable({
     method = 'POST',
     path = '/',
+    headers = {
+        ['host'] = 'localhost:8080',
+        ['user-agent'] = 'curl/7.44.0',
+        ['accept'] = '*/*'
+    },
     form = {author='John', message='Hello World!'},
     server_parts = function()
         return 'http', 'localhost', '8080'
