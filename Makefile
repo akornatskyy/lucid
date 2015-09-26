@@ -48,7 +48,7 @@ clean:
 	rm -rf luacov.* luac.out *.so
 
 qa:
-	$(ENV)/bin/luacheck -q src/ spec/ demos/app.lua
+	$(ENV)/bin/luacheck -q src/ spec/ demos/
 
 nginx:
 	cd env ; \
