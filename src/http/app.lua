@@ -143,46 +143,7 @@ function mt:__call()
     return chain_middlewares(self)
 end
 
--- mixins
-local json_encode
-
-do
-    local encoding = require 'core.encoding'
-    json_encode = encoding.json.encode
-end
-
-local JSONMixin = {}
-
-function JSONMixin:json(obj, status_code)
-    if status_code then
-        self:set_status_code(status_code)
-    end
-    self.headers['Content-Type'] = 'application/json'
-    return self:write(json_encode(obj))
-end
-
-local RoutingMixin = {}
-
-function RoutingMixin:path_for(name, args)
-    if args then
-        return self.options.router:path_for(name, args, self.route_args)
-    else
-        return self.options.router:path_for(name, self.route_args)
-    end
-end
-
-function RoutingMixin:absolute_url_for(name, args)
-    local scheme, host, port = self:server_parts()
-    return scheme .. '://' .. host ..
-           (port == '80' and '' or ':' .. port) ..
-           self:path_for(name, args)
-end
-
 return {
     new = new,
     http_verbs = http_verbs,
-    mixins = {
-        json = JSONMixin,
-        routing = RoutingMixin
-    }
 }
