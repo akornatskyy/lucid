@@ -1,12 +1,8 @@
---[[
-export LUA_CPATH='./env/lib/lua/5.1/?.so'
-export LUA_PATH='./demos/?.lua;./src/?.lua;./env/share/lua/5.1/?.lua;./env/share/lua/5.1/?/init.lua'
-time ../other/luajit-2.0/src/luajit demos/bench.lua
---]]
+package.path = package.path .. ';demos/?.lua'
 
 local Request = require('http.request')
 local ResponseWriter = require('http.response')
-local app = require(arg[1] or 'hello')
+local app = require(arg[1] or 'test')
 
 local w = setmetatable({
     headers = {}
