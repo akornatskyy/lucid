@@ -13,7 +13,7 @@ return function(options)
     end
     assert(r:add(options.urls))
     return function(w, req)
-        local handler = r:match_root(req.path)
+        local handler, args = r:match_root(req.path)
         if not handler then
             return w:set_status_code(404)
         end
