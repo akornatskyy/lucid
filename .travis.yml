@@ -3,4 +3,12 @@ language: c
 install:
     - make env PLATFORM=linux
 
-script: make test qa
+script:
+    - make test
+    - make qa
+
+after_success:
+    - eval "$(env/bin/luarocks path --bin)"
+    - luarocks install luacov-coveralls
+    - busted -c
+    - luacov-coveralls -e env
