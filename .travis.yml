@@ -1,6 +1,6 @@
 language: c
 
 install:
-    - make env
+    - make debian env
 
 script: make test
