@@ -1,7 +1,6 @@
 language: c
 
 install:
-    # - sudo make debian
     - make env PLATFORM=linux
 
-script: make test
+script: make test qa
