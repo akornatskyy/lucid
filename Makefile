@@ -6,6 +6,7 @@ ENV=$(shell pwd)/env
 #LUA_VERSION=$(shell $(LUA) -e 'print(_VERSION:match("%d.%d"))')
 LUA=$(ENV)/bin/lua
 LUA_VERSION=5.1.5
+PLATFORM=macos
 #LUA_INCLUDE_PATH=$(shell dirname $(LUA))/../include
 LUA_ROCKS_VERSION=2.2.2
 
@@ -20,7 +21,7 @@ env:
 	cd lua-$(LUA_VERSION) ; \
 	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h ; \
 	sed -i.bak s%./?.lua\;%./?.lua\;./src/?.lua\;%g src/luaconf.h ; \
-	make -s macosx install INSTALL_TOP=$(ENV) ; \
+	make -s $(PLATFORM) install INSTALL_TOP=$(ENV) ; \
 	cd .. ; rm -rf lua-$(LUA_VERSION) ; \
 	wget -c http://luarocks.org/releases/luarocks-$(LUA_ROCKS_VERSION).tar.gz \
 		-O - | tar -xzf - ; \
