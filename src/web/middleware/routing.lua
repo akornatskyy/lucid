@@ -20,31 +20,26 @@ return function(options)
         end
         req.route_args = args
         req.options = options
-        if type(handler) == 'table' then
-            local m = req.method
-            handler = setmetatable({w = w, req = req}, handler)
-            ---[[
-            if m == 'GET' then
-                m = handler.get
-            elseif m == 'POST' then
-                m = handler.post
-            elseif m == 'PUT' then
-                m = handler.put
-            elseif m == 'DELETE' then
-                m = handler.delete
-            elseif m == 'PATCH' then
-                m = handler.patch
-            elseif m == 'HEAD' then
-                m = handler.head
-            elseif m == 'OPTIONS' then
-                m = handler.options
-            end
-            if m then
-                return m(handler)
-            end
-            return w:set_status_code(405)
-        else
-            return handler(w, req, args)
+        handler = setmetatable({w = w, req = req}, handler)
+        local m = req.method
+        if m == 'GET' then
+            m = handler.get
+        elseif m == 'POST' then
+            m = handler.post
+        elseif m == 'PUT' then
+            m = handler.put
+        elseif m == 'DELETE' then
+            m = handler.delete
+        elseif m == 'PATCH' then
+            m = handler.patch
+        elseif m == 'HEAD' then
+            m = handler.head
+        elseif m == 'OPTIONS' then
+            m = handler.options
         end
+        if m then
+            return m(handler)
+        end
+        return w:set_status_code(405)
     end
 end
