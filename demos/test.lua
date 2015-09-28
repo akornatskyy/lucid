@@ -41,7 +41,7 @@ local greeting_validator = validator.new({
 })
 
 app:get('', authorize, function(w, req)
-    return w:write('Hello, world!\n')
+    return w:write('Hello World!\n')
 end)
 :post(authorize, check, function(w, req)
     local m = {author='', message=''}
@@ -51,7 +51,6 @@ end)
             not b:validate(m, greeting_validator) then
         return w:json(b.errors, 400)
     end
-
     return w:json({
         message='Hello World!',
         path=req:absolute_url_for('user', {name='jack'})

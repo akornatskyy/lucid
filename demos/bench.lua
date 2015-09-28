@@ -1,26 +1,16 @@
 package.path = package.path .. ';demos/?.lua'
 
-local Request = require('http.request')
-local ResponseWriter = require('http.response')
+local clockit = require 'core.clockit'
+local request = require 'http.functional.request'
+local writer = require 'http.functional.response'
 local app = require(arg[1] or 'test')
 
-local w = setmetatable({
-    headers = {}
-}, {__index = ResponseWriter})
+local w = writer.new()
+local req = request.new({
+    --method = 'POST'
+})
 
-local req = setmetatable({
-    method = 'POST',
-    path = '/',
-    headers = {
-        ['host'] = 'localhost:8080',
-        ['user-agent'] = 'curl/7.44.0',
-        ['accept'] = '*/*'
-    },
-    form = {author='John', message='Hello World!'},
-    server_parts = function()
-        return 'http', 'localhost', '8080'
-    end
-}, {__index = Request})
 
-app(w, req)
---for i = 1, 1000000 do for j = 1, 1 do app(w, req) end end
+clockit.ptimes(function()
+    app(w, req)
+end)
