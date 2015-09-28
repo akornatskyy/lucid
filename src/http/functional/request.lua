@@ -14,7 +14,7 @@ local defaults = {
     form = {}
 }
 
-Request = mixin({}, Request, {
+Request = mixin(Request, {
     server_parts = function()
         return 'http', 'localhost', '8080'
     end
