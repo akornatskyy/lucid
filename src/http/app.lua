@@ -7,6 +7,7 @@ local http_verbs = {
     get = 'GET',
     head = 'HEAD',
     options = 'OPTIONS',
+    patch = 'PATCH',
     post = 'POST',
     put = 'PUT'
 }
