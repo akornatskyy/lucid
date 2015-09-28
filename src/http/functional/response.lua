@@ -2,10 +2,12 @@ local ResponseWriter = require('http.response')
 _ENV = nil
 
 
-local function new()
-    return setmetatable({
-        headers = {}
-    }, {__index = ResponseWriter})
+local function new(self)
+    if not self then
+        self = {}
+    end
+    self.headers = {}
+    return setmetatable(self, {__index = ResponseWriter})
 end
 
 return {
