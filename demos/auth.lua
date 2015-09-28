@@ -7,17 +7,20 @@ local principal = require 'security.principal'
 local ticket = require 'security.crypto.ticket'
 local http = require 'http'
 local web = require 'web'
+_ENV = nil
 
---_ENV = nil
 
 local BaseHandler = mixin(
     {},
     web.mixins.AuthCookieMixin,
     web.mixins.PrincipalMixin
 )
-
--- curl -v --cookie '_a=x' http://127.0.0.1:8080
--- curl -v -b /tmp/c.txt -c /tmp/c.txt http://127.0.0.1:8080
+--[[
+    luajit lurl.lua -v demos.auth /
+    luajit lurl.lua -v -H "cookie: _a=" demos.auth /
+    curl -v --cookie '_a=x' http://127.0.0.1:8080
+    curl -v -b /tmp/c.txt -c /tmp/c.txt http://127.0.0.1:8080
+--]]
 local AuthHandler = class(BaseHandler, {
     get = function(self)
         local p = self:get_principal()
@@ -56,9 +59,9 @@ local options = {
     ticket = ticket.new {
         --digest = digest.new('md5'),
         digest = digest.hmac('ripemd160', 'key1'),
-        cipher = cipher.new('aes128', 'key2'),
+        cipher = cipher.new('aes256', 'key2'),
         encoder = encoding.new('base64')
     }
 }
 
-return http.app({web.middleware.routing}, options)
+return web.app({web.middleware.routing}, options)

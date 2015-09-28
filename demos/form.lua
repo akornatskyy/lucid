@@ -23,8 +23,12 @@ local BaseHandler = mixin({
     translation = i18n.domains['demo']
 }, web.mixins.JSONMixin, web.mixins.ModelMixin)
 
-
--- curl -i --data "author=jack&message=hello" http://127.0.0.1:8080
+--[[
+    lua lurl.lua -v -d '{"author":"jack","message":"hello"}' demos.form /
+    lua lurl.lua -v -X POST demos.form /
+    curl -v -d "author=jack&message=hello" http://127.0.0.1:8080
+    curl -v -X POST http://127.0.0.1:8080
+--]]
 local FormHandler = class(BaseHandler, {
     post = function(self)
         local m = {author='', message=''}
@@ -48,28 +52,4 @@ local options = {
     urls = all_urls
 }
 
-local app = web.app({web.middleware.routing}, options)
-if not debug.getinfo(3) then
-    local clockit = require 'core.clockit'
-    local request = require 'http.functional.request'
-    local writer = require 'http.functional.response'
-    local w = writer.new()
-
-    local req = request.new({
-        method = 'POST',
-    })
-    print('failed:')
-    clockit.ptimes(function()
-        app(w, req)
-    end)
-
-    req = request.new({
-        method = 'POST',
-        form = {author = 'jack', message = 'hello'}
-    })
-    print('succeed:')
-    clockit.ptimes(function()
-        app(w, req)
-    end)
-end
-return app
+return web.app({web.middleware.routing}, options)

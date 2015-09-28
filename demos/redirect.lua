@@ -7,9 +7,10 @@ _ENV = nil
 local BaseHandler = mixin({}, web.mixins.RoutingMixin)
 
 --[[
+    lua lurl.lua -v demos.redirect /
+    lua lurl.lua -v -H "X-Requested-With: XMLHttpRequest" demos.redirect /
     curl -v http://127.0.0.1:8080
-    curl -v --header "X-Requested-With: XMLHttpRequest"
-        http://127.0.0.1:8080
+    curl -v -H "X-Requested-With: XMLHttpRequest" http://127.0.0.1:8080
 --]]
 local RedirectHandler = class(BaseHandler, {})
 function RedirectHandler:get()
@@ -35,15 +36,4 @@ local options = {
     urls = all_urls
 }
 
-local app = web.app({web.middleware.routing}, options)
-if not debug.getinfo(3) then
-    local clockit = require 'core.clockit'
-    local request = require 'http.functional.request'
-    local writer = require 'http.functional.response'
-    local w = writer.new()
-    local req = request.new()
-    clockit.ptimes(function()
-        app(w, req)
-    end)
-end
-return app
+return web.app({web.middleware.routing}, options)

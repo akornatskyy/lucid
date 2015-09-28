@@ -1,13 +1,15 @@
 local class = require 'core.class'
 local mixin = require 'core.mixin'
 local web = require 'web'
-
 _ENV = nil
 
 
 local BaseHandler = mixin({}, web.mixins.RoutingMixin)
 
--- curl -i http://127.0.0.1:8080/en/user/123
+--[[
+    luajit lurl.lua -v demos.routing /en/user/123
+    curl -v http://127.0.0.1:8080/en/user/123
+--]]
 local UserHandler = class(BaseHandler, {})
 function UserHandler:get()
     assert('/de/user/1' == self:path_for('user', {locale='de', user_id='1'}))
@@ -33,17 +35,4 @@ local options = {
     urls = all_urls
 }
 
-local app = web.app({web.middleware.routing}, options)
-if not debug.getinfo(3) then
-    local clockit = require 'core.clockit'
-    local request = require 'http.functional.request'
-    local writer = require 'http.functional.response'
-    local w = writer.new()
-    local req = request.new({
-        path = '/en/user/123'
-    })
-    clockit.ptimes(1, function()
-        app(w, req)
-    end)
-end
-return app
+return web.app({web.middleware.routing}, options)

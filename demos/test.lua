@@ -1,6 +1,7 @@
 --local pp = require 'core.pretty'
 local mixin = require 'core.mixin'
 local binder = require 'validation.binder'
+local length = require 'validation.rules.length'
 local required = require 'validation.rules.required'
 local validator = require 'validation.validator'
 local http = require 'http'
@@ -37,9 +38,15 @@ end
 -- handlers
 
 local greeting_validator = validator.new({
-    author = {required}
+    author = {required, length{max=20}},
+    message = {required, length{min=5}, length{max=512}}
 })
 
+--[[
+    lua lurl.lua -v demos.test /
+    lua lurl.lua -v -d '{"author":"jack","message":"hello"}' demos.test /
+    lua lurl.lua -v -X POST demos.test /
+--]]
 app:get('', authorize, function(w, req)
     return w:write('Hello World!\n')
 end)
@@ -57,6 +64,7 @@ end)
     })
 end)
 
+-- lua lurl.lua -v demos.test /user/jack
 app:get('user/{name}', 'user', function(w, req)
     return w:write('Hello, ' .. req.route_args.name .. '!\n')
 end)
