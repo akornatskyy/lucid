@@ -1,6 +1,7 @@
 _ENV = nil
 
 return {
+    app = require 'web.app',
     middleware = {
         routing = require 'web.middleware.routing'
     },
