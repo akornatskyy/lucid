@@ -32,8 +32,10 @@ local function dump_table(t, space, level)
     end
     for i=1, #skeys do
         local k = t2[skeys[i]]
-        b[#b+1] = '[' .. dump_value(k, space, level) .. ']' ..
-                  space.key .. dump_value(t[k], space, level)
+        if k ~= '__index' then
+            b[#b+1] = '[' .. dump_value(k, space, level) .. ']' ..
+                      space.key .. dump_value(t[k], space, level)
+        end
     end
     if #b == 0 then
         return '{}'
