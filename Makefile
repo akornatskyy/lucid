@@ -4,7 +4,7 @@
 ENV=$(shell pwd)/env
 #LUA=$(shell which lua)
 #LUA_VERSION=$(shell $(LUA) -e 'print(_VERSION:match("%d.%d"))')
-LUA=$(ENV)/bin/lua
+LUA_IMPL=
 LUA_VERSION=5.1.5
 PLATFORM=macosx
 #LUA_INCLUDE_PATH=$(shell dirname $(LUA))/../include
@@ -16,13 +16,23 @@ CFLAGS=-pipe -O2 -fPIC -std=c99 -Wall -Wextra -Wshadow -Wpointer-arith -Wstrict-
 
 env:
 	rm -rf $(ENV) ; mkdir -p $(ENV) ; \
-	wget -c http://www.lua.org/ftp/lua-$(LUA_VERSION).tar.gz \
-		-O - | tar -xzf - ; \
-	cd lua-$(LUA_VERSION) ; \
-	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h ; \
-	sed -i.bak s%./?.lua\;%./?.lua\;./src/?.lua\;%g src/luaconf.h ; \
-	make -s $(PLATFORM) install INSTALL_TOP=$(ENV) ; \
-	cd .. ; rm -rf lua-$(LUA_VERSION) ; \
+	if [ "$(LUA_IMPL)" == "luajit" ] ; then \
+		wget -c http://luajit.org/download/LuaJIT-$(LUA_VERSION).tar.gz \
+			-O - | tar xzf - ; \
+	  	cd LuaJIT-$(LUA_VERSION) ; \
+		export MACOSX_DEPLOYMENT_TARGET=10.10 ; \
+	    make install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include/lua/5.1; \
+		ln -sf luajit-$(LUA_VERSION) $(ENV)/bin/lua ; \
+		cd .. ; rm -rf luajit-$(LUA_VERSION) ; \
+	else \
+		wget -c http://www.lua.org/ftp/lua-$(LUA_VERSION).tar.gz \
+			-O - | tar -xzf - ; \
+		cd lua-$(LUA_VERSION) ; \
+		sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h ; \
+		sed -i.bak s%./?.lua\;%./?.lua\;./src/?.lua\;%g src/luaconf.h ; \
+		make -s $(PLATFORM) install INSTALL_TOP=$(ENV) ; \
+		cd .. ; rm -rf lua-$(LUA_VERSION) ; \
+	fi ; \
 	wget -c http://luarocks.org/releases/luarocks-$(LUA_ROCKS_VERSION).tar.gz \
 		-O - | tar -xzf - ; \
 	cd luarocks-$(LUA_ROCKS_VERSION) ; \
