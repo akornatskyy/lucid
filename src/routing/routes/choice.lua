@@ -49,7 +49,6 @@ local function gen_match(matches)
     end
     return format([[
         local sub = string.sub
-        _ENV = nil
         return function(self, path)
             local m = self.m
             %s

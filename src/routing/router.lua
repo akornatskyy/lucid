@@ -57,7 +57,6 @@ local function gen_path(fmt)
         end
     end
     return format([[
-        _ENV = nil
         return function(t, d)
             return %s
         end

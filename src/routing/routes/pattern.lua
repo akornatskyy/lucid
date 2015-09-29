@@ -57,7 +57,6 @@ local function gen_match(pattern, names, args)
     end
     return format([[
         local find = string.find
-        _ENV = nil
         return function(self, path)
             local s, e%s = find(path, %q)
             if s then

@@ -1,7 +1,6 @@
 local i18n = require 'core.i18n'
 local validator = require 'validation.validator'
 local describe, it, assert = describe, it, assert
-_ENV = nil
 
 describe('validator', function()
     local translations = i18n.NullTranslation

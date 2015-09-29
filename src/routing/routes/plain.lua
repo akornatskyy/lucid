@@ -12,7 +12,6 @@ local function gen_match(pattern)
     local n = #pattern
     return format([[
         local sub = string.sub
-        _ENV = nil
         return function(self, path)
             if #path >= %s and sub(path, 1, %s) == %q then
                 return %s, self.args
