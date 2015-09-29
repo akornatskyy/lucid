@@ -21,7 +21,7 @@ env:
 			-O - | tar xzf - ; \
 	  	cd LuaJIT-$(LUA_VERSION) ; \
 		export MACOSX_DEPLOYMENT_TARGET=10.10 ; \
-	    make install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include/lua/5.1; \
+	    make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include/lua/5.1; \
 		ln -sf luajit-$(LUA_VERSION) $(ENV)/bin/lua ; \
 		cd .. ; rm -rf luajit-$(LUA_VERSION) ; \
 	else \
