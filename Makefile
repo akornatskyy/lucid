@@ -43,7 +43,7 @@ env:
 	for rock in busted luacov luacheck lbase64 struct luacrypto lua-cjson; do \
 		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
 	done ; \
-	$(ENV)/bin/luarocks make
+	ln -sf ../../bin/lurl $(ENV)/bin/lurl
 
 debian:
 	apt-get install build-essential unzip libncurses5-dev libreadline6-dev \
