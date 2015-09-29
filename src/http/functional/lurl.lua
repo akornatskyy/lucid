@@ -85,7 +85,8 @@ return function()
         w = {buffer = {}}
     end
 
-    local app = require(arg[#arg-1])
+    local app = arg[#arg-1]
+    app = app:find('%.lua$') and dofile(app) or require(app)
 
     w = writer.new(w)
     req = request.new(req)
