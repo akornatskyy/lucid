@@ -1,5 +1,5 @@
 local Mixin = {}
-_ENV = nil
+
 
 function Mixin:path_for(name, args)
     if args then

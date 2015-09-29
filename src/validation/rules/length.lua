@@ -1,5 +1,5 @@
 local setmetatable = setmetatable
-_ENV = nil
+
 
 local succeed = {__index = {
     validate = function()

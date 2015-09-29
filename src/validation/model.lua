@@ -1,5 +1,5 @@
 local type, next, tonumber = type, next, tonumber
-_ENV = nil
+
 
 local function string_adapter(value)
     if type(value) == 'table' then

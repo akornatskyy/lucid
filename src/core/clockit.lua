@@ -1,5 +1,4 @@
 local clock = require('socket').gettime
-_ENV = nil
 
 
 local function clockit(n, f)

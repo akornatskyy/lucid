@@ -1,6 +1,6 @@
 local format, next = string.format, next
 local assert, load, concat, sort = assert, loadstring, table.concat, table.sort
-_ENV = nil
+
 
 local function split(str)
     local r = {}

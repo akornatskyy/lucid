@@ -1,5 +1,5 @@
 local assert, format, load = assert, string.format, loadstring
-_ENV = nil
+
 
 local function plain_finishing(pattern, args)
     return {

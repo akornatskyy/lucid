@@ -1,6 +1,6 @@
 local assert, load, next = assert, loadstring, next
 local format, concat = string.format, table.concat
-_ENV = nil
+
 
 local function parse(p)
     local fs, ne

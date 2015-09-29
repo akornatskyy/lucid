@@ -1,7 +1,6 @@
 local cookie = require 'http.cookie'
 local next, tostring = next, tostring
 local describe, it, assert = describe, it, assert
-_ENV = nil
 
 describe('cookie', function()
     describe('parse', function()

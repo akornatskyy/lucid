@@ -1,6 +1,5 @@
 local setmetatable = setmetatable
 local mixin = require 'core.mixin'
-_ENV = nil
 
 local mt_call = function(cls)
 	return setmetatable({}, cls)

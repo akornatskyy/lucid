@@ -1,5 +1,5 @@
 local defaulttable = require 'core.collections.defaulttable'
-_ENV = nil
+
 
 local update_model
 local translation

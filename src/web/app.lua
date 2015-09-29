@@ -1,5 +1,3 @@
-_ENV = nil
-
 --[[
     function middleware(options, following)
         return function(w, req)

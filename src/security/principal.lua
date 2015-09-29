@@ -1,5 +1,5 @@
 local concat = table.concat
-_ENV = nil
+
 
 local parse = function(s)
     local t = {}

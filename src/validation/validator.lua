@@ -1,5 +1,5 @@
 local assert, type, next, setmetatable = assert, type, next, setmetatable
-_ENV = nil
+
 
 local function validate(self, model, errors, translations)
     local ok = true

@@ -1,6 +1,6 @@
 local mixin = require 'core.mixin'
 local Request = require 'http.request'
-_ENV = nil
+
 
 local headers = {
     ['host'] = 'localhost:8080',

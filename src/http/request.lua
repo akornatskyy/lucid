@@ -1,6 +1,6 @@
 local cookie = require 'http.cookie'
 local parse_cookie = cookie.parse
-_ENV = nil
+
 
 return {
     -- assumes: self.method, self.path
@@ -44,4 +44,3 @@ return {
         return headers['x-requested-with'] == 'XMLHttpRequest'
     end
 }
-

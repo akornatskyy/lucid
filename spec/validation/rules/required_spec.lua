@@ -1,7 +1,6 @@
 local i18n = require 'core.i18n'
 local required = require 'validation.rules.required'
 local describe, it, assert = describe, it, assert
-_ENV = nil
 
 describe('required rule', function()
     local translations = i18n.NullTranslation

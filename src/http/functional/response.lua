@@ -1,5 +1,4 @@
 local ResponseWriter = require('http.response')
-_ENV = nil
 
 
 local function new(self)

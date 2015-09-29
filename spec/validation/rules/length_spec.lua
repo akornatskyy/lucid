@@ -1,7 +1,6 @@
 local i18n = require 'core.i18n'
 local length = require 'validation.rules.length'
 local describe, it, assert = describe, it, assert
-_ENV = nil
 
 describe('length rule', function()
     local translations = i18n.NullTranslation

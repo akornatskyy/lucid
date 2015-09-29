@@ -1,5 +1,4 @@
 local assert, setmetatable = assert, setmetatable
-_ENV = nil
 
 
 return function(options)

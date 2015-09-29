@@ -1,6 +1,5 @@
 local defaulttable = require 'core.collections.defaulttable'
 local assert, setmetatable = assert, setmetatable
-_ENV = nil
 
 local NullTranslation = {
     gettext = function(self, msg)

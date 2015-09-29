@@ -1,6 +1,5 @@
 local curly = require 'routing.routes.curly'
 local assert, describe, it, next = assert, describe, it, next
-_ENV = nil
 
 describe('curly route', function()
     describe('convert', function()

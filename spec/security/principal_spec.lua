@@ -1,7 +1,5 @@
 local principal = require 'security.principal'
---local next, tostring = next, tostring
 local describe, it, assert = describe, it, assert
-_ENV = nil
 
 describe('principal', function()
     describe('parse', function()

@@ -2,7 +2,6 @@ local i18n = require 'core.i18n'
 local m = require 'validation.model'
 local describe, it, assert = describe, it, assert
 local type, next = type, next
-_ENV = nil
 
 describe('update_model', function()
     local translations = i18n.NullTranslation

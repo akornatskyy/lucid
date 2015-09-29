@@ -1,5 +1,4 @@
 local Mixin = {}
-_ENV = nil
 
 function Mixin:path_for(name, args)
     local req = self.req

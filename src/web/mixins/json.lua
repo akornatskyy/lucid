@@ -6,8 +6,6 @@ do
 end
 
 local Mixin = {}
-_ENV = nil
-
 
 function Mixin:json(obj)
     self.w.headers['Content-Type'] = 'application/json'

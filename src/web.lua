@@ -1,5 +1,3 @@
-_ENV = nil
-
 return {
     app = require 'web.app',
     middleware = {

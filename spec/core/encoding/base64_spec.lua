@@ -1,6 +1,5 @@
 local b64 = require 'core.encoding.base64'
 local describe, it, assert = describe, it, assert
-_ENV = nil
 
 describe('base64', function()
     it('RFC 3548', function()

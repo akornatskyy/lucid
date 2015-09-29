@@ -1,7 +1,6 @@
 local mixin = require 'core.mixin'
 local Request = require 'http.request'
 local ResponseWriter = require 'http.response'
-_ENV = nil
 
 
 mixin(ResponseWriter, {

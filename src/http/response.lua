@@ -1,6 +1,4 @@
-_ENV = nil
-
-local ResponseWriter = {
+return {
     -- assumes: self.headers
 
     get_status_code = function(self)
@@ -43,5 +41,3 @@ local ResponseWriter = {
         self.headers['Location'] = absolute_url
     end
 }
-
-return ResponseWriter

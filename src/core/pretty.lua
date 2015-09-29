@@ -1,6 +1,5 @@
 local next, type, tostring = next, type, tostring
 local sort, concat = table.sort, table.concat
-_ENV = nil
 
 local spaces = {
     default = {bracket='', indent='', item=', ', key=' = '},

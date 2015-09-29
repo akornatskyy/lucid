@@ -1,5 +1,4 @@
 local next = next
-_ENV = nil
 
 --[[
     Merge the contents of two or more tables together into the first.

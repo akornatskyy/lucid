@@ -1,6 +1,5 @@
 local class = require 'core.class'
 local assert, next, describe, it = assert, next, describe, it
-_ENV = nil
 
 describe('core.class', function()
     describe('definition', function()

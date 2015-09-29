@@ -1,5 +1,4 @@
 local setmetatable = setmetatable
-_ENV = nil
 
 local defaulttable = {
     __index = function(t, key)

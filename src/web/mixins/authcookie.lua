@@ -5,7 +5,6 @@ do
 end
 
 local Mixin = {}
-_ENV = nil
 
 function Mixin:parse_auth_cookie()
     local req = self.req

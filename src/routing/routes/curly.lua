@@ -1,6 +1,6 @@
 local base = require('routing.routes.pattern').new
 local format, concat = string.format, table.concat
-_ENV = nil
+
 
 local patterns = {
     -- one or more digits

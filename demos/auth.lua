@@ -7,7 +7,6 @@ local principal = require 'security.principal'
 local ticket = require 'security.crypto.ticket'
 local http = require 'http'
 local web = require 'web'
-_ENV = nil
 
 
 local BaseHandler = mixin(

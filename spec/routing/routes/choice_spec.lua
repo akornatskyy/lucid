@@ -1,7 +1,6 @@
 local choice = require 'routing.routes.choice'
 local assert, describe, it, next = assert, describe, it, next
 local new = choice.new
-_ENV = nil
 
 describe('choice route', function()
     local matched, args

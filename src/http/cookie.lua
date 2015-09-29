@@ -1,6 +1,6 @@
 local setmetatable, concat, tostring = setmetatable, table.concat, tostring
 local date = os.date
-_ENV = nil
+
 
 local parse = function(c)
     local r = {}

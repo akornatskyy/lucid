@@ -1,6 +1,3 @@
-_ENV = nil
-
-
 local App, AppMeta = {}, {}
 local http_verbs = {
     delete = 'DELETE',

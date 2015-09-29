@@ -1,7 +1,7 @@
 local mixin = require 'core.mixin'
 local base = require 'http.adapters.nginx.base'
 local setmetatable, tostring = setmetatable, tostring
-_ENV = nil
+
 
 local ResponseWriter = {__index = mixin(base.ResponseWriter, {
     write = function(self, c)

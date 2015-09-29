@@ -1,7 +1,7 @@
 local struct = require 'struct'
 local pack, unpack = struct.pack, struct.unpack
 local random, time = math.random, os.time
-_ENV = nil
+
 
 local Ticket = {
     encode = function(self, s)

@@ -1,7 +1,6 @@
 local pattern = require 'routing.routes.pattern'
 local assert, describe, it = assert, describe, it
 local new = pattern.new
-_ENV = nil
 
 describe('pattern route', function()
     local r, matched, args

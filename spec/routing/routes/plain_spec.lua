@@ -1,7 +1,6 @@
 local plain = require 'routing.routes.plain'
 local assert, describe, it = assert, describe, it
 local new = plain.new
-_ENV = nil
 
 describe('plain route', function()
     describe('builder', function()

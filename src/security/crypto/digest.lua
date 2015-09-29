@@ -1,6 +1,4 @@
 local type, error = type, error
-_ENV = nil
-
 local new, hmac
 
 do

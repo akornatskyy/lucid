@@ -1,7 +1,6 @@
 local class = require 'core.class'
 local mixin = require 'core.mixin'
 local web = require 'web'
-_ENV = nil
 
 
 local BaseHandler = mixin({}, web.mixins.RoutingMixin)

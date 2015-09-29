@@ -1,5 +1,3 @@
-_ENV = nil
-
 local dummy = function(x)
     return x
 end

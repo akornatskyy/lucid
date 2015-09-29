@@ -3,7 +3,7 @@ local assert, load = assert, loadstring
 local format, concat = string.format, table.concat
 local setmetatable = setmetatable
 -- local pp = require 'core.pretty'
-_ENV = nil
+
 
 local function build_route(builders, pattern, finishing, args)
     for i = 1, #builders do

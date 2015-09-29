@@ -1,5 +1,3 @@
-_ENV = nil
-
 local validate = function(self, value, model, translations)
     if not value or value == '' then
         return translations:gettext(self.msg)

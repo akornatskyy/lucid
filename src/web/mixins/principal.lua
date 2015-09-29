@@ -1,5 +1,4 @@
 local Mixin = {}
-_ENV = nil
 
 function Mixin:get_principal()
     local p = self.principal

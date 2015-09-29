@@ -1,6 +1,5 @@
 local update_model
 local null_translation
-_ENV = nil
 
 do
     local i18n = require 'core.i18n'

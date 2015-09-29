@@ -1,5 +1,5 @@
 local assert = assert
-_ENV = nil
+
 
 return function(options)
     if not options.root_path then

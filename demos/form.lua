@@ -5,7 +5,6 @@ local length = require 'validation.rules.length'
 local required = require 'validation.rules.required'
 local validator = require 'validation.validator'
 local web = require 'web'
-_ENV = nil
 
 
 i18n = i18n.configure()
