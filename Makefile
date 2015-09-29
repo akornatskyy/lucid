@@ -32,7 +32,8 @@ env:
 	cd .. ; rm -rf luarocks-$(LUA_ROCKS_VERSION) ; \
 	for rock in busted luacov luacheck lbase64 struct luacrypto lua-cjson; do \
 		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
-	done
+	done ; \
+	$(ENV)/bin/luarocks make
 
 debian:
 	apt-get install build-essential unzip libncurses5-dev libreadline6-dev \
