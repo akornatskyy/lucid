@@ -1,11 +1,16 @@
 language: c
 
+env:
+    - LUA_VERSION=5.1.5
+    - LUA_VERSION=5.2.4
+    - LUA_VERSION=5.3.1
+
 install:
-    - make env PLATFORM=linux
+    - make env PLATFORM=linux LUA_VERSION=$LUA_VERSION
 
 script:
-    - make test
-    - make qa
+    - make test $LUA_VERSION
+    - make qa $LUA_VERSION
 
 after_success:
     - eval "$(env/bin/luarocks path --bin)"
