@@ -1,5 +1,8 @@
-local class = require 'core.encoding'
-local assert, next, describe, it = assert, next, describe, it
+local encoding = require 'core.encoding'
+local assert, describe, it = assert, describe, it
 
 describe('core.encoding', function()
+	it('', function()
+		assert.not_nil(encoding)
+	end)
 end)
