@@ -16,7 +16,7 @@ CFLAGS=-pipe -O2 -fPIC -std=c99 -Wall -Wextra -Wshadow -Wpointer-arith -Wstrict-
 
 env:
 	rm -rf $(ENV) ; mkdir -p $(ENV) ; \
-	if [ "$(LUA_IMPL)" == "luajit" ] ; then \
+	if [ "$(LUA_IMPL)" = "luajit" ] ; then \
 		wget -c http://luajit.org/download/LuaJIT-$(LUA_VERSION).tar.gz \
 			-O - | tar xzf - ; \
 	  	cd LuaJIT-$(LUA_VERSION) ; \
