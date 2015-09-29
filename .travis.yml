@@ -9,8 +9,8 @@ install:
     - make env PLATFORM=linux LUA_VERSION=$LUA_VERSION
 
 script:
-    - make test $LUA_VERSION
-    - make qa $LUA_VERSION
+    - make test LUA_VERSION=$LUA_VERSION
+    - make qa LUA_VERSION=$LUA_VERSION
 
 after_success:
     - eval "$(env/bin/luarocks path --bin)"
