@@ -2,7 +2,7 @@ local class = require 'core.class'
 local web = require 'web'
 
 --[[
-    luajit lurl.lua -v demos.hello /
+    lurl -v demos.hello /
     curl -v http://localhost:8080
 --]]
 local WelcomeHandler = class({

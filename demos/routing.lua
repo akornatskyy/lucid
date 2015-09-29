@@ -7,7 +7,7 @@ _ENV = nil
 local BaseHandler = mixin({}, web.mixins.RoutingMixin)
 
 --[[
-    luajit lurl.lua -v demos.routing /en/user/123
+    lurl -v demos.routing /en/user/123
     curl -v http://127.0.0.1:8080/en/user/123
 --]]
 local UserHandler = class(BaseHandler, {})

@@ -7,8 +7,8 @@ _ENV = nil
 local BaseHandler = mixin({}, web.mixins.RoutingMixin)
 
 --[[
-    lua lurl.lua -v demos.redirect /
-    lua lurl.lua -v -H "X-Requested-With: XMLHttpRequest" demos.redirect /
+    lurl -v demos.redirect /
+    lurl -v -H "X-Requested-With: XMLHttpRequest" demos.redirect /
     curl -v http://127.0.0.1:8080
     curl -v -H "X-Requested-With: XMLHttpRequest" http://127.0.0.1:8080
 --]]

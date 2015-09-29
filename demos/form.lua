@@ -24,8 +24,8 @@ local BaseHandler = mixin({
 }, web.mixins.JSONMixin, web.mixins.ModelMixin)
 
 --[[
-    lua lurl.lua -v -d '{"author":"jack","message":"hello"}' demos.form /
-    lua lurl.lua -v -X POST demos.form /
+    lurl -v -d '{"author":"jack","message":"hello"}' demos.form /
+    lurl -v -X POST demos.form /
     curl -v -d "author=jack&message=hello" http://127.0.0.1:8080
     curl -v -X POST http://127.0.0.1:8080
 --]]
