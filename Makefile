@@ -6,7 +6,7 @@ ENV=$(shell pwd)/env
 #LUA_VERSION=$(shell $(LUA) -e 'print(_VERSION:match("%d.%d"))')
 LUA=$(ENV)/bin/lua
 LUA_VERSION=5.1.5
-PLATFORM=macos
+PLATFORM=macosx
 #LUA_INCLUDE_PATH=$(shell dirname $(LUA))/../include
 LUA_ROCKS_VERSION=2.2.2
 
