@@ -55,51 +55,51 @@ local function parse_args()
     return req, args
 end
 
--- main
+return function()
+    if #arg < 2 then
+        return usage()
+    end
 
-if #arg < 2 then
-    return usage()
-end
+    local req, args = parse_args()
+    if not req then
+        return usage()
+    end
 
-local req, args = parse_args()
-if not req then
-    return usage()
-end
+    local w
+    if args.verbose then
+        local mixin = require 'core.mixin'
+        local ResponseWriter = require 'http.response'
+        mixin(ResponseWriter, {
+            get_status_code = function(self)
+                return self.status_code
+            end,
 
-local w
-if args.verbose then
-    local mixin = require 'core.mixin'
-    local ResponseWriter = require 'http.response'
-    mixin(ResponseWriter, {
-        get_status_code = function(self)
-            return self.status_code
-        end,
+            set_status_code = function(self, code)
+                self.status_code = code
+            end,
 
-        set_status_code = function(self, code)
-            self.status_code = code
-        end,
+            write = function(self, c)
+                self.buffer[#self.buffer+1] = c
+            end
+        })
+        w = {buffer = {}}
+    end
 
-        write = function(self, c)
-            self.buffer[#self.buffer+1] = c
-        end
-    })
-    w = {buffer = {}}
-end
+    local app = require(arg[#arg-1])
 
-local app = require(arg[#arg-1])
+    w = writer.new(w)
+    req = request.new(req)
+    app(w, req)
 
-w = writer.new(w)
-req = request.new(req)
-app(w, req)
-
-if args.verbose then
-    local pp = require 'core.pretty'
-    req.options = nil
-    print('req: ' .. pp.dump(req, pp.spaces.indented))
-    print('w: ' .. pp.dump(w, pp.spaces.indented))
-elseif args.bench then
-    local clockit = require 'core.clockit'
-    clockit.ptimes(function()
-        app(w, req)
-    end)
+    if args.verbose then
+        local pp = require 'core.pretty'
+        req.options = nil
+        print('req: ' .. pp.dump(req, pp.spaces.indented))
+        print('w: ' .. pp.dump(w, pp.spaces.indented))
+    elseif args.bench then
+        local clockit = require 'core.clockit'
+        clockit.ptimes(function()
+            app(w, req)
+        end)
+    end
 end
