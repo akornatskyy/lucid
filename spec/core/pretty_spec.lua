@@ -1,6 +1,6 @@
 local pretty = require 'core.pretty'
 
-describe('pretty', function()
+describe('core.pretty', function()
     local dump = pretty.dump
 
     it('dump nil', function()
