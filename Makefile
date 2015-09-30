@@ -1,5 +1,5 @@
-.SILENT: env test clean qa
-.PHONY: env test clean qa
+.SILENT: env test clean qa nginx run
+.PHONY: env test clean qa nginx run
 
 ENV=$(shell pwd)/env
 #LUA=$(shell which lua)
@@ -18,12 +18,15 @@ CFLAGS=-pipe -O2 -fPIC -std=c99 -Wall -Wextra -Wshadow -Wpointer-arith -Wstrict-
 
 env:
 	rm -rf $(ENV) ; mkdir -p $(ENV) ; \
+	unset LUA_PATH ; unset LUA_CPATH ; \
 	if [ "$(LUA_IMPL)" = "luajit" ] ; then \
 		wget -c http://luajit.org/download/LuaJIT-$(LUA_VERSION).tar.gz \
 			-O - | tar xzf - ; \
 	  	cd LuaJIT-$(LUA_VERSION) ; \
+	  	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h ; \
+		sed -i.bak s%./?.lua\"%./?.lua\;./src/?.lua\"%g src/luaconf.h ; \
 		export MACOSX_DEPLOYMENT_TARGET=10.10 ; \
-	    make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include; \
+	    make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include ; \
 		ln -sf luajit-$(LUA_VERSION) $(ENV)/bin/lua ; \
 		cd .. ; rm -rf luajit-$(LUA_VERSION) ; \
 	else \
