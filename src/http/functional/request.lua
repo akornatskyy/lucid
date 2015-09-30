@@ -4,7 +4,7 @@ local Request = require 'http.request'
 
 local headers = {
     ['host'] = 'localhost:8080',
-    ['user-agent'] = 'curl/7.44.0',
+    ['user-agent'] = 'lurl/scm-0',
     ['accept'] = '*/*'
 }
 
