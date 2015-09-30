@@ -9,6 +9,8 @@ LUA_VERSION=5.1.5
 PLATFORM=macosx
 #LUA_INCLUDE_PATH=$(shell dirname $(LUA))/../include
 LUA_ROCKS_VERSION=2.2.2
+NGINX_VERSION=1.9.5
+NGINX_LUA_MODULE_VERSION=0.9.16
 
 CFLAGS=-pipe -O2 -fPIC -std=c99 -Wall -Wextra -Wshadow -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wno-unused-parameter -Wconditional-uninitialized -Werror
 #CFLAGS=
@@ -21,7 +23,7 @@ env:
 			-O - | tar xzf - ; \
 	  	cd LuaJIT-$(LUA_VERSION) ; \
 		export MACOSX_DEPLOYMENT_TARGET=10.10 ; \
-	    make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include/lua/5.1; \
+	    make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include; \
 		ln -sf luajit-$(LUA_VERSION) $(ENV)/bin/lua ; \
 		cd .. ; rm -rf luajit-$(LUA_VERSION) ; \
 	else \
@@ -43,7 +45,7 @@ env:
 	for rock in busted luacov luacheck lbase64 struct luacrypto lua-cjson; do \
 		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
 	done ; \
-	ln -sf ../../bin/lurl $(ENV)/bin/lurl
+	ln -sf `pwd`/bin/lurl $(ENV)/bin/lurl
 
 debian:
 	apt-get install build-essential unzip libncurses5-dev libreadline6-dev \
@@ -63,13 +65,27 @@ qa:
 	$(ENV)/bin/luacheck -q src/ spec/ demos/
 
 nginx:
-	cd env ; \
-	git clone https://github.com/openresty/lua-nginx-module ; \
-	hg clone http://hg.nginx.org/nginx ; \
+	WDIR=`pwd` ; \
+	cd $(ENV) ; \
+	wget -c https://github.com/openresty/lua-nginx-module/archive/v$(NGINX_LUA_MODULE_VERSION).tar.gz \
+			-O - | tar xzf - ; \
+	ln -sf lua-nginx-module-$(NGINX_LUA_MODULE_VERSION) lua-nginx-module ; \
+	wget -c http://nginx.org/download/nginx-$(NGINX_VERSION).tar.gz \
+			-O - | tar xzf - ; \
+	ln -sf nginx-$(NGINX_VERSION) nginx ; \
+	if [ "$(LUA_IMPL)" = "luajit" ] ; then \
+		export LUAJIT_LIB=$(ENV)/lib ; \
+		export LUAJIT_INC=$(ENV)/include ; \
+	else \
+		export LUA_LIB=$(ENV)/lib ; \
+		export LUA_INC=$(ENV)/include ; \
+	fi ; \
 	cd nginx ; \
-	export LUAJIT_LIB=/opt/local/lib ; \
-	export LUAJIT_INC=/opt/local/include/luajit-2.0/ ; \
-	auto/configure --prefix=./ --add-module=../lua-nginx-module ; \
+	./configure --prefix=./ --without-http_rewrite_module --without-pcre \
+		--add-module=../lua-nginx-module ; \
 	make -j4 ; \
-	mkdir logs ; \
-	ln -s ../../../etc/nginx.conf conf/lucid.conf
+	mkdir -p logs ; \
+	ln -sf $$WDIR/etc/nginx.conf conf/lucid.conf
+
+run:
+	cd $(ENV)/nginx ; objs/nginx -c conf/lucid.conf
