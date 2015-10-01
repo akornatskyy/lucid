@@ -14,16 +14,12 @@ describe('core.class', function()
             assert.same({}, class({})())
         end)
 
-        it('adds mixin function', function()
-            assert.truthy(class({}).mixin)
-        end)
-
         it('has extra meta information', function()
             local keys = {}
             for k in next, class({}) do
                 keys[k] = 1
             end
-            assert.same({__index=1, mixin=1}, keys)
+            assert.same({__index=1}, keys)
         end)
 
         it('is a table type', function()
@@ -113,35 +109,6 @@ describe('core.class', function()
             })
             local c = C()
             assert.equals(c, c:f())
-        end)
-    end)
-
-    describe('mixin', function()
-        it('adds functions', function()
-            local M = {
-                f = function(self)
-                end
-            }
-            local C = class({})
-            C:mixin(M)
-            assert.equals(M.f, C.f)
-        end)
-    end)
-
-    describe('mixin', function()
-        it('supports multiple arguments', function()
-            local M1 = {
-                f1 = function(self)
-                end
-            }
-            local M2 = {
-                f2 = function(self)
-                end
-            }
-            local C = class({})
-            C:mixin(M1, M2)
-            assert.equals(M1.f1, C.f1)
-            assert.equals(M2.f2, C.f2)
         end)
     end)
 

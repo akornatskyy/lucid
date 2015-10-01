@@ -1,5 +1,4 @@
 local setmetatable = setmetatable
-local mixin = require 'core.mixin'
 
 local mt_call = function(cls)
 	return setmetatable({}, cls)
@@ -19,7 +18,6 @@ return function(base, cls)
         cls = base
     end
     cls.__index = cls
-    cls.mixin = mixin
     cls = setmetatable(cls, mt)
     mt.__call = cls.ctor and mt_call_ctor or mt_call
     --cls.new = cls.ctor and mt_call_ctor or mt_call
