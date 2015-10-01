@@ -9,10 +9,10 @@ local http_verbs = {
     put = 'PUT'
 }
 
-local pack_wrappers = function(handlers)
+local pack_wrappers = function(handlers, options)
     local h = handlers[#handlers]
     for i = #handlers - 1, 1, -1 do
-        h = handlers[i](h)
+        h = handlers[i](h, options)
     end
     return h
 end
@@ -41,7 +41,7 @@ function RouteBuilder:__index(method)
         else
             table.insert(handlers, 1, name_or_func)
         end
-        mapping[http_verb] = pack_wrappers(handlers)
+        mapping[http_verb] = pack_wrappers(handlers, self.options)
         self.ordered[#self.ordered+1] = self.pattern
         return self
     end
@@ -80,10 +80,10 @@ function App:all(pattern, name_or_func, ...)
     local r
     local handlers = {...}
     if type(name_or_func) == 'string' then
-        r = {pattern, pack_wrappers(handlers), name=name_or_func}
+        r = {pattern, pack_wrappers(handlers, self.options), name=name_or_func}
     else
         table.insert(handlers, 1, name_or_func)
-        r = {pattern, pack_wrappers(handlers)}
+        r = {pattern, pack_wrappers(handlers, self.options)}
     end
     self.options.urls[#self.options.urls+1] = r
 end
@@ -94,7 +94,8 @@ function App:route(pattern, name)
         pattern = pattern,
         name = name,
         mapping = self.mapping,
-        ordered = self.ordered
+        ordered = self.ordered,
+        options = self.options
     }, RouteBuilder)
 end
 
@@ -129,7 +130,7 @@ end
 local function chain_middlewares(self)
     local following
     for i = #self.middlewares, 1, -1 do
-        following = self.middlewares[i](self.options, following)
+        following = self.middlewares[i](following, self.options)
     end
     return following
 end
