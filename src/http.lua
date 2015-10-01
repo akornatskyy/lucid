@@ -4,6 +4,8 @@ return {
     Request = require 'http.request',
     ResponseWriter = require 'http.response',
     middleware = {
+        authcookie = require 'http.middleware.authcookie',
+        authorize = require 'http.middleware.authorize',
         routing = require 'http.middleware.routing'
     },
     mixins = {
