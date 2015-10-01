@@ -18,7 +18,7 @@ mixin(http.ResponseWriter, http.mixins.json)
 
 local authorize = http.middleware.authorize
 local authcookie = http.middleware.authcookie
-local app = http.app:new {
+local app = http.app.new {
     ticket = ticket.new {
         digest = digest.hmac('ripemd160', 'key1'),
         cipher = cipher.new('aes256', 'key2'),

@@ -57,18 +57,17 @@ local http_method_wrapper = function(mapping)
     end
 end
 
-local function new(self, options)
-    if not self then
-        self = {}
+local function new(options)
+    options = options or {}
+    if not options.urls then
+        options.urls = {}
     end
-    self.options = options or {}
-    if not self.options.urls then
-        self.options.urls = {}
-    end
-    self.middlewares = {}
-    self.ordered = {}
-    self.mapping = {}
-    return setmetatable(self, AppMeta)
+    return setmetatable({
+        options = options,
+        middlewares = {},
+        ordered = {},
+        mapping = {},
+    }, AppMeta)
 end
 
 function App:use(middleware)
