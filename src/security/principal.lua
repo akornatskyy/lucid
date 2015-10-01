@@ -26,6 +26,8 @@ local parse = function(s)
         if not j then
             if i ~= 1 then
                 r[s:sub(i)] = true
+            elseif #s > 0 then
+                r[s] = true
             end
             break
         end
