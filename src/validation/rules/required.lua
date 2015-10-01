@@ -1,5 +1,5 @@
 local validate = function(self, value, model, translations)
-    if not value or value == '' then
+    if not value or value == '' or value == 0 then
         return translations:gettext(self.msg)
     end
     return nil
