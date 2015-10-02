@@ -13,11 +13,13 @@ luarocks install --server=http://luarocks.org/dev lucid
 
 # Overview
 
-Using function:
+Using a function:
 
 ```lua
 local http = require 'http'
+
 local app = http.app.new()
+app:use(http.middleware.routing)
 
 app:get('', function(w, req)
     return w:write('Hello World!\n')
@@ -26,7 +28,7 @@ end)
 return app()
 ```
 
-... or metaclass:
+... or a metaclass:
 
 ```lua
 local class = require 'core.class'
@@ -47,6 +49,8 @@ local options = {
 return web.app({web.middleware.routing}, options)
 ```
 
+see more [here](https://github.com/akornatskyy/lucid/tree/master/demos).
+
 # Setup
 
 Install development dependencies:
@@ -59,16 +63,16 @@ eval "$(env/bin/luarocks path --bin)"
 
 # Run
 
-Check from command line:
+Check from the command line:
 
 ```sh
-lurl -v demos/hello.lua /
+lurl -v demos/http/hello.lua /
 ```
 
-Serve files with web server:
+Serve files with a web server:
 
 ```sh
-export app=demos.hello ; make run
+export app=demos.http.hello ; make run
 curl -v http://localhost:8080
 ```
 
