@@ -23,8 +23,8 @@ local BaseHandler = mixin({
 }, web.mixins.JSONMixin, web.mixins.ModelMixin)
 
 --[[
-    lurl -v -d '{"author":"jack","message":"hello"}' demos.form /
-    lurl -v -X POST demos.form /
+    lurl -v -d '{"author":"jack","message":"hello"}' demos.web.form /
+    lurl -v -X POST demos.web.form /
     curl -v -d "author=jack&message=hello" http://127.0.0.1:8080
     curl -v -X POST http://127.0.0.1:8080
 --]]

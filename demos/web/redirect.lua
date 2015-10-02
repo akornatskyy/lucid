@@ -6,7 +6,7 @@ local web = require 'web'
 local BaseHandler = mixin({}, web.mixins.RoutingMixin)
 
 --[[
-    lurl -v demos.redirect /
+    lurl -v demos.web.redirect /
     lurl -v -H "X-Requested-With: XMLHttpRequest" demos.redirect /
     curl -v http://127.0.0.1:8080
     curl -v -H "X-Requested-With: XMLHttpRequest" http://127.0.0.1:8080

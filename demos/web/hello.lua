@@ -2,7 +2,7 @@ local class = require 'core.class'
 local web = require 'web'
 
 --[[
-    lurl -v demos.hello /
+    lurl -v demos.web.hello /
     curl -v http://localhost:8080
 --]]
 local WelcomeHandler = class({

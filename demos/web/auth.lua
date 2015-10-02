@@ -15,8 +15,8 @@ local BaseHandler = mixin(
     web.mixins.PrincipalMixin
 )
 --[[
-    lurl -v demos.auth /
-    lurl -v -H "cookie: _a=" demos.auth /
+    lurl -v demos.web.auth /
+    lurl -v -H "cookie: _a=" demos.web.auth /
     curl -v --cookie '_a=x' http://127.0.0.1:8080
     curl -v -b /tmp/c.txt -c /tmp/c.txt http://127.0.0.1:8080
 --]]
