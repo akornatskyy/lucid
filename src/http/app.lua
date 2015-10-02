@@ -131,6 +131,7 @@ local function chain_middlewares(self)
     for i = #self.middlewares, 1, -1 do
         following = self.middlewares[i](following, self.options)
     end
+    assert(following, 'no middleware in use')
     return following
 end
 
