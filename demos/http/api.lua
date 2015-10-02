@@ -104,8 +104,7 @@ end)
 
 -- curl -v http://localhost:8080/api/v1/task/1
 app:get('task/{task_id:i}', 'task', function(w, req)
-    local task_id = req.route_args.task_id
-    local t = get_task(task_id)
+    local t = get_task(req.route_args.task_id)
     if not t then
         return w:set_status_code(404)
     end
