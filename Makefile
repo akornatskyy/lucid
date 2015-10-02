@@ -70,6 +70,7 @@ qa:
 nginx:
 	WDIR=`pwd` ; \
 	cd $(ENV) ; \
+	rm -rf nginx* lua-nginx-module* ; \
 	wget -c https://github.com/openresty/lua-nginx-module/archive/v$(NGINX_LUA_MODULE_VERSION).tar.gz \
 			-O - | tar xzf - ; \
 	ln -sf lua-nginx-module-$(NGINX_LUA_MODULE_VERSION) lua-nginx-module ; \
