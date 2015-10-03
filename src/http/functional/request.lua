@@ -34,6 +34,5 @@ end
 return {
     new = new,
     defaults = defaults,
-    headers = headers,
-    Request = Request
+    headers = headers
 }
