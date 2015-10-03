@@ -1,5 +1,5 @@
 local request = require 'http.functional.request'
-local writer = require 'http.functional.response'
+local setmetatable, tonumber = setmetatable, tonumber
 
 
 local function usage()
@@ -8,7 +8,7 @@ Usage: lurl [options...] <app> <path>
 Options:
  -X COMMAND     Specify request command to use, e.g. POST
  -H LINE        Pass custom header LINE, e.g. 'Accept: application/json'
- -d DATA        Request form data as json, e.g. '{message:"hello"}'
+ -d DATA        Request form data as json, e.g. '{"message":"hello"}'
  -b             Issue a number of requests through iterations
  -i ITERATIONS  Number of iterations (3)
  -n REQUESTS    Number of requests (100000)
@@ -60,36 +60,24 @@ return function()
         return usage()
     end
 
+    local app = arg[#arg-1]
+    app = app:find('%.lua$') and dofile(app) or require(app)
+
     local req, args = parse_args()
     if not req then
         return usage()
     end
+    req = request.new(req)
 
     local w
     if args.verbose then
-        local mixin = require 'core.mixin'
-        local ResponseWriter = require 'http.response'
-        mixin(ResponseWriter, {
-            get_status_code = function(self)
-                return self.status_code
-            end,
-
-            set_status_code = function(self, code)
-                self.status_code = code
-            end,
-
-            write = function(self, c)
-                self.buffer[#self.buffer+1] = c
-            end
-        })
-        w = {buffer = {}}
+        w = require 'http.functional.response'
+        w = w.new()
+    else
+        w = require 'http.response'
+        w = setmetatable({headers = {}}, {__index = w})
     end
 
-    local app = arg[#arg-1]
-    app = app:find('%.lua$') and dofile(app) or require(app)
-
-    w = writer.new(w)
-    req = request.new(req)
     app(w, req)
 
     if args.verbose then
