@@ -70,12 +70,12 @@ return function()
     req = request.new(req)
 
     local w
-    if args.verbose then
-        w = require 'http.functional.response'
-        w = w.new()
-    else
+    if args.bench then
         w = require 'http.response'
         w = setmetatable({headers = {}}, {__index = w})
+    else
+        w = require 'http.functional.response'
+        w = w.new()
     end
 
     app(w, req)
@@ -90,5 +90,7 @@ return function()
         clockit.ptimes(function()
             app(w, req)
         end)
+    else
+        io.write(table.concat(w.buffer))
     end
 end
