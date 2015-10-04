@@ -8,13 +8,13 @@ local function signin(app)
     local c = w.headers['Set-Cookie']
     assert(c)
     c = c:match('^(_a=.-);')
-    return w, req, c
+    return c
 end
 
 local function secure(app)
-    local w, req, c = signin(app)
-    w = writer.new()
-    req = request.new {
+    local c = signin(app)
+    local w = writer.new()
+    local req = request.new {
         path = '/secure',
         headers = {['cookie'] = c}
     }
@@ -26,7 +26,7 @@ local function test_cases(app)
 	assert.not_nil(app)
 
 	it('responds with auth cookie', function()
-        local w, req, c = signin(app)
+        local c = signin(app)
         assert.not_nil(c)
 	end)
 
@@ -45,7 +45,7 @@ local function test_cases(app)
     end)
 
 	it('parses auth cookie', function()
-        local w, req = secure(app)
+        local w = secure(app)
         assert.is_nil(w.status_code)
 	end)
 end
@@ -56,6 +56,7 @@ describe('demos.http.auth', function()
 
     it('adds parsed security principal to request', function()
         local w, req = secure(app)
+        assert.is_nil(w.status_code)
         assert.same({
             id = 'john.smith',
             roles = {admin = true},
