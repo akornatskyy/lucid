@@ -13,13 +13,13 @@ local function ptimes(...)
     local n = 3
     local k = 100000
     local f
-    local args = {...}
-    if #args == 1 then
-        f = args[1]
-    elseif #args == 2 then
-        k, f = unpack(args)
+    local nargs = #{...}
+    if nargs == 1 then
+        f = ...
+    elseif nargs == 2 then
+        k, f = ...
     else
-        n, k, f = unpack(args)
+        n, k, f = ...
     end
     for i = 1, n do
         local t = clockit(k, f)
