@@ -1,5 +1,6 @@
 local request = require 'http.functional.request'
 local writer = require 'http.functional.response'
+local json = require 'core.encoding.json'
 local describe, it, assert = describe, it, assert
 
 local function test_cases(app)
@@ -8,14 +9,9 @@ local function test_cases(app)
     it('responds with bad request status cod and errors', function()
         local w, req = writer.new(), request.new {method = 'POST'}
         app(w, req)
-        assert.same({
-            status_code = 400,
-            headers = {['Content-Type'] = 'application/json'},
-            buffer = {
-                '{"message":"Required field cannot be left blank.",' ..
-                '"author":"Required field cannot be left blank."}'
-            }
-        }, w)
+        assert.equals(400, w.status_code)
+        assert.same({['Content-Type'] = 'application/json'}, w.headers)
+        assert(json.decode(table.concat(w.buffer)))
 	end)
 
     it('accepts a valid input', function()
