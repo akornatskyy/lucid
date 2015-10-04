@@ -14,31 +14,35 @@ local BaseHandler = mixin(
     web.mixins.AuthCookieMixin,
     web.mixins.PrincipalMixin
 )
+
 --[[
-    lurl -v demos.web.auth /
-    lurl -v -H "cookie: _a=" demos.web.auth /
-    curl -v --cookie '_a=x' http://127.0.0.1:8080
-    curl -v -b /tmp/c.txt -c /tmp/c.txt http://127.0.0.1:8080
+    lurl -v demos/web/auth.lua /signin
 --]]
-local AuthHandler = class(BaseHandler, {
+local SignInHandler = class(BaseHandler, {
     get = function(self)
-        local p = self:get_principal()
-        if not p then
-            p = {
-                id = 'john.smith',
-                roles = {r1=true},
-                alias = 'John Smith'
-            }
-            self:set_principal(p)
+        self:set_principal{
+            id = 'john.smith',
+            roles = {admin=true}
+        }
+    end
+})
+
+--[[
+    lurl -v -H 'Cookie: _a=' demos/web/auth.lua /secure
+--]]
+local SecureHandler = class(BaseHandler, {
+    get = function(self)
+        if not self:get_principal() then
+            return self.w:set_status_code(401)
         end
-        self.w:write('Hello, ' .. p.alias .. '!\n')
     end
 })
 
 -- url mapping
 
 local all_urls = {
-    {'', AuthHandler}
+    {'signin', SignInHandler},
+    {'secure', SecureHandler}
 }
 
 -- config

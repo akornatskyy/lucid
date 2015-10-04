@@ -28,7 +28,6 @@ end)
     lurl -v -H 'Cookie: _a=' demos/http/auth.lua /secure
 --]]
 app:get('secure', authorize, function(w, req)
-    return w:write('Hello World!\n')
 end)
 
 return app()
