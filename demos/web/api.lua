@@ -100,7 +100,8 @@ local TasksHandler = class(BaseHandler, {
         if not ok then
             return self:json_error(msg)
         end
-        return self:json({task_id=m.task_id}, 201)
+        self.w:set_status_code(201)
+        return self:json({task_id=m.task_id})
     end
 })
 
@@ -115,14 +116,16 @@ local TaskHandler = class(BaseHandler, {
     end,
     -- curl -v -X PUT http://localhost:8080/api/v1/task/1
     put = function(self)
-        local m = {title='', status=0}
+        local t = get_task(self.req.route_args.task_id)
+        if not t then
+            return self.w:set_status_code(404)
+        end
         self.errors = {}
-        if not self:update_model(m) or
-                not self:validate(m, task_validator) then
+        if not self:update_model(t) or
+                not self:validate(t, task_validator) then
             return self:json_errors()
         end
-        m.task_id = self.req.route_args.task_id
-        local ok, msg = update_task(m)
+        local ok, msg = update_task(t)
         if not ok then
             return self:json_error(msg)
         end

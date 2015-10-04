@@ -120,15 +120,17 @@ app:get('task/{task_id:i}', 'task', function(w, req)
 end)
 -- curl -v -X PUT http://localhost:8080/api/v1/task/1
 :put(function(w, req)
-    local m = {title='', status=0}
+    local t = get_task(req.route_args.task_id)
+    if not t then
+        return w:set_status_code(404)
+    end
     local b = binder.new()
     local values = req.form or req:parse_form()
-    if not b:bind(m, values) or
-            not b:validate(m, task_validator) then
+    if not b:bind(t, values) or
+            not b:validate(t, task_validator) then
         return w:json(b.errors, 400)
     end
-    m.task_id = req.route_args.task_id
-    local ok, msg = update_task(m)
+    local ok, msg = update_task(t)
     if not ok then
         return w:json_error(msg)
     end
