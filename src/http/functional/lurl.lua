@@ -10,8 +10,6 @@ Options:
  -H LINE        Pass custom header LINE, e.g. 'Accept: application/json'
  -d DATA        Request form data as json, e.g. '{"message":"hello"}'
  -b             Issue a number of requests through iterations
- -i ITERATIONS  Number of iterations (3)
- -n REQUESTS    Number of requests (100000)
  -v             Make the operation more talkative
 ]])
 end
