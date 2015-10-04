@@ -26,7 +26,15 @@ local tasks = {
 -- service
 
 local function list_tasks()
-    return tasks
+    local r = {}
+    for k, _ in pairs(tasks) do
+        r[#r+1] = k
+    end
+    table.sort(r)
+    for i = 1, #r do
+        r[i] = tasks[r[i]]
+    end
+    return r
 end
 
 local function add_task(t)
