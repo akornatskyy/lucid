@@ -29,7 +29,7 @@ local greeting_validator = validator.new({
 app:post('', function(w, req)
     local m = {author='', message=''}
     local b = binder.new()
-    local values = req.form or req:parse_form()
+    local values = req.body or req:parse_body()
     if not b:bind(m, values) or
             not b:validate(m, greeting_validator) then
         return w:json(b.errors, 400)

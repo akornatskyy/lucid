@@ -30,13 +30,13 @@ mixin(Request, {
         return headers
     end,
 
-    parse_form = function(self)
+    parse_body = function(self)
         -- TODO: ajax
         local r = self.ngx.req
         r.read_body()
-        local form = r.get_post_args()
-        self.form = form
-        return form
+        local body = r.get_post_args()
+        self.body = body
+        return body
     end,
 
     server_parts = function(self)

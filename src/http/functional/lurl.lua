@@ -8,7 +8,7 @@ Usage: lurl [options...] <app> <path>
 Options:
  -X COMMAND     Specify request command to use, e.g. POST
  -H LINE        Pass custom header LINE, e.g. 'Accept: application/json'
- -d DATA        Request form data as json, e.g. '{"message":"hello"}'
+ -d DATA        Request body data as json, e.g. '{"message":"hello"}'
  -b             Issue a number of requests through iterations
  -v             Make the operation more talkative
 ]])
@@ -30,7 +30,7 @@ local function parse_args()
             i = i + 1
         elseif o == '-d' and s then
             local json = require 'core.encoding.json'
-            req.form = json.decode(s)
+            req.body = json.decode(s)
             if not req.method then
                 req.method = 'POST'
             end

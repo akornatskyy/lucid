@@ -44,7 +44,7 @@ local function test_cases(app)
             local req = request.new({
                 method = 'POST',
                 path = '/api/v1/tasks',
-                form = {title = 'Task X'}
+                body = {title = 'Task X'}
             })
             app(w, req)
             assert.equals(201, w.status_code)
@@ -85,7 +85,7 @@ local function test_cases(app)
             local req = request.new({
                 method = 'PUT',
                 path = '/api/v1/task/1',
-                form = {title = ''}
+                body = {title = ''}
             })
             app(w, req)
             assert.equals(400, w.status_code)
@@ -96,7 +96,7 @@ local function test_cases(app)
             local req = request.new({
                 method = 'PUT',
                 path = '/api/v1/task/1',
-                form = {title = 'Task X'}
+                body = {title = 'Task X'}
             })
             app(w, req)
             assert.is_nil(w.status_code)

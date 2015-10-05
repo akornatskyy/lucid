@@ -22,7 +22,7 @@ end
 function Mixin:update_model(model, values)
     -- self.errors must exist
     local req = self.req
-    return update_model(model, values or req.form or req:parse_form(),
+    return update_model(model, values or req.body or req:parse_body(),
                         self.errors, self.translation[self:get_locale()])
 end
 

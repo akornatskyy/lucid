@@ -18,7 +18,7 @@ local function test_cases(app)
         local w = writer.new()
         local req = request.new {
             method = 'POST',
-            form = {
+            body = {
                 author = 'jack', message = 'hello'
             }
         }

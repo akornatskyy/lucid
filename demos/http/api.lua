@@ -98,7 +98,7 @@ end)
 :post(function(w, req)
     local m = {title='', status=1}
     local b = binder.new()
-    local values = req.form or req:parse_form()
+    local values = req.body or req:parse_body()
     if not b:bind(m, values) or
             not b:validate(m, task_validator) then
         return w:json(b.errors, 400)
@@ -125,7 +125,7 @@ end)
         return w:set_status_code(404)
     end
     local b = binder.new()
-    local values = req.form or req:parse_form()
+    local values = req.body or req:parse_body()
     if not b:bind(t, values) or
             not b:validate(t, task_validator) then
         return w:json(b.errors, 400)

@@ -11,7 +11,7 @@ local headers = {
 local defaults = {
     method = 'GET',
     path = '/',
-    form = {}
+    body = {}
 }
 
 Request = mixin(Request, {

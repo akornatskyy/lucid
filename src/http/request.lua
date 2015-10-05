@@ -11,7 +11,7 @@ return {
     parse_headers = function(self)
     end,
 
-    parse_form = function(self)
+    parse_body = function(self)
     end,
 
     server_parts = function(self)
