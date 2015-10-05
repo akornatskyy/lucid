@@ -24,6 +24,8 @@ local greeting_validator = validator.new({
     lurl -v -d '{"author":"jack","message":"hello"}' demos.http.form /
     lurl -v -X POST demos.http.form /
     curl -v -d "author=jack&message=hello" http://127.0.0.1:8080
+    curl -v -H 'Content-Type: application/json' \
+        -d '{"author":"jack","message":"hello"}' http://127.0.0.1:8080
     curl -v -X POST http://127.0.0.1:8080
 --]]
 app:post('', function(w, req)
@@ -37,4 +39,3 @@ app:post('', function(w, req)
 end)
 
 return app()
-

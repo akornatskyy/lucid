@@ -26,6 +26,8 @@ local BaseHandler = mixin({
     lurl -v -d '{"author":"jack","message":"hello"}' demos.web.form /
     lurl -v -X POST demos.web.form /
     curl -v -d "author=jack&message=hello" http://127.0.0.1:8080
+    curl -v -H 'Content-Type: application/json' \
+        -d '{"author":"jack","message":"hello"}' http://127.0.0.1:8080
     curl -v -X POST http://127.0.0.1:8080
 --]]
 local FormHandler = class(BaseHandler, {
