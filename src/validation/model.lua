@@ -2,31 +2,67 @@ local type, next, tonumber = type, next, tonumber
 
 
 local function string_adapter(value)
-    if type(value) == 'table' then
-        value = value[#value]
+    if value == nil then
+        return nil
     end
-    return value and value:match('^%s*(.*%S)') or ''
+    local t = type(value)
+    if t == 'table' then
+        value = value[#value]
+        if value == nil then
+            return nil
+        end
+        t = type(value)
+    end
+    if t ~= 'string' then
+        return tostring(value)
+    end
+    return value:match('^%s*(.*%S)') or ''
 end
 
 local function number_adapter(value, translations)
-    if type(value) == 'table' then
+    if value == nil then
+        return nil
+    end
+    local t = type(value)
+    if t == 'table' then
         value = value[#value]
+        if value == nil then
+            return nil
+        end
+        t = type(value)
     end
     if value == '' then
         return nil
     end
-    value = tonumber(value)
-    if value then
-        return value
+    if t ~= 'number' then
+       value = tonumber(value)
     end
-    return nil, translations:gettext('The input is not in numeric format.')
+    if value == nil then
+        return nil, translations:gettext('The input is not in numeric format.')
+    end
+    return value
 end
 
 local function boolean_adapter(value)
-    if type(value) == 'table' then
-        value = value[#value]
+    if value == nil then
+        return nil
     end
-    return value == '1' or value == 'true'
+    local t = type(value)
+    if t == 'table' then
+        value = value[#value]
+        if value == nil then
+            return nil
+        end
+        t = type(value)
+    end
+    if value == '' then
+        return nil
+    end
+    if t ~= 'boolean' then
+        value = tostring(value)
+        return value == '1' or value == 'true'
+    end
+    return value
 end
 
 local function table_adapter(value, adapter, translations)

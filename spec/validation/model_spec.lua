@@ -128,15 +128,30 @@ describe('model adapter', function()
             assert.equals(a, m.adapters[type('')])
         end)
 
-        it('adapts an empty table to an empty string', function()
-            assert.equals('', a({}))
+        it('adapts nil', function()
+            assert.equals(nil, a(nil))
+        end)
+
+        it('adapts number', function()
+            assert.equals('100', a(100))
+            assert.equals('0.5', a(0.5))
+        end)
+
+        it('adapts boolean', function()
+            assert.equals('false', a(false))
+            assert.equals('true', a(true))
+        end)
+
+        it('adapts an empty table to nil', function()
+            assert.equals(nil, a({}))
         end)
 
         it('strips whitespace', function()
             local cases = {
                 {'', ''},
                 {'', ' '},
-                {'x', '  x  '}
+                {'x', '  x  '},
+                {'x  x', '  x  x '}
             }
             for _, c in next, cases do
                 local expected, s = c[1], c[2]
@@ -148,7 +163,9 @@ describe('model adapter', function()
             local cases = {
                 {'', {' '}},
                 {'', {'1', ' '}},
-                {'x', {'1', ' x '}}
+                {'x', {'1', ' x '}},
+                {'100', {'1', 100}},
+                {'false', {'1', false}}
             }
             for _, c in next, cases do
                 local expected, s = c[1], c[2]
@@ -162,6 +179,10 @@ describe('model adapter', function()
 
         it('registered', function()
             assert.equals(a, m.adapters[type(1)])
+        end)
+
+        it('adapts nil', function()
+            assert.equals(nil, a(nil))
         end)
 
         it('adapts an empty string to nil', function()
@@ -185,7 +206,8 @@ describe('model adapter', function()
         it('takes last value of multiple input', function()
             local cases = {
                 {1, {'1'}},
-                {2, {'1', '2'}}
+                {2, {'1', '2'}},
+                {3, {'1', 3}}
             }
             for _, c in next, cases do
                 local expected, s = c[1], c[2]
@@ -196,6 +218,8 @@ describe('model adapter', function()
         it('reports an error if can not adapt a string to number', function()
             local translations = i18n.NullTranslation
             local cases = {
+                true,
+                false,
                 'x',
                 '1x',
                 'x1'
@@ -215,12 +239,38 @@ describe('model adapter', function()
             assert.equals(a, m.adapters[type(true)])
         end)
 
+        it('adapts nil', function()
+            assert.equals(nil, a(nil))
+        end)
+
+        it('adapts an empty string to nil', function()
+            assert.is_nil(a(''))
+        end)
+
+        it('adapts number', function()
+            assert.equals(true, a(1))
+            assert.equals(false, a(0))
+            assert.equals(false, a(2))
+        end)
+
         it('converts string', function()
             local cases = {
                 {true, '1'},
                 {true, 'true'},
-                {false, ''},
                 {false, ' 1'}
+            }
+            for _, c in next, cases do
+                local expected, s = c[1], c[2]
+                assert.equals(expected, a(s))
+            end
+        end)
+
+        it('takes last value of multiple input', function()
+            local cases = {
+                {true, {0, 1}},
+                {true, {'0', '1'}},
+                {nil, {1, ''}},
+                {true, {'1', 'true'}}
             }
             for _, c in next, cases do
                 local expected, s = c[1], c[2]
