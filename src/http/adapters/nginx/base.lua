@@ -1,7 +1,12 @@
 local mixin = require 'core.mixin'
 local Request = require 'http.request'
 local ResponseWriter = require 'http.response'
+local json_decode
 
+do
+    local json = require 'core.encoding.json'
+    json_decode = json.decode
+end
 
 mixin(ResponseWriter, {
     get_status_code = function(self)
@@ -31,10 +36,21 @@ mixin(Request, {
     end,
 
     parse_body = function(self)
-        -- TODO: ajax
+        local body
         local r = self.ngx.req
         r.read_body()
-        local body = r.get_post_args()
+        local headers = r.get_headers()
+        local content_type = headers['content-type']
+        if content_type == 'application/json' then
+            body = r.get_body_data()
+            local c = body:sub(1, 1)
+            if c ~= '{' and c ~= '[' then
+                return nil
+            end
+            body = json_decode(body)
+        else
+            body = r.get_post_args()
+        end
         self.body = body
         return body
     end,
