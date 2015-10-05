@@ -21,10 +21,8 @@ local RouteBuilder = {}
 
 function RouteBuilder:__index(method)
     local http_verb = http_verbs[method]
+    assert(http_verb)
     return function(_, name_or_func, ...)
-        if not http_verb then
-            assert(false)
-        end
         local mapping = self.mapping[self.pattern]
         if mapping then
             assert(not mapping[http_verb])
@@ -142,5 +140,5 @@ end
 
 return {
     new = new,
-    http_verbs = http_verbs,
+    http_verbs = http_verbs
 }
