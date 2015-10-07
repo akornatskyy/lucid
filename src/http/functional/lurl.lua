@@ -70,6 +70,9 @@ return function()
 
     local app = arg[#arg-1]
     app = app:find('%.lua$') and dofile(app) or require(app)
+    if type(app) == 'table' then
+        app = app.new()
+    end
 
     local req, args = parse_args()
     if not req then
