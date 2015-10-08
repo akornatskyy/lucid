@@ -40,8 +40,8 @@ mixin(Request, {
         local r = self.ngx.req
         r.read_body()
         local headers = r.get_headers()
-        local content_type = headers['content-type']
-        if content_type == 'application/json' then
+        local t = headers['content-type']
+        if t and t:find('application/json', 1, true) then
             body = r.get_body_data()
             local c = body:sub(1, 1)
             if c ~= '{' and c ~= '[' then
