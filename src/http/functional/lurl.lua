@@ -14,9 +14,26 @@ Options:
 ]])
 end
 
+local function parse_qs(t, s)
+    for kv in s:gmatch('([^&]+)') do
+        local key, value = kv:match('([^=]*)=?(.*)')
+        t[key] = value
+    end
+end
+
+local function parse_path(path)
+    local qs = {}
+    local i = path:find('?', 1, true)
+    if i then
+        parse_qs(qs, path:sub(i + 1))
+        path = path:sub(1, i - 1)
+    end
+    return path, qs
+end
+
 local function parse_args()
     local o, s, j
-    local req = {path = arg[#arg], headers={}, body={}}
+    local req = {headers = {}, body = {}}
     local args = {i = 3, n = 100000}
     local i = 1
     while i <= #arg - 2 do
@@ -38,10 +55,7 @@ local function parse_args()
                     req.headers['content-type'] = 'application/json'
                 end
             else
-                for kv in s:gmatch('([^&]+)') do
-                    local key, value = kv:match('([^=]*)=?(.*)')
-                    req.body[key] = value
-                end
+                parse_qs(req.body, s)
                 if not content_type then
                     req.headers['content-type'] =
                         'application/x-www-form-urlencoded'
@@ -60,6 +74,7 @@ local function parse_args()
         end
         i = i + 1
     end
+    req.path, req.query = parse_path(arg[#arg])
     return req, args
 end
 
