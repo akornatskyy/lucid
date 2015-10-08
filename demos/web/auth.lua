@@ -20,10 +20,16 @@ local BaseHandler = mixin(
 --]]
 local SignInHandler = class(BaseHandler, {
     get = function(self)
-        self:set_principal{
+        self:set_principal {
             id = 'john.smith',
             roles = {admin=true}
         }
+    end
+})
+
+local SignOutHandler = class(BaseHandler, {
+    get = function(self)
+        self:set_principal()
     end
 })
 
@@ -42,6 +48,7 @@ local SecureHandler = class(BaseHandler, {
 
 local all_urls = {
     {'signin', SignInHandler},
+    {'signout', SignOutHandler},
     {'secure', SecureHandler}
 }
 
@@ -51,13 +58,8 @@ local options = {
     urls = all_urls,
     principal = principal,
     auth_cookie = {
-        name = '_a',
-        path = '/',
-        deleted = http.cookie.delete {
-            name = '_a',
-            path = '/',
-            --domain=c.domain
-        }
+        name = '_a', path = '/',
+        deleted = http.cookie.delete {name = '_a', path = '/'}
     },
     ticket = ticket.new {
         --digest = digest.new('md5'),

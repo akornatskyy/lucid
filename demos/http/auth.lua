@@ -24,6 +24,10 @@ app:get('signin', authcookie, function(w, req)
     w.principal = {id = 'john.smith', roles = {admin=true}}
 end)
 
+app:get('signout', authcookie, function(w, req)
+    w.principal = nil
+end)
+
 --[[
     lurl -v -H 'Cookie: _a=' demos/http/auth.lua /secure
 --]]

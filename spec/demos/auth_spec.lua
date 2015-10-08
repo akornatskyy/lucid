@@ -16,7 +16,7 @@ local function secure(app)
     local w = writer.new()
     local req = request.new {
         path = '/secure',
-        headers = {['cookie'] = c}
+        headers = {cookie = c}
     }
     app(w, req)
     return w, req
@@ -47,6 +47,20 @@ local function test_cases(app)
 	it('parses auth cookie', function()
         local w = secure(app)
         assert.is_nil(w.status_code)
+	end)
+
+	it('removes auth cookie', function()
+        local c = signin(app)
+        assert.not_nil(c)
+        local w = writer.new()
+        local req = request.new {
+            path = '/signout',
+            headers = {cookie = c}
+        }
+        app(w, req)
+        assert.is_nil(w.status_code)
+        assert.equals('_a=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/',
+                      w.headers['Set-Cookie'])
 	end)
 end
 
