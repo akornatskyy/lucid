@@ -1,5 +1,7 @@
 language: c
 
+sudo: false
+
 env:
     - LUA_VERSION=5.1.5
     - LUA_VERSION=5.2.4
