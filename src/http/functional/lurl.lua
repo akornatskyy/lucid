@@ -34,7 +34,7 @@ end
 local function parse_args()
     local o, s, j
     local req = {headers = {}, body = {}}
-    local args = {i = 3, n = 100000}
+    local args = {}
     local i = 1
     while i <= #arg - 2 do
         o, s = arg[i], arg[i+1]
