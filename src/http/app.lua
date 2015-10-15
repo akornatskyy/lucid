@@ -17,6 +17,36 @@ local pack_wrappers = function(handlers, options)
     return h
 end
 
+local http_method_wrapper = function(mapping)
+    return function(w, req)
+        local handler = mapping[req.method]
+        if not handler then
+            return w:set_status_code(405)
+        end
+        return handler(w, req)
+    end
+end
+
+local function build_url_mapping(self)
+    local urls = self.options.urls
+    for i = 1, #self.ordered do
+        local path = self.ordered[i]
+        local mapping  = self.mapping[path]
+        if mapping then
+            local name = mapping.name
+            mapping.name = nil
+            urls[#urls+1] = {
+                path,
+                http_method_wrapper(mapping),
+                name=name
+            }
+            self.mapping[path] = nil
+        end
+    end
+    self.mapping = nil
+    self.ordered = nil
+end
+
 local RouteBuilder = {}
 
 function RouteBuilder:__index(method)
@@ -45,16 +75,6 @@ function RouteBuilder:__index(method)
     end
 end
 
-local http_method_wrapper = function(mapping)
-    return function(w, req)
-        local handler = mapping[req.method]
-        if not handler then
-            return w:set_status_code(405)
-        end
-        return handler(w, req)
-    end
-end
-
 local function new(options)
     options = options or {}
     if not options.urls then
@@ -70,6 +90,12 @@ end
 
 function App:use(middleware)
     self.middlewares[#self.middlewares+1] = middleware
+end
+
+function App:add(pattern, app)
+    local urls = self.options.urls
+    build_url_mapping(app)
+    urls[#urls+1] = {pattern, app.options.urls}
 end
 
 -- app:all('pattern', ['route_name',] [function(following), ...] function(w, req)
@@ -102,26 +128,6 @@ function AppMeta:__index(name)
         local r = self:route(pattern)
         return r[name](r, ...)
     end
-end
-
-local function build_url_mapping(self)
-    local urls = self.options.urls
-    for i = 1, #self.ordered do
-        local path = self.ordered[i]
-        local mapping  = self.mapping[path]
-        if mapping then
-            local name = mapping.name
-            mapping.name = nil
-            urls[#urls+1] = {
-                path,
-                http_method_wrapper(mapping),
-                name=name
-            }
-            self.mapping[path] = nil
-        end
-    end
-    self.mapping = nil
-    self.ordered = nil
 end
 
 local function chain_middlewares(self)
