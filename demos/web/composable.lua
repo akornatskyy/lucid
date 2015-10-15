@@ -23,5 +23,7 @@ local options = {
     urls = all_urls
 }
 
+--[[
+    lurl -v demos/web/composable.lua /greetings/hi
+--]]
 return web.app({web.middleware.routing}, options)
-

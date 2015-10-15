@@ -12,6 +12,6 @@ app:add('greetings/', greetings)
 app:use(http.middleware.routing)
 
 --[[
-    lurl -v demos/http/subapp.lua /greetings/hi
+    lurl -v demos/http/composable.lua /greetings/hi
 --]]
 return app()
