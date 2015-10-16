@@ -3,7 +3,7 @@ local mixin = require 'core.mixin'
 local web = require 'web'
 
 
-local BaseHandler = mixin({}, web.mixins.RoutingMixin)
+local BaseHandler = mixin({}, web.mixins.routing)
 
 --[[
     lurl -v demos.web.redirect /

@@ -66,12 +66,15 @@ end
 
 -- web handlers
 
-local BaseHandler = mixin({
+local BaseHandler = {
     json_error = function(self, msg)
         self.w:set_status_code(400)
         return self:json({['__ERROR__'] = msg})
     end
-}, web.mixins.JSONMixin, web.mixins.ModelMixin, web.mixins.RoutingMixin)
+}
+
+mixin(BaseHandler, web.mixins.json, web.mixins.locale, web.mixins.validation,
+      web.mixins.model, web.mixins.routing)
 
 local WelcomeHandler = class(BaseHandler, {})
 -- curl -v http://localhost:8080/api/v1/urls

@@ -4,10 +4,13 @@ return {
         routing = require 'web.middleware.routing'
     },
     mixins = {
-        AuthCookieMixin = require 'web.mixins.authcookie',
-        ModelMixin = require 'web.mixins.model',
-        PrincipalMixin = require 'web.mixins.principal',
-        RoutingMixin = require 'web.mixins.routing',
-        JSONMixin = require 'web.mixins.json'
+        authcookie = require 'web.mixins.authcookie',
+        json = require 'web.mixins.json',
+        locale = require 'web.mixins.locale',
+        model = require 'web.mixins.model',
+        principal = require 'web.mixins.principal',
+        routing = require 'web.mixins.routing',
+        set_error = require 'validation.mixins.set_error',
+        validation = require 'validation.mixins.validation'
     }
 }

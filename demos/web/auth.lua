@@ -11,8 +11,8 @@ local web = require 'web'
 
 local BaseHandler = mixin(
     {},
-    web.mixins.AuthCookieMixin,
-    web.mixins.PrincipalMixin
+    web.mixins.authcookie,
+    web.mixins.principal
 )
 
 --[[

@@ -18,9 +18,12 @@ local greeting_validator = validator.new({
 
 -- handlers
 
-local BaseHandler = mixin({
+local BaseHandler = {
     translation = i18n.domains['demo']
-}, web.mixins.JSONMixin, web.mixins.ModelMixin)
+}
+
+mixin(BaseHandler, web.mixins.json, web.mixins.locale, web.mixins.validation,
+      web.mixins.model)
 
 --[[
     lurl -v -d '{"author":"jack","message":"hello"}' demos.web.form /
