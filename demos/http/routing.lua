@@ -12,6 +12,7 @@ app:use(http.middleware.routing)
     curl -v http://127.0.0.1:8080/en/user/123
 --]]
 app:get('{locale}/user/{user_id:i}', 'user', function(w, req)
+    assert('user' == req.route_args.route_name)
     assert('/de/user/1' == req:path_for('user', {locale='de', user_id='1'}))
     assert('/en/user/2' == req:path_for('user', {user_id='2'}))
     assert(req.path == req:path_for('user'))

@@ -3,7 +3,7 @@ local mixin = require 'core.mixin'
 local web = require 'web'
 
 
-local BaseHandler = mixin({}, web.mixins.RoutingMixin)
+local BaseHandler = mixin({}, web.mixins.routing)
 
 --[[
     lurl -v demos.web.routing /en/user/123
@@ -11,6 +11,7 @@ local BaseHandler = mixin({}, web.mixins.RoutingMixin)
 --]]
 local UserHandler = class(BaseHandler, {})
 function UserHandler:get()
+    assert('user' == self.req.route_args.route_name)
     assert('/de/user/1' == self:path_for('user', {locale='de', user_id='1'}))
     assert('/en/user/2' == self:path_for('user', {user_id='2'}))
     assert(self.req.path == self:path_for('user'))
