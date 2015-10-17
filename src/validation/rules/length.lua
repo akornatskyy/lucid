@@ -1,11 +1,6 @@
+local succeed = require 'validation.rules.succeed'
 local setmetatable = setmetatable
 
-
-local succeed = {__index = {
-    validate = function()
-        return nil
-    end
-}}
 
 local check_min = {__index = {
     msg = 'Required to be a minimum of %d characters in length.',
