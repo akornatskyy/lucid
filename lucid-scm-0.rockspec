@@ -72,8 +72,13 @@ build = {
         ['validation.mixins.set_error'] = 'src/validation/mixins/set_error.lua',
         ['validation.mixins.validation'] = 'src/validation/mixins/validation.lua',
         ['validation.model'] = 'src/validation/model.lua',
+        ['validation.rules.compare'] = 'src/validation/rules/compare.lua',
+        ['validation.rules.email'] = 'src/validation/rules/email.lua',
         ['validation.rules.length'] = 'src/validation/rules/length.lua',
+        ['validation.rules.pattern'] = 'src/validation/rules/pattern.lua',
+        ['validation.rules.range'] = 'src/validation/rules/range.lua',
         ['validation.rules.required'] = 'src/validation/rules/required.lua',
+        ['validation.rules.succeed'] = 'src/validation/rules/succeed.lua',
         ['validation.validator'] = 'src/validation/validator.lua',
 
         ['web'] = 'src/web.lua',
