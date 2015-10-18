@@ -26,7 +26,7 @@ describe('router', function()
 
         it('accepts builders', function()
             local builders = {}
-            local r = router.new({builders=builders})
+            local r = router.new {builders=builders}
             assert.equals(builders, r.builders)
         end)
     end)
@@ -34,44 +34,44 @@ describe('router', function()
     describe('add', function()
         it('fails to override route name', function()
             local r = router.new()
-            local ok, msg = r:add({
+            local ok, msg = r:add {
                 {'1', 1, name='x'},
                 {'2', 2, name='x'}
-            })
+            }
             assert.is_false(ok)
             assert.equals('overriding name "x"', msg)
         end)
 
         it('fails to override route name in included', function()
             local r = router.new()
-            local ok, msg = r:add({
+            local ok, msg = r:add {
                 {'1', 1, name='x'},
                 {'2', {
                     {'3', 2, name='x'}
                 }}
-            })
+            }
             assert.is_false(ok)
             assert.equals('overriding name "x"', msg)
         end)
 
         it('fails to override route path', function()
             local r = router.new()
-            local ok, msg = r:add({
+            local ok, msg = r:add {
                 {'1', 1},
                 {'1', 2}
-            })
+            }
             assert.is_false(ok)
             assert.equals('overriding path "1"', msg)
         end)
 
         it('fails to override route path in included', function()
             local r = router.new()
-            local ok, msg = r:add({
+            local ok, msg = r:add {
                 {'1', 1},
                 {'', {
                     {'1', 2}
                 }}
-            })
+            }
             assert.is_false(ok)
             assert.equals('overriding path "1"', msg)
         end)

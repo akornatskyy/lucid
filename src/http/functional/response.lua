@@ -1,5 +1,6 @@
 local mixin = require 'core.mixin'
 local ResponseWriter = require('http.response')
+local setmetatable = setmetatable
 
 
 mixin(ResponseWriter, {

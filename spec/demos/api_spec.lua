@@ -8,7 +8,7 @@ local function test_cases(app)
 
 	it('responds with urls', function()
         local w = writer.new()
-        local req = request.new({path = '/api/v1/urls'})
+        local req = request.new {path = '/api/v1/urls'}
         app(w, req)
         assert.is_nil(w.status_code)
         assert.same({['Content-Type'] = 'application/json'}, w.headers)
@@ -21,7 +21,7 @@ local function test_cases(app)
 
 	it('responds with tasks', function()
         local w = writer.new()
-        local req = request.new({path = '/api/v1/tasks'})
+        local req = request.new {path = '/api/v1/tasks'}
         app(w, req)
         assert.is_nil(w.status_code)
         assert.same({['Content-Type'] = 'application/json'}, w.headers)
@@ -31,21 +31,21 @@ local function test_cases(app)
     describe('add task', function()
         it('validates', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'POST',
                 path = '/api/v1/tasks'
-            })
+            }
             app(w, req)
             assert.equals(400, w.status_code)
         end)
 
         it('adds', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'POST',
                 path = '/api/v1/tasks',
                 body = {title = 'Task X'}
-            })
+            }
             app(w, req)
             assert.equals(201, w.status_code)
         end)
@@ -54,14 +54,14 @@ local function test_cases(app)
     describe('get task', function()
         it('responds with not found status code', function()
             local w = writer.new()
-            local req = request.new({path = '/api/v1/task/0'})
+            local req = request.new {path = '/api/v1/task/0'}
             app(w, req)
             assert.equals(404, w.status_code)
         end)
 
         it('returns a task', function()
             local w = writer.new()
-            local req = request.new({path = '/api/v1/task/1'})
+            local req = request.new {path = '/api/v1/task/1'}
             app(w, req)
             assert.is_nil(w.status_code)
             assert.same({['Content-Type'] = 'application/json'}, w.headers)
@@ -72,32 +72,32 @@ local function test_cases(app)
     describe('update task', function()
         it('responds with not found status code', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'PUT',
                 path = '/api/v1/task/0'
-            })
+            }
             app(w, req)
             assert.equals(404, w.status_code)
         end)
 
         it('validates', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'PUT',
                 path = '/api/v1/task/1',
                 body = {title = ''}
-            })
+            }
             app(w, req)
             assert.equals(400, w.status_code)
         end)
 
         it('updates a task', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'PUT',
                 path = '/api/v1/task/1',
                 body = {title = 'Task X'}
-            })
+            }
             app(w, req)
             assert.is_nil(w.status_code)
         end)
@@ -106,20 +106,20 @@ local function test_cases(app)
     describe('remove task', function()
         it('responds with not found status code', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'DELETE',
                 path = '/api/v1/task/0'
-            })
+            }
             app(w, req)
             assert.equals(404, w.status_code)
         end)
 
         it('removes a task', function()
             local w = writer.new()
-            local req = request.new({
+            local req = request.new {
                 method = 'DELETE',
                 path = '/api/v1/task/2'
-            })
+            }
             app(w, req)
             assert.is_nil(w.status_code)
         end)

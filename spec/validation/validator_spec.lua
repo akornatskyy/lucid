@@ -21,9 +21,9 @@ describe('validator', function()
                 end
             }
         end
-        model_validator = validator.new({
+        model_validator = validator.new {
             name = {not_nil}
-        })
+        }
         model = {name = ''}
         assert(validate())
         assert(not errors.name)
@@ -40,9 +40,9 @@ describe('validator', function()
                 return value == nil and 'error' or nil
             end
         }
-        model_validator = validator.new({
+        model_validator = validator.new {
             name = {not_nil}
-        })
+        }
         model = {name = ''}
         assert(validate())
         assert(not errors.name)
@@ -57,11 +57,11 @@ describe('validator', function()
                 return value == nil and 'error' or nil
             end
         }
-        model_validator = validator.new({
-            details = validator.new({
+        model_validator = validator.new {
+            details = validator.new {
                 name = {not_nil}
-            })
-        })
+            }
+        }
         model = {details = {name = ''}}
         assert(validate())
         assert(not errors.name)

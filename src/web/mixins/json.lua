@@ -1,3 +1,4 @@
+local assert = assert
 local json_encode
 
 do

@@ -1,4 +1,4 @@
-local concat = table.concat
+local concat, next = table.concat, next
 
 
 local parse = function(s)

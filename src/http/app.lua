@@ -1,3 +1,6 @@
+local assert, setmetatable, rawget, type = assert, setmetatable, rawget, type
+local insert = table.insert
+
 local App, AppMeta = {}, {}
 local http_verbs = {
     delete = 'DELETE',
@@ -67,7 +70,7 @@ function RouteBuilder:__index(method)
         if type(name_or_func) == 'string' then
             mapping.name = name_or_func
         else
-            table.insert(handlers, 1, name_or_func)
+            insert(handlers, 1, name_or_func)
         end
         mapping[http_verb] = pack_wrappers(handlers, self.options)
         self.ordered[#self.ordered+1] = self.pattern
@@ -105,7 +108,7 @@ function App:all(pattern, name_or_func, ...)
     if type(name_or_func) == 'string' then
         r = {pattern, pack_wrappers(handlers, self.options), name=name_or_func}
     else
-        table.insert(handlers, 1, name_or_func)
+        insert(handlers, 1, name_or_func)
         r = {pattern, pack_wrappers(handlers, self.options)}
     end
     self.options.urls[#self.options.urls+1] = r

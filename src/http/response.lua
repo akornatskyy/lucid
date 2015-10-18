@@ -1,3 +1,5 @@
+local type = type
+
 return {
     -- assumes: self.headers
 

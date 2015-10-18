@@ -1,5 +1,6 @@
 local mixin = require 'core.mixin'
 local Request = require 'http.request'
+local setmetatable = setmetatable
 
 
 local headers = {

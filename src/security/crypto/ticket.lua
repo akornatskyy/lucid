@@ -1,6 +1,7 @@
 local struct = require 'struct'
 local pack, unpack = struct.pack, struct.unpack
-local random, time = math.random, os.time
+local assert, type, random, time = assert, type, math.random, os.time
+local setmetatable = setmetatable
 
 
 local Ticket = {

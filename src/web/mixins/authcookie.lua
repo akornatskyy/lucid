@@ -29,14 +29,14 @@ function Mixin:set_auth_cookie(s)
     local o = self.req.options
     local c = o.auth_cookie
     if s then
-        c = dump({
+        c = dump {
             name=c.name,
             value=o.ticket:encode(s),
             path=c.path,
             domain=c.domain,
             secure=c.secure,
             http_only=true
-        })
+        }
     else
         c = c.deleted
     end

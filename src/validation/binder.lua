@@ -1,3 +1,4 @@
+local setmetatable = setmetatable
 local update_model
 local null_translation
 

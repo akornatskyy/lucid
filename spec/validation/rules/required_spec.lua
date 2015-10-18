@@ -18,7 +18,7 @@ describe('required rule', function()
     end)
 
     it('allows customize an error message', function()
-        local r = required({msg = 'error'})
+        local r = required{msg = 'error'}
         assert.equals('error', r:validate(nil, nil, translations))
     end)
 end)

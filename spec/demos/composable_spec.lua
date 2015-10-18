@@ -6,7 +6,7 @@ local function test_cases(app)
 	assert.not_nil(app)
 
 	it('responds with hi', function()
-        local w, req = writer.new(), request.new({path = '/greetings/hi'})
+        local w, req = writer.new(), request.new {path = '/greetings/hi'}
         app(w, req)
         assert.same({'hi'}, w.buffer)
 	end)

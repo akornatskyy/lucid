@@ -29,28 +29,28 @@ describe('core.class', function()
 
     describe(':ctor', function()
         it('called', function()
-            local C = class({
+            local C = class {
                 ctor = function(self)
                     self.called = true
                 end
-            })
+            }
             assert.same({called = true}, C())
         end)
 
         it('call with arguments', function()
-            local C = class({
+            local C = class {
                 ctor = function(self, a, b)
                     self.a = a
                     self.b = b
                 end
-            })
+            }
             assert.same({a = 1, b = 2}, C(1, 2))
         end)
     end)
 
     describe('getmetatable', function()
         it('check', function()
-            local C = class({})
+            local C = class {}
             local c = C()
             assert.equals(C, getmetatable(c))
         end)
@@ -58,16 +58,16 @@ describe('core.class', function()
 
     describe('setmetatable', function()
         it('init', function()
-            local C = class({})
+            local C = class {}
             assert.same({a = 1}, setmetatable({a = 1}, C))
         end)
 
         it('should call a function', function()
-            local C = class({
+            local C = class {
                 f = function(self)
                     return self.a
                 end
-            })
+            }
             local c = setmetatable({a = 1}, C)
             assert.equals(1, c:f())
         end)
@@ -75,7 +75,7 @@ describe('core.class', function()
 
     describe('function', function()
         it('raises an error if function not defined', function()
-            local C = class({})
+            local C = class {}
             local c = C()
             assert.error(function()
                 c.f()
@@ -83,30 +83,30 @@ describe('core.class', function()
         end)
 
         it('should support static call', function()
-            local C = class({
+            local C = class {
                 f = function()
                     return 1
                 end
-            })
+            }
             assert.equals(1, C.f())
         end)
 
         it('should support class call', function()
-            local C = class({
+            local C = class {
                 f = function(cls)
                     assert(cls)
                     return 1
                 end
-            })
+            }
             assert.equals(1, C:f())
         end)
 
         it('should be available with self', function()
-            local C = class({
+            local C = class {
                 f = function(self)
                     return self
                 end
-            })
+            }
             local c = C()
             assert.equals(c, c:f())
         end)
@@ -114,11 +114,11 @@ describe('core.class', function()
 
     describe('inheritance', function()
         it('#1 always calls a base ctor', function()
-            local A = class({
+            local A = class {
                 ctor = function(self)
                     self.a = true
                 end
-            })
+            }
             local B = class(A, {})
             local D = class(B, {})
             local d = D()
@@ -127,11 +127,11 @@ describe('core.class', function()
         end)
 
         it('allows to call a base ctor', function()
-            local B = class({
+            local B = class {
                 ctor = function(self)
                     self.b = true
                 end
-            })
+            }
             local D = class(B, {
                 ctor = function(self)
                     B.ctor(self)
@@ -144,11 +144,11 @@ describe('core.class', function()
         end)
 
         it('allows to call a base function', function()
-            local B = class({
+            local B = class {
                 b = function(self)
                     self.called = true
                 end
-            })
+            }
             local D = class(B, {})
             local d = D()
             d:b()
@@ -157,11 +157,11 @@ describe('core.class', function()
 
         it('allows to call a base function from subclass', function()
             local called
-            local B = class({
+            local B = class {
                 b = function(self)
                     called = true
                 end
-            })
+            }
             local D = class(B, {
                 d = function(self)
                     B:b()
@@ -173,10 +173,10 @@ describe('core.class', function()
         end)
 
         it('allows to override a base function', function()
-            local B = class({
+            local B = class {
                 b = function(self)
                 end
-            })
+            }
             local D = class(B, {
                 b = function(self)
                     self.called = true
@@ -189,11 +189,11 @@ describe('core.class', function()
         end)
 
         it('should support static call', function()
-            local B = class({
+            local B = class {
                 f = function()
                     return 1
                 end
-            })
+            }
             local D = class(B, {
             })
             assert.equals(1, B.f())
@@ -201,11 +201,11 @@ describe('core.class', function()
         end)
 
         it('should support class call', function()
-            local B = class({
+            local B = class {
                 f = function(cls)
                     return cls
                 end
-            })
+            }
             local D = class(B, {
             })
             assert.equals(B, B:f())

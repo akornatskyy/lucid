@@ -6,7 +6,7 @@ describe('length rule', function()
     local translations = i18n.NullTranslation
 
     describe('check min', function()
-        local r = length({min=1})
+        local r = length{min=1}
 
         it('ignores nil value', function()
             assert.is_nil(r:validate(nil))
@@ -23,7 +23,7 @@ describe('length rule', function()
     end)
 
     describe('check max', function()
-        local r = length({max=2})
+        local r = length{max=2}
 
         it('ignores nil value', function()
             assert.is_nil(r:validate(nil))
@@ -41,7 +41,7 @@ describe('length rule', function()
     end)
 
     describe('check equal', function()
-        local r = length({min=2, max=2})
+        local r = length{min=2, max=2}
 
         it('ignores nil value', function()
             assert.is_nil(r:validate(nil))
@@ -58,7 +58,7 @@ describe('length rule', function()
     end)
 
     describe('check range', function()
-        local r = length({min=1, max=2})
+        local r = length{min=1, max=2}
 
         it('ignores nil value', function()
             assert.is_nil(r:validate(nil))
@@ -76,7 +76,7 @@ describe('length rule', function()
     end)
 
     it('always succeeds if min nor max specified', function()
-        local r = length({})
+        local r = length{}
         assert.is_nil(r:validate(''))
     end)
 end)

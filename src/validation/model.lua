@@ -1,4 +1,4 @@
-local type, next, tonumber = type, next, tonumber
+local type, next, tostring, tonumber = type, next, tostring, tonumber
 
 
 local function string_adapter(value)

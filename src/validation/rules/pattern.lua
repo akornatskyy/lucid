@@ -1,4 +1,4 @@
-local setmetatable, find = setmetatable, string.find
+local assert, setmetatable, find = assert, setmetatable, string.find
 
 
 local check_found = {__index = {

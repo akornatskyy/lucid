@@ -6,12 +6,12 @@ describe('security.principal', function()
 
         it('fails if id is not supplied', function()
             assert.has_error(function()
-                principal.dump({})
+                principal.dump {}
             end, 'invalid value (nil) at index 1 in table for \'concat\'')
         end)
 
         it('requires only id', function()
-            local s = principal.dump({id='user'})
+            local s = principal.dump {id='user'}
             assert.same({
                 id='user',
                 roles={},
@@ -21,7 +21,7 @@ describe('security.principal', function()
         end)
 
         it('supports alias', function()
-            local s = principal.dump({id='user', alias='alias'})
+            local s = principal.dump {id='user', alias='alias'}
             assert.same({
                 id='user',
                 roles={},
@@ -31,7 +31,7 @@ describe('security.principal', function()
         end)
 
         it('supports extra', function()
-            local s = principal.dump({id='user', extra='extra'})
+            local s = principal.dump {id='user', extra='extra'}
             assert.same({
                 id='user',
                 roles={},
