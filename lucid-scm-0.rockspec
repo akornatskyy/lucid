@@ -25,6 +25,9 @@ source = {
 build = {
     type = 'builtin',
     modules = {
+        ['caching.cached'] = 'src/caching/cached.lua',
+        ['caching.null'] = 'src/caching/null.lua',
+
         ['core.class'] = 'src/core/class.lua',
         ['core.clockit'] = 'src/core/clockit.lua',
         ['core.collections.defaulttable'] = 'src/core/collections/defaulttable.lua',
