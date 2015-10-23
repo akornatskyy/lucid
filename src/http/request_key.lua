@@ -51,7 +51,7 @@ end
 local function parse_parts(s)
     local parts = {}
     local b = 1
-    local e = 1
+    local e
     local pe = 1
     while true do
         b, e = s:find('%$%w+', b)
@@ -61,7 +61,6 @@ local function parse_parts(s)
         end
         parts[#parts+1] = s:sub(pe, b - 1)
         local name = s:sub(b + 1, e)
-        local f = variables[name]
         e = e + 1
         b, pe = s:find('^_[%w_]+', e)
         if b then
