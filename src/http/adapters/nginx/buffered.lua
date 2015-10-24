@@ -1,6 +1,6 @@
 local mixin = require 'core.mixin'
 local base = require 'http.adapters.nginx.base'
-local setmetatable, tostring = setmetatable, tostring
+local setmetatable, tostring, next = setmetatable, tostring, next
 
 
 local ResponseWriter = {__index = mixin(base.ResponseWriter, {
@@ -16,11 +16,11 @@ local Request = {__index = base.Request}
 return function(app)
     return function(ngx)
         local var = ngx.var
-        local b = {}
+        local headers = ngx.header
         local w = setmetatable({
             ngx = ngx,
-            headers = ngx.header,
-            b = b,
+            headers = {},
+            b = {},
             s = 0
         }, ResponseWriter)
         local req = setmetatable({
@@ -29,8 +29,11 @@ return function(app)
             path = var.uri
         }, Request)
         app(w, req)
-        ngx.header['Content-Length'] = tostring(w.s)
-        ngx.print(b)
+        headers['Content-Length'] = tostring(w.s)
+        for name, value in next, w.headers do
+            headers[name] = value
+        end
+        ngx.print(w.b)
         ngx.eof()
     end
 end
