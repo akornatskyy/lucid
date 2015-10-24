@@ -6,6 +6,7 @@ return {
     middleware = {
         authcookie = require 'http.middleware.authcookie',
         authorize = require 'http.middleware.authorize',
+        caching = require 'http.middleware.caching',
         routing = require 'http.middleware.routing'
     },
     mixins = {

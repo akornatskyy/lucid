@@ -1,6 +1,7 @@
 return {
     app = require 'web.app',
     middleware = {
+        caching = require 'http.middleware.caching',
         routing = require 'web.middleware.routing'
     },
     mixins = {
