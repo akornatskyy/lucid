@@ -1,3 +1,5 @@
+local digest = require 'security.crypto.digest'
+local etag = require 'http.etag'
 local request_key = require 'http.request_key'
 local concat, next = table.concat, next
 
@@ -5,9 +7,7 @@ local concat, next = table.concat, next
 local function pack(w)
     local status_code = w:get_status_code()
     local headers = w.headers
-    local r = {
-        b = concat(w.b)
-    }
+    local r = {b = w.b}
     if status_code ~= 0 and status_code ~= 200 then
         r.s = status_code
     end
@@ -35,6 +35,7 @@ return function(options, following)
     local cache = options.cache
     assert(cache, 'cache')
     local make_key = request_key.new '$m:$p'
+    local make_etag = etag.new(digest.new('md5'))
     local profiles = {}
     return function(w, req)
         local key
@@ -54,6 +55,8 @@ return function(options, following)
                 profiles[mkey] = profile
                 key = profile.key(req)
             end
+            w.b = concat(w.b)
+            w.headers['ETag'] = make_etag(w.b)
             cache:set(key, pack(w), profile.time)
         end
     end
