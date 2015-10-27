@@ -26,6 +26,7 @@ build = {
     type = 'builtin',
     modules = {
         ['caching.cached'] = 'src/caching/cached.lua',
+        ['caching.dependency'] = 'src/caching/dependency.lua',
         ['caching.null'] = 'src/caching/null.lua',
 
         ['core.class'] = 'src/core/class.lua',
