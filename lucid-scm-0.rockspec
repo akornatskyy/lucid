@@ -48,6 +48,7 @@ build = {
         ['http.adapters.nginx.stream'] = 'src/http/adapters/nginx/stream.lua',
         ['http.app'] = 'src/http/app.lua',
         ['http.cookie'] = 'src/http/cookie.lua',
+        ['http.etag'] = 'src/http/etag.lua',
         ['http.functional.lurl'] = 'src/http/functional/lurl.lua',
         ['http.functional.request'] = 'src/http/functional/request.lua',
         ['http.functional.response'] = 'src/http/functional/response.lua',
