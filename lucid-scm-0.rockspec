@@ -59,6 +59,7 @@ build = {
         ['http.mixins.json'] = 'src/http/mixins/json.lua',
         ['http.mixins.routing'] = 'src/http/mixins/routing.lua',
         ['http.request'] = 'src/http/request.lua',
+        ['http.request_key'] = 'src/http/request_key.lua',
         ['http.response'] = 'src/http/response.lua',
 
         ['routing.builders'] = 'src/routing/builders.lua',
