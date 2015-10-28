@@ -53,6 +53,7 @@ build = {
         ['http.functional.response'] = 'src/http/functional/response.lua',
         ['http.middleware.authcookie'] = 'src/http/middleware/authcookie.lua',
         ['http.middleware.authorize'] = 'src/http/middleware/authorize.lua',
+        ['http.middleware.caching'] = 'src/http/middleware/caching.lua',
         ['http.middleware.routing'] = 'src/http/middleware/routing.lua',
         ['http.mixins.json'] = 'src/http/mixins/json.lua',
         ['http.mixins.routing'] = 'src/http/mixins/routing.lua',
