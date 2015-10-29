@@ -45,7 +45,7 @@ env:
 		--force-config && \
 	make -s build install && \
 	cd .. ; rm -rf luarocks-$(LUA_ROCKS_VERSION) ; \
-	for rock in 'lua_cliargs 2.5-4' busted luacov luacheck lbase64 struct luacrypto lua-cjson; do \
+	for rock in busted luacov luacheck lbase64 struct luacrypto lua-cjson; do \
 		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
 	done ; \
 	ln -sf `pwd`/bin/lurl $(ENV)/bin/lurl
