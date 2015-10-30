@@ -21,6 +21,11 @@ local function var_headers(name)
            '(h["' .. name .. '"] or "")'
 end
 
+local function var_cookies(name)
+    return 'local c = req.cookies or req:parse_cookie()',
+           '(c["' .. name .. '"] or "")'
+end
+
 local function var_gzip()
     return 'local h = req.headers',
         '((h["accept-encoding"] or ""):find("gzip", 1, true) and "z" or "")'
@@ -36,6 +41,8 @@ local variables = {
     headers = var_headers,
     header = var_headers,
     h = var_headers,
+    cookie = var_cookies,
+    c = var_cookies,
     gzip = var_gzip,
     gz = var_gzip
 }

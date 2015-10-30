@@ -67,6 +67,24 @@ describe('http.request_key', function()
                     headers={['accept-encoding']='gzip, deflate'}
                 }
             },
+            ['GET:/::'] = {
+                '$m:$p:$c__a:$c_b',
+                {
+                    method='GET', path='/', cookies={}
+                }
+            },
+            ['GET:/:abc'] = {
+                '$m:$p:$c__a',
+                {
+                    method='GET', path='/', cookies={_a='abc', b='xyz'}
+                }
+            },
+            ['GET:/:abc:xyz'] = {
+                '$m:$p:$c__a:$c_b',
+                {
+                    method='GET', path='/', cookies={_a='abc', b='xyz'}
+                }
+            },
             ['GET:/'] = {
                 '$m$gz:$p',
                 {
