@@ -5,9 +5,8 @@ local setmetatable, tostring, next = setmetatable, tostring, next
 
 local ResponseWriter = {__index = mixin(base.ResponseWriter, {
     write = function(self, c)
-        local b = self.b
+        local b = self.buffer
         b[#b+1] = c
-        self.s = self.s + c:len()
     end
 })}
 
@@ -20,8 +19,7 @@ return function(app)
         local w = setmetatable({
             ngx = ngx,
             headers = {},
-            b = {},
-            s = 0
+            buffer = {}
         }, ResponseWriter)
         local req = setmetatable({
             ngx = ngx,
@@ -29,11 +27,10 @@ return function(app)
             path = var.uri
         }, Request)
         app(w, req)
-        headers['Content-Length'] = tostring(w.s)
         for name, value in next, w.headers do
             headers[name] = value
         end
-        ngx.print(w.b)
+        ngx.print(w.buffer)
         ngx.eof()
     end
 end
