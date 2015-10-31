@@ -1,6 +1,7 @@
 local mixin = require 'core.mixin'
-local ResponseWriter = require('http.response')
+local ResponseWriter = require 'http.response'
 local setmetatable = setmetatable
+local mt = {__index = ResponseWriter}
 
 
 mixin(ResponseWriter, {
@@ -13,13 +14,13 @@ mixin(ResponseWriter, {
     end,
 
     write = function(self, c)
-        self.buffer[#self.buffer+1] = c
+        local b = self.buffer
+        b[#b+1] = c
     end
 })
 
-
 local function new()
-    return setmetatable({headers={}, buffer={}}, {__index = ResponseWriter})
+    return setmetatable({headers={}, buffer={}}, mt)
 end
 
 return {
