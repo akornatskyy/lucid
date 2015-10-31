@@ -1,6 +1,6 @@
 local mixin = require 'core.mixin'
 local base = require 'http.adapters.nginx.base'
-local setmetatable, tostring, next = setmetatable, tostring, next
+local setmetatable, next = setmetatable, next
 
 
 local ResponseWriter = {__index = mixin(base.ResponseWriter, {
