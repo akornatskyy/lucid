@@ -1,6 +1,7 @@
 local mixin = require 'core.mixin'
 local Request = require 'http.request'
 local setmetatable = setmetatable
+local mt = {__index = Request}
 
 
 local headers = {
@@ -15,12 +16,11 @@ local defaults = {
     body = {}
 }
 
-Request = mixin(Request, {
+mixin(Request, {
     server_parts = function()
         return 'http', 'localhost', '8080'
     end
 })
-
 
 local function new(self)
     self = mixin({}, defaults, self or {})
@@ -29,7 +29,7 @@ local function new(self)
     else
         self.headers = headers
     end
-    return setmetatable(self, {__index = Request})
+    return setmetatable(self, mt)
 end
 
 return {
