@@ -1,5 +1,5 @@
 local request = require 'http.functional.request'
-local setmetatable = setmetatable
+local writer = require 'http.functional.response'
 
 
 local function usage()
@@ -89,34 +89,32 @@ return function()
         app = app.new()
     end
 
-    local req, args = parse_args()
-    if not req then
+    local d, args = parse_args()
+    if not d then
         return usage()
     end
-    req = request.new(req)
 
-    local w
-    if args.bench then
-        w = require 'http.response'
-        w = setmetatable({headers = {}}, {__index = w})
-    else
-        w = require 'http.functional.response'
-        w = w.new()
-    end
-
+    local req = request.new(d)
+    local w = writer.new()
     app(w, req)
 
     if args.verbose then
         local pp = require 'core.pretty'
         req.options = nil
-        print('req: ' .. pp.dump(req, pp.spaces.indented))
-        print('w: ' .. pp.dump(w, pp.spaces.indented))
+        io.write('req: ')
+        print(pp.dump(req, pp.spaces.indented))
+        io.write('w: ')
+        print(pp.dump(w, pp.spaces.indented))
     elseif args.bench then
         local clockit = require 'core.clockit'
         clockit.ptimes(function()
-            app(w, req)
+            app(writer.new(), request.new(d))
         end)
     else
-        io.write(table.concat(w.buffer))
+        local b = w.buffer
+        if type(b) == 'table' then
+            b = table.concat(b)
+        end
+        io.write(b)
     end
 end
