@@ -19,12 +19,11 @@ return {
 
     parse_cookie = function(self)
         local headers = self.headers or self:parse_headers()
-        if not headers then
-            return nil
-        end
         local c = headers['cookie']
         if not c then
-            return nil
+            local cookies = {}
+            self.cookies = cookies
+            return cookies
         end
         local cookies = parse_cookie(c)
         self.cookies = cookies
@@ -32,11 +31,8 @@ return {
     end,
 
     get_cookie = function(self, name)
-        local c = self.cookies or self:parse_cookie()
-        if not c then
-            return nil
-        end
-        return c[name]
+        local cookies = self.cookies or self:parse_cookie()
+        return cookies[name]
     end,
 
     is_ajax = function(self)
