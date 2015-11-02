@@ -13,8 +13,11 @@ local function get_keys(self, master_key)
         keys[i] = master_key .. tostring(i)
     end
     local keys2 = self.cache:get_multi(keys)
-    for i=1, #keys2 do
-        keys[#keys+1] = keys2[i]
+    for i=1, #keys do
+        local key = keys2[keys[i]]
+        if key then
+            keys[#keys+1] = key
+        end
     end
     return keys
 end
@@ -22,9 +25,9 @@ end
 function Dependency:next_key(master_key)
     local i = self.cache:incr(master_key)
     if not i then
-        self.cache.add(master_key, 0)
+        self.cache:add(master_key, 0)
+        i = self.cache:incr(master_key)
     end
-    i = self.cache:incr(master_key)
     return master_key .. tostring(i)
 end
 
@@ -36,7 +39,7 @@ function Dependency:delete(master_key)
     local keys = get_keys(self, master_key)
     if keys then
         for i=1, #keys do
-            self.cache.delete(keys[i])
+            self.cache:delete(keys[i])
         end
     end
 end
