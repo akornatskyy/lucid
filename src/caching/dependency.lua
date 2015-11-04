@@ -22,7 +22,7 @@ local function get_keys(self, master_key)
     return keys
 end
 
-function Dependency:next_key(master_key)
+local function next_key(self, master_key)
     local i = self.cache:incr(master_key)
     if not i then
         self.cache:add(master_key, 0)
@@ -32,7 +32,7 @@ function Dependency:next_key(master_key)
 end
 
 function Dependency:add(master_key, key)
-    return self.cache:add(self:next_key(master_key), key, self.time)
+    return self.cache:add(next_key(self, master_key), key, self.time)
 end
 
 function Dependency:delete(master_key)
