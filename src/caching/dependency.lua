@@ -19,6 +19,7 @@ local function get_keys(self, master_key)
             keys[#keys+1] = key
         end
     end
+    keys[#keys+1] = master_key
     return keys
 end
 
