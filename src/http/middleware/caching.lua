@@ -30,7 +30,7 @@ local function unpack(w, r)
     w.buffer = body
 end
 
-return function(options, following)
+return function(following, options)
     local cache = options.cache
     assert(cache, 'cache')
     local make_key = request_key.new '$m:$p'

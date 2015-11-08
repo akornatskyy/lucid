@@ -1,7 +1,7 @@
 local assert, setmetatable = assert, setmetatable
 
 
-return function(options)
+return function(following, options)
     if not options.root_path then
         options.root_path = '/'
     end
