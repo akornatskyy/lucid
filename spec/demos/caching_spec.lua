@@ -14,6 +14,10 @@ local function test_cases(app)
 	end)
 end
 
+describe('demos.http.caching', function()
+    test_cases(require 'demos.http.caching')
+end)
+
 describe('demos.web.caching', function()
     test_cases(require 'demos.web.caching')
 end)
