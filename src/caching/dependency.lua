@@ -45,8 +45,10 @@ function Dependency:delete(master_key)
     end
 end
 
-local function new(cache, time)
-    return setmetatable({cache=cache, time=time}, mt)
+local function new(self)
+    assert(self)
+    assert(self.cache)
+    return setmetatable(self, mt)
 end
 
 return {

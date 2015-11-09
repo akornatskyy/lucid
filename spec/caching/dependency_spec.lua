@@ -19,7 +19,7 @@ describe('caching.dependency', function()
                     return true
                 end
             }
-            local d = dependency.new(cache, 60)
+            local d = dependency.new {cache=cache, time=60}
 
             assert.is_true(d:add('master', 'key'))
 
@@ -44,7 +44,7 @@ describe('caching.dependency', function()
                     return true
                 end
             }
-            local d = dependency.new(cache, 60)
+            local d = dependency.new {cache=cache, time=60}
 
             assert.is_true(d:add('master', 'key'))
 
@@ -64,7 +64,7 @@ describe('caching.dependency', function()
                     return nil
                 end
             }
-            local d = dependency.new(cache, 60)
+            local d = dependency.new {cache=cache, time=60}
 
             d:delete('master')
 
@@ -99,7 +99,7 @@ describe('caching.dependency', function()
                     calls[#calls+1] = {'delete', key}
                 end
             }
-            local d = dependency.new(cache, 60)
+            local d = dependency.new {cache=cache, time=60}
 
             d:delete('master')
 
