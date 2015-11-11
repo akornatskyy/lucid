@@ -16,6 +16,12 @@ function RedirectHandler:get()
     return self:redirect_for('welcome')
 end
 
+local OtherHandler = class(BaseHandler, {
+    get = function(self)
+        return self:see_other_for('welcome')
+    end
+})
+
 local WelcomeHandler = class(BaseHandler, {
     get = function(self)
         self.w:write('Hello World!\n')
@@ -26,6 +32,7 @@ local WelcomeHandler = class(BaseHandler, {
 
 local all_urls = {
     {'', RedirectHandler},
+    {'other', OtherHandler},
     {'welcome', WelcomeHandler, name='welcome'}
 }
 

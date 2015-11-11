@@ -15,6 +15,10 @@ app:get('', function(w, req)
     return w:redirect(req:absolute_url_for('welcome'))
 end)
 
+app:get('other', function(w, req)
+    return w:see_other(req:absolute_url_for('welcome'))
+end)
+
 app:get('welcome', 'welcome', function(w, req)
     return w:write('Hello World!\n')
 end)

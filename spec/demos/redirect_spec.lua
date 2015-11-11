@@ -13,6 +13,14 @@ local function test_cases(app)
                     w.headers)
 	end)
 
+	it('responds with see other status code', function()
+        local w, req = writer.new(), request.new {path = '/other'}
+        app(w, req)
+        assert.equals(303, w.status_code)
+        assert.same({['Location'] = 'http://localhost:8080/welcome'},
+                    w.headers)
+	end)
+
     it('follows redirect', function()
         local w, req = writer.new(), request.new {path = '/welcome'}
         app(w, req)
