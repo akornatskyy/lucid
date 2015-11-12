@@ -10,6 +10,12 @@ local function test_cases(app)
         app(w, req)
         assert.same({'http://localhost:8080/en/user/123\n'}, w.buffer)
 	end)
+
+	it('responds with not found', function()
+        local w, req = writer.new(), request.new {path = '/unknown'}
+        app(w, req)
+        assert.same(404, w.status_code)
+	end)
 end
 
 describe('demos.http.routing', function()
