@@ -35,6 +35,8 @@ return function(following, options)
             m = handler.head
         elseif m == 'OPTIONS' then
             m = handler.options
+        else
+            return w:set_status_code(405)
         end
         if m then
             return m(handler)
