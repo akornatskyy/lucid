@@ -11,11 +11,16 @@ local function test_cases(app)
         assert.same({'Hello World!\n'}, w.buffer)
 	end)
 
-	it('responds with method not allowed status code', function()
-        local w, req = writer.new(), request.new {method = 'POST'}
-        app(w, req)
-        assert.equals(405, w.status_code)
-	end)
+    it('responds with method not allowed status code', function()
+        local http_verbs = {
+            'DELETE', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT', 'UNKNOWN'
+        }
+        for _, m in next, http_verbs do
+                local w, req = writer.new(), request.new {method = m}
+                app(w, req)
+                assert.equals(405, w.status_code)
+        end
+    end)
 end
 
 describe('demos.http.hello', function()
