@@ -111,7 +111,7 @@ end
 local function include(self, pattern, included, args)
     local r
     if not included.add then
-        r = new({builders=self.builders})
+        r = new {builders = self.builders}
         r.path_map = nil
         local ok, msg = r:add(included)
         if not ok then

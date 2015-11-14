@@ -21,14 +21,14 @@ return function(following, options)
         following(w, req)
         local p = w.principal
         if p then
-            w:add_header('Set-Cookie', dump({
+            w:add_header('Set-Cookie', dump {
                 name=name,
                 value=ticket:encode(principal.dump(p)),
                 path=path,
                 domain=domain,
                 secure=secure,
                 http_only=true
-            }))
+            })
         else
             w:add_header('Set-Cookie', deleted)
         end

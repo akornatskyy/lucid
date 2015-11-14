@@ -30,14 +30,14 @@ return function(following, options)
         local p, time_left = ticket:decode(c)
         if p then
             if time_left < ticket.max_age / 2 then
-                w:add_header('Set-Cookie', dump({
+                w:add_header('Set-Cookie', dump {
                     name=name,
                     value=ticket:encode(p),
                     path=path,
                     domain=domain,
                     secure=secure,
                     http_only=true
-                }))
+                })
             end
             req.principal = principal.parse(p)
         else
