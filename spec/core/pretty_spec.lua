@@ -12,6 +12,7 @@ describe('core.pretty', function()
             ['1'] = 1,
             ['"a"'] = 'a',
             ['true'] = true,
+            ['"<function>"'] = function() end,
             ['{}'] = {},
             ['{{}}'] = {{}},
             ['{1, 2}'] = {1, 2},
