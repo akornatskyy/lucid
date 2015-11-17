@@ -10,6 +10,9 @@ local WelcomeHandler = class({
         self.w:set_cookie(cookie.dump {
             name = 'c', value = '100', http_only = true
         })
+        self.w:set_cookie(cookie.dump {
+            name = 'x', value = '5'
+        })
     end
 })
 

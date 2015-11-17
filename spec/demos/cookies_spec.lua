@@ -10,7 +10,8 @@ local function test_cases(app)
         app(w, req)
         assert.same({
             'm=hello; Path=/',
-            'c=100; HttpOnly'
+            'c=100; HttpOnly',
+            'x=5'
         }, w.headers['Set-Cookie'])
 	end)
 

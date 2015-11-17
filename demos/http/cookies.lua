@@ -10,6 +10,9 @@ app:get('', function(w)
     w:set_cookie(http.cookie.dump {
         name = 'c', value = '100', http_only = true
     })
+    w:set_cookie(http.cookie.dump {
+        name = 'x', value = '5'
+    })
 end)
 
 app:get('remove', function(w)
