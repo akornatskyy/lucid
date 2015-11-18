@@ -30,7 +30,7 @@ describe('cookie', function()
     end)
 
     describe('dump', function()
-        it('returns the serialization for use in header', function()
+        it('returns a string', function()
             local cases = {
                 ['a=1'] = {name='a', value='1'},
                 ['a=1; Path=/abc/'] = {name='a', value='1', path='/abc/'},
@@ -52,6 +52,23 @@ describe('cookie', function()
                 assert.equals(e, tostring(c))
                 assert.equals(e, c:dump())
                 assert.equals(e, cookie.dump(c))
+            end
+        end)
+    end)
+
+    describe('delete', function()
+        it('returns empty expired cookie', function()
+            local prefix = 'a=; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+            local cases = {
+                [prefix] = {name='a'},
+                [prefix .. '; Path=/abc/'] = {name='a', path='/abc/'},
+                [prefix .. '; Domain=x.com'] = {name='a', domain='x.com'},
+                [prefix .. '; Path=/abc/; Domain=x.com'] = {
+                    name='a', path='/abc/', domain='x.com'
+                }
+            }
+            for e, c in next, cases do
+                assert.equals(e, cookie.delete(c))
             end
         end)
     end)
