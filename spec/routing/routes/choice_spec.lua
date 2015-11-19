@@ -38,5 +38,12 @@ describe('choice route', function()
                 end
             end)
         end
+
+        it('merges default args', function()
+            local r = new('/{locale:(en|de)}/', nil, {site_id='1'})
+            matched, args = r:match('/en/welcome')
+            assert.equals(4, matched)
+            assert.same({locale='en', site_id='1'}, args)
+        end)
     end)
 end)
