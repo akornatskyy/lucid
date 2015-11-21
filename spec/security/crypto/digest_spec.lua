@@ -12,7 +12,6 @@ describe('security.crypto.digest', function()
         local cases = {
             sha = '+NOzEkQqZ3BgV660W5gyIa+08DU=',
             sha1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M=',
-            mdc2 = 'wt1JmCfACkDz5c+qIr1NtA==',
             ripemd160 = 'XlL+5H5rBwVl90NyRozcaZ3okQc=',
             sha224 = 'kKPtnjKyqvTGHEEOuSVCYRnhqdxT1Chq3pmoCQ==',
             sha256 = 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=',
@@ -48,7 +47,6 @@ describe('security.crypto.digest', function()
         local cases = {
             sha = '+NOzEkQqZ3BgV660W5gyIa+08DU=',
             sha1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M=',
-            mdc2 = 'wt1JmCfACkDz5c+qIr1NtA==',
             ripemd160 = 'XlL+5H5rBwVl90NyRozcaZ3okQc=',
             sha224 = 'kKPtnjKyqvTGHEEOuSVCYRnhqdxT1Chq3pmoCQ==',
             sha256 = 'n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=',
