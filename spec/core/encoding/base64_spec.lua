@@ -78,4 +78,37 @@ describe('base64', function()
             end
         end)
     end)
+
+    describe('encoded len', function()
+        it('returns a number', function()
+            assert.equals(16, b64.encoded_len(10))
+            assert.equals(24, b64.encoded_len(16))
+        end)
+    end)
+
+    describe('decoded len', function()
+        it('returns a number', function()
+            assert.equals(12, b64.decoded_len(16))
+            assert.equals(18, b64.decoded_len(24))
+        end)
+    end)
+
+    describe('not implemented', function()
+        it('raises an error', function()
+            local saved = require
+            _G['require'] = function(m)
+                if m == 'base64' then
+                    return error()
+                end
+                return saved(m)
+            end
+            package.loaded['base64'] = nil
+            package.loaded['core.encoding.base64'] = nil
+            local base64 = require 'core.encoding.base64'
+            assert.error(base64.encode, 'base64 encode is not implemented')
+            assert.error(base64.decode, 'base64 decode is not implemented')
+            package.loaded['core.encoding.base64'] = nil
+            _G['require'] = saved
+        end)
+    end)
 end)
