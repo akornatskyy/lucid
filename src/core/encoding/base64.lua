@@ -1,3 +1,4 @@
+local floor = math.floor
 local encode, decode
 
 do
@@ -16,11 +17,11 @@ do
 end
 
 local encoded_len = function(n)
-    return math.flor((n + 2) / 3) * 4
+    return floor((n + 2) / 3) * 4
 end
 
 local decoded_len = function(n)
-    return math.flor(n / 4) * 3
+    return floor(n / 4) * 3
 end
 
 return {
