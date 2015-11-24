@@ -11,8 +11,7 @@ local Ticket = {
                  random(-0x80000000, 0x7FFFFFFF),
                  time() + self.max_age,
                  random(-0x80000000, 0x7FFFFFFF)
-            ) ..
-            s .. pack('<I4', random(-0x80000000, 0x7FFFFFFF))
+            ) .. s .. pack('<I4', random(-0x80000000, 0x7FFFFFFF))
         )
         return self.encoder.encode(self.digest(s) .. s)
     end,
