@@ -29,12 +29,29 @@ describe('ticket', function()
             })
         end)
 
+        it('supports function for digest', function()
+            local digest = require 'security.crypto.digest'
+            local md5 = digest.new 'md5'
+            assert(ticket.new {
+                digest = md5,
+                cipher = cipher.new('aes128', 'key2'),
+                encoder = encoding.new('base64')
+            })
+        end)
+
+        it('raises an error if digest is not a string or function', function()
+            local f = function()
+                ticket.new {}
+            end
+            assert.error(f, 'digest: string or function expected')
+        end)
+
         it('supports max_age', function()
             assert.equals(60, ticket.new {
                 digest = 'md5',
+                max_age = 60,
                 cipher = cipher.new('aes128', 'key2'),
-                encoder = encoding.new('base64'),
-                max_age = 60
+                encoder = encoding.new('base64')
             }.max_age)
         end)
     end)
