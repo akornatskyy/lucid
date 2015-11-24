@@ -30,7 +30,6 @@ describe('ticket', function()
         end)
 
         it('supports function for digest', function()
-            local digest = require 'security.crypto.digest'
             local md5 = digest.new 'md5'
             assert(ticket.new {
                 digest = md5,
