@@ -1,8 +1,12 @@
 local principal = require 'web.mixins.principal'
-local describe, it, assert = describe, it, assert
+local describe, it, assert, setmetatable = describe, it, assert, setmetatable
 
 describe('web.mixins.principal', function()
-	it('', function()
-		assert.not_nil(principal)
-	end)
+    describe('get principal', function()
+	    it('returns saved principal', function()
+		    local c = setmetatable({}, {__index=principal})
+            c.principal = 'x'
+            assert.equals('x', c:get_principal())
+	    end)
+    end)
 end)
