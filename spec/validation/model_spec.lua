@@ -189,6 +189,10 @@ describe('model adapter', function()
             assert.is_nil(a(''))
         end)
 
+        it('adapts an empty table to nil', function()
+            assert.equals(nil, a({}))
+        end)
+
         it('converts string to number', function()
             local cases = {
                 {0, ' 0 '},
@@ -247,10 +251,19 @@ describe('model adapter', function()
             assert.is_nil(a(''))
         end)
 
+        it('adapts an empty table to nil', function()
+            assert.equals(nil, a({}))
+        end)
+
         it('adapts number', function()
             assert.equals(true, a(1))
             assert.equals(false, a(0))
             assert.equals(false, a(2))
+        end)
+
+        it('adapts boolean', function()
+            assert.equals(true, a(true))
+            assert.equals(false, a(false))
         end)
 
         it('converts string', function()
