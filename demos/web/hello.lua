@@ -5,11 +5,11 @@ local web = require 'web'
     lurl -v demos.web.hello /
     curl -v http://localhost:8080
 --]]
-local WelcomeHandler = class({
+local WelcomeHandler = class {
     get = function(self)
         self.w:write('Hello World!\n')
     end
-})
+}
 
 -- url mapping
 

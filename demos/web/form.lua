@@ -11,10 +11,10 @@ i18n = i18n.configure()
 
 -- validation
 
-local greeting_validator = validator.new({
+local greeting_validator = validator.new {
     author = {required, length{max=20}},
     message = {required, length{min=5}, length{max=512}}
-})
+}
 
 -- handlers
 

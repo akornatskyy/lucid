@@ -9,11 +9,7 @@ local http = require 'http'
 local web = require 'web'
 
 
-local BaseHandler = mixin(
-    {},
-    web.mixins.authcookie,
-    web.mixins.principal
-)
+local BaseHandler = mixin({}, web.mixins.authcookie, web.mixins.principal)
 
 --[[
     lurl -v demos/web/auth.lua /signin

@@ -2,7 +2,7 @@ local class = require 'core.class'
 local cookie = require 'http.cookie'
 local web = require 'web'
 
-local WelcomeHandler = class({
+local WelcomeHandler = class {
     get = function(self)
         self.w:set_cookie(cookie.dump {
             name = 'm', value = 'hello', path = '/'
@@ -14,13 +14,13 @@ local WelcomeHandler = class({
             name = 'x', value = '5'
         })
     end
-})
+}
 
-local RemoveHandler = class({
+local RemoveHandler = class {
     get = function(self)
         self.w:set_cookie(cookie.delete {name = 'c'})
     end
-})
+}
 
 -- url mapping
 

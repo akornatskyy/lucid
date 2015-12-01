@@ -1,11 +1,11 @@
 local class = require 'core.class'
 local web = require 'web'
 
-local WelcomeHandler = class({
+local WelcomeHandler = class {
     get = function(self)
         self.w:write('hi')
     end
-})
+}
 
 -- url mapping
 
