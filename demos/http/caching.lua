@@ -23,12 +23,20 @@ local cache_profile = {
     time = 600
 }
 
-local counter = 0
+local c1 = 0
+local c2 = 0
 
 app:get('', function(w)
-    counter = counter + 1
+    c1 = c1 + 1
     w.cache_profile = cache_profile
-    return w:write('Counter = ' .. counter .. '\n')
+    return w:write('Counter = ' .. c1 .. '\n')
+end)
+
+app:post('not-found', function(w)
+    c2 = c2 + 1
+    w:set_status_code(404)
+    w.cache_profile = cache_profile
+    return w:write('Counter = ' .. c2 .. '\n')
 end)
 
 return app()

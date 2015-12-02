@@ -9,6 +9,19 @@ local function test_cases(app)
         for i=1, 10 do
             local w, req = writer.new(), request.new()
             app(w, req)
+            assert.is_nil(w.status_code)
+            assert.same('Counter = 1\n', w.buffer)
+        end
+	end)
+
+	it('preserves status code', function()
+        for i=1, 10 do
+            local w, req = writer.new(), request.new {
+                method = 'POST',
+                path = '/not-found'
+            }
+            app(w, req)
+            assert.equals(404, w.status_code)
             assert.same('Counter = 1\n', w.buffer)
         end
 	end)

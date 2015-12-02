@@ -8,20 +8,31 @@ local cache_profile = {
     time = 600
 }
 
-local counter = 0
+local c1 = 0
+local c2 = 0
 
-local CounterHandler = class({
+local CounterHandler = class {
     get = function(self)
-        counter = counter + 1
-        self.w:write('Counter = ' .. counter .. '\n')
+        c1 = c1 + 1
+        self.w:write('Counter = ' .. c1 .. '\n')
         self.w.cache_profile = cache_profile
     end
-})
+}
+
+local NotFoundCounterHandler = class {
+    post = function(self)
+        c2 = c2 + 1
+        self.w:set_status_code(404)
+        self.w:write('Counter = ' .. c2 .. '\n')
+        self.w.cache_profile = cache_profile
+    end
+}
 
 -- url mapping
 
 local all_urls = {
-    {'', CounterHandler}
+    {'', CounterHandler},
+    {'not-found', NotFoundCounterHandler}
 }
 
 -- config
