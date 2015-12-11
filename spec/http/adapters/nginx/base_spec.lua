@@ -21,4 +21,19 @@ describe('http.adapters.nginx.base', function()
             assert(flush_called)
         end)
     end)
+
+    describe('request', function()
+        it('parse query', function()
+            local query = {x=1}
+            local req = setmetatable({ngx = {
+                req = {
+                    get_uri_args = function()
+                        return query
+                    end
+                }
+            }}, {__index=base.Request})
+            assert.same(query, req:parse_query())
+            assert.same(query, req.query)
+        end)
+    end)
 end)
