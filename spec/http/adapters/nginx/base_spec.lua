@@ -35,5 +35,19 @@ describe('http.adapters.nginx.base', function()
             assert.same(query, req:parse_query())
             assert.same(query, req.query)
         end)
+
+        it('server parts', function()
+            local req = setmetatable({ngx = {
+                var = {
+                    scheme = 'http',
+                    host = 'localhost',
+                    server_port = 8080
+                }
+            }}, {__index=base.Request})
+            local scheme, host, server_port = req:server_parts()
+            assert.equals('http', scheme)
+            assert.equals('localhost', host)
+            assert.equals(8080, server_port)
+        end)
     end)
 end)
