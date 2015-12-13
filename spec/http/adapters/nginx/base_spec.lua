@@ -24,6 +24,19 @@ describe('http.adapters.nginx.base', function()
 
     describe('request', function()
         it('parse query', function()
+            local headers = {x=1}
+            local req = setmetatable({ngx = {
+                req = {
+                    get_headers = function()
+                        return headers
+                    end
+                }
+            }}, {__index=base.Request})
+            assert.same(headers, req:parse_headers())
+            assert.same(headers, req.headers)
+        end)
+
+        it('parse headers', function()
             local query = {x=1}
             local req = setmetatable({ngx = {
                 req = {
