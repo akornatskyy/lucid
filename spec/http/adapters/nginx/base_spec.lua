@@ -49,6 +49,27 @@ describe('http.adapters.nginx.base', function()
             assert.same(query, req.query)
         end)
 
+        it('parse body', function()
+            local read_body_called = false
+            local body = {x=1}
+            local req = setmetatable({ngx = {
+                req = {
+                    read_body = function()
+                        read_body_called = true
+                    end,
+                    get_headers = function()
+                        return {}
+                    end,
+                    get_post_args = function()
+                        return body
+                    end
+                }
+            }}, {__index=base.Request})
+            assert.same(body, req:parse_body())
+            assert.same(body, req.body)
+            assert(read_body_called)
+        end)
+
         it('server parts', function()
             local req = setmetatable({ngx = {
                 var = {
