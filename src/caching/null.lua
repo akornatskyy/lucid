@@ -61,13 +61,13 @@ end
 
 function Cache:incr(key, offset)
     assert(type(key) == 'string')
-    assert(type(offset) == 'number')
+    assert(offset == nil or type(offset) == 'number')
     return true
 end
 
 function Cache:decr(key, offset)
     assert(type(key) == 'string')
-    assert(type(offset) == 'number')
+    assert(offset == nil or type(offset) == 'number')
     return true
 end
 
