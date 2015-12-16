@@ -70,6 +70,28 @@ describe('http.adapters.nginx.base', function()
             assert(read_body_called)
         end)
 
+        it('parse body currupted json', function()
+            local read_body_called = false
+            local get_body_data_called = false
+            local req = setmetatable({ngx = {
+                req = {
+                    read_body = function()
+                        read_body_called = true
+                    end,
+                    get_headers = function()
+                        return {['content-type'] = 'application/json'}
+                    end,
+                    get_body_data = function()
+                        get_body_data_called = true
+                        return ''
+                    end
+                }
+            }}, {__index=base.Request})
+            assert.is_nil(req:parse_body())
+            assert(read_body_called)
+            assert(get_body_data_called)
+        end)
+
         it('server parts', function()
             local req = setmetatable({ngx = {
                 var = {
