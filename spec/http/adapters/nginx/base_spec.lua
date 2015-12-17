@@ -92,6 +92,28 @@ describe('http.adapters.nginx.base', function()
             assert(get_body_data_called)
         end)
 
+        it('parse body json', function()
+            local read_body_called = false
+            local get_body_data_called = false
+            local req = setmetatable({ngx = {
+                req = {
+                    read_body = function()
+                        read_body_called = true
+                    end,
+                    get_headers = function()
+                        return {['content-type'] = 'application/json'}
+                    end,
+                    get_body_data = function()
+                        get_body_data_called = true
+                        return '{"x": 1}'
+                    end
+                }
+            }}, {__index=base.Request})
+            assert.same({x=1}, req:parse_body())
+            assert(read_body_called)
+            assert(get_body_data_called)
+        end)
+
         it('server parts', function()
             local req = setmetatable({ngx = {
                 var = {
