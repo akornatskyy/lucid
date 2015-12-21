@@ -49,4 +49,14 @@ describe('http.functional.lurl', function()
         _G['arg'] = sarg
         _G['io'] = sio
     end)
+
+    it('-H option', function()
+        local sarg = arg
+        local sio = io
+        _G['arg'] = {'-H', 'Cookie: _a=', 'demos.http.auth', '/signout'}
+        _G['io'] = {write = function(s) end}
+        lurl()
+        _G['arg'] = sarg
+        _G['io'] = sio
+    end)
 end)
