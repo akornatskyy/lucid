@@ -9,8 +9,8 @@ LUA_VERSION=5.1.5
 PLATFORM=macosx
 #LUA_INCLUDE_PATH=$(shell dirname $(LUA))/../include
 LUA_ROCKS_VERSION=2.2.2
-NGINX_VERSION=1.9.7
-NGINX_LUA_MODULE_VERSION=0.9.19
+NGINX_VERSION=1.9.9
+NGINX_LUA_MODULE_VERSION=0.9.20
 
 CFLAGS=-pipe -O2 -fPIC -std=c99 -Wall -Wextra -Wshadow -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement -Wno-unused-parameter -Wconditional-uninitialized -Werror
 #CFLAGS=
@@ -20,7 +20,7 @@ env:
 	rm -rf $(ENV) ; mkdir -p $(ENV) ; \
 	unset LUA_PATH ; unset LUA_CPATH ; \
 	if [ "$(LUA_IMPL)" = "luajit" ] ; then \
-		wget -c http://luajit.org/download/LuaJIT-$(LUA_VERSION).tar.gz \
+		wget -c https://github.com/LuaJIT/LuaJIT/archive/v$(LUA_VERSION).tar.gz \
 			-O - | tar xzf - ; \
 	  	cd LuaJIT-$(LUA_VERSION) ; \
 	  	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h ; \
