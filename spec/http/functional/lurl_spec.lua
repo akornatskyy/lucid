@@ -59,4 +59,16 @@ describe('http.functional.lurl', function()
         _G['arg'] = sarg
         _G['io'] = sio
     end)
+
+    it('-d option', function()
+        local sarg = arg
+        local sio = io
+        local c = ''
+        _G['arg'] = {'-d', '{"author":"Jack"}', 'demos.http.form', '/'}
+        _G['io'] = {write = function(s) c = s end}
+        lurl()
+        assert.equals('{"message":"Required field cannot be left blank."}', c)
+        _G['arg'] = sarg
+        _G['io'] = sio
+    end)
 end)
