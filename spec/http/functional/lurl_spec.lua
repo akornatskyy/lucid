@@ -38,6 +38,16 @@ describe('http.functional.lurl', function()
         _G['io'] = sio
     end)
 
+    it('path with query string', function()
+        local sarg = arg
+        local sio = io
+        _G['arg'] = {'demos.http.api', '/api/v1/tasks?status=1'}
+        _G['io'] = {write = function(s) end}
+        lurl()
+        _G['arg'] = sarg
+        _G['io'] = sio
+    end)
+
     it('-X option', function()
         local sarg = arg
         local sio = io
