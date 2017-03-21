@@ -6,10 +6,10 @@ env:
     - LUA_VERSION=5.1.5
     - LUA_VERSION=5.2.4
     - LUA_IMPL=luajit LUA_VERSION=2.0.4
-    - LUA_IMPL=luajit LUA_VERSION=2.1.0-beta1
+    - LUA_IMPL=luajit LUA_VERSION=2.1.0-beta2
 
 install:
-    - make env PLATFORM=linux LUA_IMPL=$LUA_IMPL LUA_VERSION=$LUA_VERSION
+    - make env LUA_IMPL=$LUA_IMPL LUA_VERSION=$LUA_VERSION
 
 script:
     - make test
