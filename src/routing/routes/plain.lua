@@ -1,4 +1,5 @@
-local assert, format, load = assert, string.format, loadstring
+local assert, format = assert, string.format
+local load = loadstring or load
 
 
 local function plain_finishing(pattern, args)

@@ -1,5 +1,6 @@
-local assert, format, load = assert, string.format, loadstring
-local concat = table.concat
+local assert, format, concat = assert, string.format, table.concat
+local load = loadstring or load
+local unpack = unpack or table.unpack
 
 
 local function var_method()

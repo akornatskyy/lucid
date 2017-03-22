@@ -1,5 +1,5 @@
 local require, next, type = require, next, type
-local assert, load = assert, loadstring
+local assert, load = assert, loadstring or load
 local format, concat = string.format, table.concat
 local setmetatable = setmetatable
 -- local pp = require 'core.pretty'

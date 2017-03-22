@@ -1,5 +1,6 @@
 local format, next = string.format, next
-local assert, load, concat, sort = assert, loadstring, table.concat, table.sort
+local assert, concat, sort = assert, table.concat, table.sort
+local load = loadstring or load
 
 
 local function split(str)

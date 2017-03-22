@@ -1,4 +1,4 @@
-local assert, load, next = assert, loadstring, next
+local assert, load, next = assert, loadstring or load, next
 local format, concat = string.format, table.concat
 
 

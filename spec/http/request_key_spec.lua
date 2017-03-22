@@ -1,5 +1,6 @@
 local request_key = require 'http.request_key'
 local describe, it, assert = describe, it, assert
+local unpack = unpack or table.unpack
 
 describe('http.request_key', function()
     it('raises an error if a variable is unknown', function()
