@@ -19,4 +19,16 @@ app:get('{locale}/user/{user_id:i}', 'user', function(w, req)
     w:write(req:absolute_url_for('user') .. '\n')
 end)
 
+app:all('all', function(w, req)
+    return w:write('all')
+end)
+
+app:route('api/users', 'users')
+:get(function(w, req)
+    return w:write(req:path_for('users'))
+end)
+:post(function(w, req)
+    return w:write('user added')
+end)
+
 return app()

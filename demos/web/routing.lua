@@ -18,6 +18,15 @@ function UserHandler:get()
     self.w:write(self:absolute_url_for('user') .. '\n')
 end
 
+local UsersHandler = class(BaseHandler, {
+    get = function(self)
+        return self.w:write(self:path_for('users'))
+    end,
+    post = function(self)
+        return self.w:write('user added')
+    end
+})
+
 -- url mapping
 
 local user_urls = {
@@ -25,7 +34,8 @@ local user_urls = {
 }
 
 local all_urls = {
-    {'{locale:(en|de)}/', user_urls}
+    {'{locale:(en|de)}/', user_urls},
+    {'api/users', UsersHandler, name='users'}
 }
 
 -- config

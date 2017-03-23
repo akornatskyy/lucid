@@ -16,10 +16,42 @@ local function test_cases(app)
         app(w, req)
         assert.same(404, w.status_code)
 	end)
+
+    describe('single path', function()
+        it('mapped to http verb get', function()
+            local w, req = writer.new(), request.new {
+                path = '/api/users'
+            }
+            app(w, req)
+            assert.same({req.path}, w.buffer)
+        end)
+
+        it('mapped to http verb post', function()
+            local w, req = writer.new(), request.new {
+                method = 'POST',
+                path = '/api/users'
+            }
+            app(w, req)
+            assert.same({'user added'}, w.buffer)
+        end)
+    end)
 end
 
 describe('demos.http.routing', function()
-    test_cases(require 'demos.http.routing')
+    local app = require 'demos.http.routing'
+    test_cases(app)
+
+	it('responds to any http verb', function()
+        local http_verbs = {
+            'DELETE', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT', 'UNKNOWN'
+        }
+        for _, m in next, http_verbs do
+            local w = writer.new()
+            local req = request.new {method = m, path = '/all'}
+            app(w, req)
+            assert.same({'all'}, w.buffer)
+        end
+	end)
 end)
 
 describe('demos.web.routing', function()
