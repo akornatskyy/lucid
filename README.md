@@ -56,9 +56,18 @@ see more [here](https://github.com/akornatskyy/lucid/tree/master/demos).
 Install development dependencies:
 
 ```sh
+sudo make debian
 make env nginx
-make test
+make test qa
 eval "$(env/bin/luarocks path --bin)"
+```
+
+alternative environments:
+
+```sh
+make env LUA_VERSION=5.2.4
+make env LUA_IMPL=luajit LUA_VERSION=2.0.4
+make env LUA_IMPL=luajit LUA_VERSION=2.1.0-beta2
 ```
 
 # Run
