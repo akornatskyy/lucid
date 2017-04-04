@@ -79,7 +79,7 @@ nginx:
 	wget -c https://github.com/openresty/lua-nginx-module/archive/v$(NGINX_LUA_MODULE_VERSION).tar.gz \
 		-O - | tar xzf - && \
 	ln -sf lua-nginx-module-$(NGINX_LUA_MODULE_VERSION) lua-nginx-module && \
-	wget -c http://nginx.org/download/nginx-$(NGINX_VERSION).tar.gz \
+	wget -c https://nginx.org/download/nginx-$(NGINX_VERSION).tar.gz \
 		-O - | tar xzf - && \
 	ln -sf nginx-$(NGINX_VERSION) nginx && \
 	if [ "$(LUA_IMPL)" = "luajit" ] ; then \
