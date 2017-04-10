@@ -11,6 +11,8 @@ A web API toolkit playground for the [Lua](http://www.lua.org/) programming lang
 luarocks install --server=http://luarocks.org/dev lucid
 ```
 
+... or use docker [images](https://github.com/akornatskyy/lucid/tree/master/docker).
+
 # Overview
 
 Using a function:
