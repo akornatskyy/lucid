@@ -10,6 +10,16 @@ This image is based on the [Alpine Linux](https://alpinelinux.org). For more inf
 docker run -it --rm -p 8080:8080 akorn/lucid:dev-luajit2.1-alpine
 ```
 
+# How to run demos
+
+By setting environment variable `app` you can control which demo app is
+running.
+
+```
+docker run -it --rm -p 8080:8080 -v `pwd`/demos:/app \
+    -e app=http.hello akorn/lucid:dev-luajit2.1-alpine
+```
+
 ---
 
 # What is Lucid?
