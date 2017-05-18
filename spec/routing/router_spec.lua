@@ -64,6 +64,14 @@ describe('router', function()
             assert.equals('overriding path "1"', msg)
         end)
 
+        it('allows to override route path', function()
+            local r = router.new {allow_path_override=true}
+            assert(r:add {
+                {'1', 1},
+                {'1', 2}
+            })
+        end)
+
         it('fails to override route path in included', function()
             local r = router.new()
             local ok, msg = r:add {
@@ -74,6 +82,16 @@ describe('router', function()
             }
             assert.is_false(ok)
             assert.equals('overriding path "1"', msg)
+        end)
+
+        it('allows to override route path in included', function()
+            local r = router.new {allow_path_override=true}
+            assert(r:add {
+                {'1', 1},
+                {'', {
+                    {'1', 2}
+                }}
+            })
         end)
     end)
 

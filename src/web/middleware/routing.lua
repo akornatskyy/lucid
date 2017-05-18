@@ -8,7 +8,10 @@ return function(following, options)
     local r = options.router
     if not r then
         r = require 'routing.router'
-        r = r.new{root_path=options.root_path}
+        r = r.new {
+            root_path=options.root_path,
+            allow_path_override=options.allow_path_override
+        }
         options.router = r
     end
     assert(r:add(options.urls))

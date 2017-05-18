@@ -96,7 +96,7 @@ local function add_route(self, pattern, handler, args, name)
     end
     if route.exact_matches then
         for p, a in next, route.exact_matches do
-            if self.match_map[p] then
+            if not self.allow_path_override and self.match_map[p] then
                 return false, format('overriding path %q', p)
             end
             self.match_map[p] = {handler, a}
@@ -125,7 +125,7 @@ local function include(self, pattern, included, args)
         for p, a in next, r.exact_matches do
             for k, v in next, included.match_map do
                 k = p .. k
-                if self.match_map[k] then
+                if not self.allow_path_override and self.match_map[k] then
                     return false, format('overriding path %q', k)
                 end
                 local h, kw = v[1], v[2]
