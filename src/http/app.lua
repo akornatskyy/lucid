@@ -52,9 +52,13 @@ end
 local RouteBuilder = {}
 
 function RouteBuilder:__index(method)
-    local http_verb = http_verbs[method]
-    assert(http_verb)
+    local http_verb = http_verbs[method] or method
     return function(_, name_or_func, ...)
+        local handlers = {...}
+        if self ~= _ then
+            insert(handlers, 1, name_or_func)
+            name_or_func = _
+        end
         local mapping = self.mapping[self.pattern]
         if mapping then
             assert(not mapping[http_verb])
@@ -62,7 +66,6 @@ function RouteBuilder:__index(method)
             mapping = {}
             self.mapping[self.pattern] = mapping
         end
-        local handlers = {...}
         if rawget(self, 'name') then
             mapping.name = self.name
         end
@@ -114,6 +117,7 @@ function App:all(pattern, name_or_func, ...)
 end
 
 -- app:route('pattern' [, 'name']):post(function(w, req) ...
+-- app:route('pattern' [, 'name'])['OPTIONS'](function(w, req) ...
 function App:route(pattern, name)
     return setmetatable({
         pattern = pattern,
