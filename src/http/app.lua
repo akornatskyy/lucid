@@ -97,10 +97,10 @@ function App:use(middleware)
     self.middlewares[#self.middlewares+1] = middleware
 end
 
-function App:add(pattern, app)
+function App:add(pattern, other_app)
     local urls = self.options.urls
-    build_url_mapping(app)
-    urls[#urls+1] = {pattern, app.options.urls}
+    build_url_mapping(other_app)
+    urls[#urls+1] = {pattern, other_app.options.urls}
 end
 
 -- app:all('pattern', ['route_name',] [function(following), ...] function(w, req)
