@@ -10,7 +10,7 @@ RUN set -ex \
         openssl-dev \
         git \
     \
-    && for rock in lbase64 lua-cjson luacrypto struct ; do \
+    && for rock in lbase64 lua-cjson luaossl struct ; do \
          luarocks install $rock ; \
        done \
     \

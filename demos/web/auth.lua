@@ -1,11 +1,8 @@
 local class = require 'core.class'
-local encoding = require 'core.encoding'
 local mixin = require 'core.mixin'
 local cipher = require 'security.crypto.cipher'
 local digest = require 'security.crypto.digest'
-local principal = require 'security.principal'
 local ticket = require 'security.crypto.ticket'
-local http = require 'http'
 local web = require 'web'
 
 
@@ -52,17 +49,19 @@ local all_urls = {
 
 local options = {
     urls = all_urls,
-    principal = principal,
-    auth_cookie = {
-        name = '_a', path = '/',
-        deleted = http.cookie.delete {name = '_a', path = '/'}
-    },
     ticket = ticket.new {
-        --digest = digest.new('md5'),
-        digest = digest.hmac('ripemd160', 'key1'),
-        cipher = cipher.new('aes256', 'key2'),
-        encoder = encoding.new('base64')
-    }
+        --digest = digest.new('sha256'),
+        digest = digest.hmac('ripemd160', '6xZxzaP)C2d5LRnw'),
+        cipher = cipher.new {
+            cipher = 'aes128',
+            key = 'DK((-x=e[.2cLq]f',
+            iv = 'b#KXN>H9"j><f2N`'
+        }
+    },
+    auth_cookie = {
+        name = '_a'
+    },
+    principal = require 'security.principal'
 }
 
 return web.app({web.middleware.routing}, options)

@@ -6,8 +6,8 @@ ENV=$(shell pwd)/env
 LUA_IMPL=lua
 LUA_VERSION=5.1.5
 LUAROCKS_VERSION=2.4.2
-NGINX_VERSION=1.10.3
-NGINX_LUA_MODULE_VERSION=0.10.8
+NGINX_VERSION=1.12.1
+NGINX_LUA_MODULE_VERSION=0.10.10
 
 ifeq (Darwin,$(shell uname -s))
   PLATFORM?=osx
@@ -20,8 +20,8 @@ clean:
 	rm -rf luacov.* luac.out .luacheckcache *.so
 
 env: luarocks
-	for rock in busted luacov luacheck lbase64 luacrypto \
-				lua-cjson luasocket struct ; do \
+	for rock in lbase64 luaossl lua-cjson luasocket struct \
+			busted luacov luacheck ; do \
 		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
 	done
 
@@ -58,7 +58,6 @@ luajit: rm
   	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h && \
 	sed -i.bak s%./?.lua\"%./?.lua\;./src/?.lua\"%g src/luaconf.h && \
 	export MACOSX_DEPLOYMENT_TARGET=10.10 && \
-	export PATH=/sbin:$$PATH && \
 	unset LUA_PATH && unset LUA_CPATH && \
     make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include && \
 	ln -sf luajit-$(LUA_VERSION) $(ENV)/bin/lua && \

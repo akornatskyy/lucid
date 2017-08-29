@@ -6,7 +6,7 @@ local setmetatable = setmetatable
 
 local Ticket = {
     encode = function(self, s)
-        s = self.cipher.encrypt(
+        s = self.cipher:encrypt(
             pack('<I4I4I4',
                  random(-0x80000000, 0x7FFFFFFF),
                  time() + self.max_age,
@@ -26,7 +26,7 @@ local Ticket = {
         if t ~= self.digest(s) then
             return nil, 'signature missmatch'
         end
-        s = self.cipher.decrypt(s)
+        s = self.cipher:decrypt(s)
         if not s then
             return nil, 'unable to decrypt'
         end
@@ -46,6 +46,9 @@ local new = function(self)
         self.digest = d.new(self.digest)
     elseif type(self.digest) ~= 'function' then
         error('digest: string or function expected', 2)
+    end
+    if not self.encoder then
+        self.encoder = require('core.encoding').new('base64')
     end
     assert(self.cipher)
     assert(self.cipher.encrypt)

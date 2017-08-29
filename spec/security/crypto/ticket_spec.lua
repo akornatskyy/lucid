@@ -8,7 +8,11 @@ describe('ticket', function()
     local t = ticket.new {
         --digest = digest.new('md5'),
         digest = digest.hmac('ripemd160', 'key1'),
-        cipher = cipher.new('aes128', 'key2'),
+        cipher = cipher.new {
+            cipher = 'aes128',
+            key = string.rep('x', 16),
+            iv = string.rep('x', 16)
+        },
         encoder = encoding.new('base64')
     }
 
@@ -24,7 +28,10 @@ describe('ticket', function()
         it('supports string for digest', function()
             assert(ticket.new {
                 digest = 'md5',
-                cipher = cipher.new('aes128', 'key2'),
+                cipher = cipher.new {
+                    cipher = 'aes128',
+                    key = ''
+                },
                 encoder = encoding.new('base64')
             })
         end)
@@ -33,7 +40,10 @@ describe('ticket', function()
             local md5 = digest.new 'md5'
             assert(ticket.new {
                 digest = md5,
-                cipher = cipher.new('aes128', 'key2'),
+                cipher = cipher.new {
+                    cipher = 'aes128',
+                    key = ''
+                },
                 encoder = encoding.new('base64')
             })
         end)
@@ -49,7 +59,10 @@ describe('ticket', function()
             assert.equals(60, ticket.new {
                 digest = 'md5',
                 max_age = 60,
-                cipher = cipher.new('aes128', 'key2'),
+                cipher = cipher.new {
+                    cipher = 'aes128',
+                    key = ''
+                },
                 encoder = encoding.new('base64')
             }.max_age)
         end)
@@ -69,21 +82,17 @@ describe('ticket', function()
         end)
 
         it('unable to decrypt', function()
-            local t2 = ticket.new {
-                digest = digest.hmac('ripemd160', 'key1'),
-                cipher = cipher.new('aes128', 'invalid'),
-                encoder = encoding.new('base64')
-            }
-            local r = t:encode('test')
-            local value, err = t2:decode(r)
+            local s = string.rep('x', 10)
+            local r = t.encoder.encode(t.digest(s) .. s)
+            local value, err = t:decode(r)
             assert.is_nil(value)
             assert.equals('unable to decrypt', err)
         end)
 
         it('expired', function()
             local value, err = t:decode(
-                'blRmix9ICePifLqLPHaVNkNV66IUdpn9Vy' ..
-                'mIotdkoYFjb/UEqOl2ZGJTsPZ5P/kuWZ8NUw==')
+                'f4dixtKVgSjFjXkKjskzafHB1sOXpDxlvxxY' ..
+                'z8yJUeqaRBQuRrLAnEODr1kVE8SU9JkVZw==')
             assert.is_nil(value)
             assert.equals('expired', err)
         end)

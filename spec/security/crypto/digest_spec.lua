@@ -10,7 +10,6 @@ describe('security.crypto.digest', function()
 
         local b64 = encoding.new('base64')
         local cases = {
-            sha = '+NOzEkQqZ3BgV660W5gyIa+08DU=',
             sha1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M=',
             ripemd160 = 'XlL+5H5rBwVl90NyRozcaZ3okQc=',
             sha224 = 'kKPtnjKyqvTGHEEOuSVCYRnhqdxT1Chq3pmoCQ==',
@@ -20,8 +19,7 @@ describe('security.crypto.digest', function()
             sha512 = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6w' ..
                      'YX4oOHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w==',
             md4 = '2zRtaR16zE3CYl2xn54/Ug==',
-            md5 = 'CY9rzUYh03PK3k6DJie09g==',
-            dss1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M='
+            md5 = 'CY9rzUYh03PK3k6DJie09g=='
         }
         for digest_type, expected in next, cases do
             it('supports ' .. digest_type, function()
@@ -45,7 +43,6 @@ describe('security.crypto.digest', function()
 
         local b64 = encoding.new('base64')
         local cases = {
-            sha = '+NOzEkQqZ3BgV660W5gyIa+08DU=',
             sha1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M=',
             ripemd160 = 'XlL+5H5rBwVl90NyRozcaZ3okQc=',
             sha224 = 'kKPtnjKyqvTGHEEOuSVCYRnhqdxT1Chq3pmoCQ==',
@@ -55,8 +52,7 @@ describe('security.crypto.digest', function()
             sha512 = '7iaw3Ur350mqGo7jwQrpkj9hiYB3Lkc/iBml1JQODbJ6wYX4o' ..
                      'OHV+E+IvIh/1nsUNzLDBMxfqa2Ob1f1ACio/w==',
             md4 = '2zRtaR16zE3CYl2xn54/Ug==',
-            md5 = 'CY9rzUYh03PK3k6DJie09g==',
-            dss1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M='
+            md5 = 'CY9rzUYh03PK3k6DJie09g=='
         }
         for digest_type, expected in next, cases do
             it('supports ' .. digest_type, function()
