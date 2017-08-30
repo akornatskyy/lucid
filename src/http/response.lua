@@ -30,7 +30,7 @@ return {
     end,
 
     set_cookie = function(self, s)
-        self:add_header('Set-Cookie', s)
+        return self:add_header('Set-Cookie', s)
     end,
 
     redirect = function(self, absolute_url, status_code)

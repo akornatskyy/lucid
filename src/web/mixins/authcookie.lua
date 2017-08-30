@@ -1,7 +1,9 @@
-local dump
+local dump_cookie
+local delete_cookie
 do
     local cookie = require 'http.cookie'
-    dump = cookie.dump
+    dump_cookie = cookie.dump
+    delete_cookie = cookie.delete
 end
 
 local Mixin = {}
@@ -29,16 +31,17 @@ function Mixin:set_auth_cookie(s)
     local o = self.req.options
     local c = o.auth_cookie
     if s then
-        c = dump {
+        c = dump_cookie {
             name=c.name,
             value=o.ticket:encode(s),
             path=c.path,
             domain=c.domain,
             secure=c.secure,
+            same_site=c.same_site,
             http_only=true
         }
     else
-        c = c.deleted
+        c = delete_cookie {name = c.name, path = o.root_path}
     end
     self.w:add_header('Set-Cookie', c)
 end

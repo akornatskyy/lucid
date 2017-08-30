@@ -42,9 +42,10 @@ describe('cookie', function()
                 ['a=1; HttpOnly'] = {name='a', value='1', http_only=true},
                 ['a=1; Secure'] = {name='a', value='1', secure=true},
                 ['a=1; Domain=x.com; Expires=Mon, 09 Feb 2015 09:21:47 GMT; '..
-                 'Max-Age=600; HttpOnly; Secure'] = {
+                 'Max-Age=600; SameSite=Strict; HttpOnly; Secure'] = {
                     name='a', value='1', domain='x.com', expires=1423473707,
-                    max_age=600, http_only=true, secure=true
+                    max_age=600, http_only=true, secure=true,
+                    same_site='Strict'
                 },
             }
             for e, c in next, cases do

@@ -42,6 +42,9 @@ local dump = function(self)
         r[#r+1] = '; Max-Age='
         r[#r+1] = tostring(self.max_age)
     end
+    if self.same_site then
+        r[#r+1] = '; SameSite=' .. self.same_site
+    end
     if self.http_only then
         r[#r+1] = '; HttpOnly'
     end
