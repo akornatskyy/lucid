@@ -6,7 +6,7 @@ local describe, it, assert = describe, it, assert
 local function test_cases(app)
 	assert.not_nil(app)
 
-    it('responds with bad request status cod and errors', function()
+    it('responds with bad request status code and errors', function()
         local w, req = writer.new(), request.new {method = 'POST'}
         app(w, req)
         assert.equals(400, w.status_code)

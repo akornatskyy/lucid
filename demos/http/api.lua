@@ -11,7 +11,8 @@ local http = require 'http'
 mixin(http.Request, http.mixins.routing)
 mixin(http.ResponseWriter, http.mixins.json, {
     json_error = function(self, msg)
-        return self:json({['__ERROR__'] = msg}, 400)
+        self:set_status_code(400)
+        return self:json({['__ERROR__'] = msg})
     end
 })
 
@@ -101,13 +102,15 @@ end)
     local values = req.body or req:parse_body()
     if not b:bind(m, values) or
             not b:validate(m, task_validator) then
-        return w:json(b.errors, 400)
+        w:set_status_code(400)
+        return w:json(b.errors)
     end
     local ok, msg = add_task(m)
     if not ok then
         return w:json_error(msg)
     end
-    return w:json({task_id=m.task_id}, 201)
+    w:set_status_code(201)
+    return w:json({task_id=m.task_id})
 end)
 
 -- curl -v http://localhost:8080/api/v1/task/1
@@ -128,7 +131,8 @@ end)
     local values = req.body or req:parse_body()
     if not b:bind(t, values) or
             not b:validate(t, task_validator) then
-        return w:json(b.errors, 400)
+        w:set_status_code(400)
+        return w:json(b.errors)
     end
     local ok, msg = update_task(t)
     if not ok then

@@ -15,10 +15,10 @@ app:use(http.middleware.routing)
 
 -- validation
 
-local greeting_validator = validator.new({
+local greeting_validator = validator.new {
     author = {required, length{max=20}},
     message = {required, length{min=5}, length{max=512}}
-})
+}
 
 --[[
     lurl -v -d '{"author":"jack","message":"hello"}' demos.http.form /
@@ -34,7 +34,8 @@ app:post('', function(w, req)
     local values = req.body or req:parse_body()
     if not b:bind(m, values) or
             not b:validate(m, greeting_validator) then
-        return w:json(b.errors, 400)
+        w:set_status_code(400)
+        return w:json(b.errors)
     end
 end)
 

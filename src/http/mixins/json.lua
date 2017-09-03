@@ -8,10 +8,7 @@ end
 local Mixin = {}
 
 
-function Mixin:json(obj, status_code)
-    if status_code then
-        self:set_status_code(status_code)
-    end
+function Mixin:json(obj)
     self.headers['Content-Type'] = 'application/json'
     return self:write(json_encode(obj))
 end
