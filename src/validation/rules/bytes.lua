@@ -1,17 +1,11 @@
 local succeed = require 'validation.rules.succeed'
 local setmetatable = setmetatable
-local len
-
-do
-    local utf8 = require 'utf8'
-    len = utf8.len
-end
 
 
 local check_min = {__index = {
-    msg = 'Required to be a minimum of %d characters in length.',
+    msg = 'Required to be a minimum of %d bytes in length.',
     validate = function(self, value, model, translations)
-        if value and len(value) < self.min then
+        if value and value:len() < self.min then
             return translations:gettext(self.msg):format(self.min)
         end
         return nil
@@ -21,7 +15,7 @@ local check_min = {__index = {
 local check_max = {__index = {
     msg = 'Exceeds maximum length of %d.',
     validate = function(self, value, model, translations)
-        if value and len(value) > self.max then
+        if value and value:len() > self.max then
             return translations:gettext(self.msg):format(self.max)
         end
         return nil
@@ -29,9 +23,9 @@ local check_max = {__index = {
 }}
 
 local check_equal = {__index = {
-    msg = 'The length must be exactly %d characters.',
+    msg = 'The length must be exactly %d bytes.',
     validate = function(self, value, model, translations)
-        if value and len(value) ~= self.min then
+        if value and value:len() ~= self.min then
             return translations:gettext(self.msg):format(self.min)
         end
         return nil
@@ -39,10 +33,10 @@ local check_equal = {__index = {
 }}
 
 local check_range = {__index = {
-    msg = 'The length must fall within the range %d - %d characters.',
+    msg = 'The length must fall within the range %d - %d bytes.',
     validate = function(self, value, model, translations)
         if value then
-            local l = len(value)
+            local l = value:len()
             if l < self.min or l > self.max then
                 return translations:gettext(self.msg):format(self.min, self.max)
             end
