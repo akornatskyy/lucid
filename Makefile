@@ -10,7 +10,7 @@ NGINX_VERSION=1.12.1
 NGINX_LUA_MODULE_VERSION=0.10.10
 
 ifeq (Darwin,$(shell uname -s))
-  PLATFORM?=osx
+  PLATFORM?=macosx
 else
   PLATFORM?=linux
 endif
@@ -20,7 +20,7 @@ clean:
 	rm -rf luacov.* luac.out .luacheckcache *.so
 
 env: luarocks
-	for rock in lbase64 luaossl lua-cjson luasocket struct \
+	for rock in lbase64 luaossl lua-cjson luasocket struct utf8 \
 			busted luacov luacheck ; do \
 		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
 	done
@@ -32,7 +32,7 @@ qa:
 	$(ENV)/bin/luacheck -q src/ spec/ demos/
 
 run:
-	cd $(ENV)/nginx ; objs/nginx -c conf/lucid.conf
+	$(ENV)/bin/nginx -c conf/lucid.conf
 
 debian:
 	apt-get install build-essential unzip libncurses5-dev libreadline6-dev \
@@ -74,13 +74,12 @@ luarocks: $(LUA_IMPL)
 nginx:
 	WDIR=`pwd` && \
 	cd $(ENV) && \
-	rm -rf nginx* lua-nginx-module* && \
-	wget -c https://github.com/openresty/lua-nginx-module/archive/v$(NGINX_LUA_MODULE_VERSION).tar.gz \
-		-O - | tar xzf - && \
-	ln -sf lua-nginx-module-$(NGINX_LUA_MODULE_VERSION) lua-nginx-module && \
+	rm -rf nginx lua-nginx-module && \
+	mkdir -p nginx lua-nginx-module conf logs && \
 	wget -c https://nginx.org/download/nginx-$(NGINX_VERSION).tar.gz \
-		-O - | tar xzf - && \
-	ln -sf nginx-$(NGINX_VERSION) nginx && \
+		-O - | tar -xzC nginx --strip-components=1 && \
+	wget -c https://github.com/openresty/lua-nginx-module/archive/v$(NGINX_LUA_MODULE_VERSION).tar.gz \
+		-O - | tar -xzC lua-nginx-module --strip-components=1 && \
 	if [ "$(LUA_IMPL)" = "luajit" ] ; then \
 		export LUAJIT_LIB=$(ENV)/lib && \
 		export LUAJIT_INC=$(ENV)/include ; \
@@ -89,8 +88,11 @@ nginx:
 		export LUA_INC=$(ENV)/include ; \
 	fi && \
 	cd nginx && \
-	./configure --prefix=./ --without-http_rewrite_module --without-pcre \
+	./configure --prefix=$(ENV) --without-http_rewrite_module --without-pcre \
 		--add-module=../lua-nginx-module && \
 	make -j4 && \
-	mkdir -p logs && \
-	ln -sf $$WDIR/etc/nginx.conf conf/lucid.conf
+	cd .. && \
+	cp nginx/objs/nginx bin/ && \
+	cp nginx/conf/mime.types conf/ && \
+	ln -sf $$WDIR/etc/nginx.conf conf/lucid.conf && \
+	rm -rf nginx lua-nginx-module
