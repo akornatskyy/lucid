@@ -3,7 +3,7 @@ local validator = require 'validation.validator'
 local describe, it, assert = describe, it, assert
 
 describe('validator', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
     local model, model_validator, errors
 
     local validate = function()

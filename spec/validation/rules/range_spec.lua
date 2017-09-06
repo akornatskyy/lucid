@@ -3,7 +3,7 @@ local range = require 'validation.rules.range'
 local describe, it, assert = describe, it, assert
 
 describe('range rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
 
     describe('check min', function()
         local r = range{min=1}

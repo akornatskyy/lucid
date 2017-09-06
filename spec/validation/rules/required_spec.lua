@@ -3,7 +3,7 @@ local required = require 'validation.rules.required'
 local describe, it, assert = describe, it, assert
 
 describe('required rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
 
     it('succeeds', function()
         local r = required()

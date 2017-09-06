@@ -3,7 +3,7 @@ local pattern = require 'validation.rules.pattern'
 local describe, it, assert = describe, it, assert
 
 describe('pattern rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
 
     describe('check found', function()
         local r = pattern{'%d+'}

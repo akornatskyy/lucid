@@ -3,7 +3,7 @@ local compare = require 'validation.rules.compare'
 local describe, it, assert = describe, it, assert
 
 describe('compare rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
 
     describe('check equal', function()
         local r = compare{equal='confirm_password', msg='error'}

@@ -1,13 +1,12 @@
 local class = require 'core.class'
 local mixin = require 'core.mixin'
-local i18n = require 'core.i18n'
+
 local length = require 'validation.rules.length'
 local required = require 'validation.rules.required'
 local validator = require 'validation.validator'
+
 local web = require 'web'
 
-
-i18n = i18n.configure()
 
 -- validation
 
@@ -18,10 +17,7 @@ local greeting_validator = validator.new {
 
 -- handlers
 
-local BaseHandler = {
-    translation = i18n.domains['demo']
-}
-
+local BaseHandler = {}
 mixin(BaseHandler, web.mixins.json, web.mixins.locale, web.mixins.validation,
       web.mixins.model)
 

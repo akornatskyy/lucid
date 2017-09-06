@@ -4,7 +4,7 @@ local describe, it, assert = describe, it, assert
 local type, next = type, next
 
 describe('update_model', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
     local model, values, errors
 
     local update_model = function()
@@ -220,7 +220,7 @@ describe('model adapter', function()
         end)
 
         it('reports an error if can not adapt a string to number', function()
-            local translations = i18n.NullTranslation
+            local translations = i18n.null
             local cases = {
                 true,
                 false,

@@ -1,52 +1,90 @@
-local defaulttable = require 'core.collections.defaulttable'
-local assert, setmetatable = assert, setmetatable
+local json = require 'core.encoding.json'
+local mixin = require 'core.mixin'
+local plurals = require 'core.i18n.plurals'
 
-local NullTranslation = {
+local Translations = {
+    gettext = function(self, msg)
+        assert(type(msg) == 'string')
+        return self.translations[msg] or msg
+    end,
+
+    cardinal = function(n)
+        assert(type(n) == 'number')
+        return n == 1 and 'one' or 'other'
+    end,
+
+    cgettext = function(self, msg, n)
+        local m = self.translations[msg]
+        if not m then
+            return msg
+        end
+        return m[self.cardinal(n)] or m['other'] or msg
+    end,
+
+    ordinal = function(n)
+        assert(type(n) == 'number')
+        return n == 1 and 'one' or 'other'
+    end,
+
+    ogettext = function(self, msg, n)
+        local m = self.translations[msg]
+        if not m then
+            return msg
+        end
+        return m[self.ordinal(n)] or m['other'] or msg
+    end
+}
+
+local null = {
     gettext = function(self, msg)
         assert(self)
+        assert(msg)
         return msg
     end,
-    ngettext = function(self, msg1, msg2, n)
+
+    cgettext = function(self, msg, n)
         assert(self)
-        return n == 1 and msg1 or msg2
-    end
-}
-
-local function make_translation()
-    return NullTranslation
-end
-
-local function make_domain()
-    return defaulttable(make_translation)
-end
-
-local Manager = {
-    ctor = function(self, directories, default_lang)
-        self.default_lang = default_lang or 'en'
-        self.domains = defaulttable(make_domain)
-        self.locale = {}
-        if directories then
-            for _, d in next, directories do
-                assert(self.load(d))
-            end
-        end
+        assert(msg)
+        assert(n)
+        return msg
     end,
 
-    load = function(self, directory)
+    ogettext = function(self, msg, n)
         assert(self)
-        assert(directory)
+        assert(msg)
+        assert(n)
+        return msg
     end
 }
 
-local mt = {__index=Manager}
+local function new(self)
+    assert(type(self) == 'table')
+    assert(type(self.translations))
+    return setmetatable(self, {
+        __index = mixin({}, Translations, plurals.rules[self.lang])
+    })
+end
 
-local function new(...)
-    local self = setmetatable({}, mt)
-    self:ctor(...)
-    return self
+local load_json = function(path)
+    local f = assert(io.open(path, 'rb'))
+    local content = f:read '*a'
+    f:close()
+    return json.decode(content)
+end
+
+local function load(options)
+    local t = {}
+    for _, l in next, options.locales do
+        t[l] = new {
+            translations = load_json(options.directory .. l .. '.json'),
+            lang = l
+        }
+    end
+    return t
 end
 
 return {
-    configure = new,
-    NullTranslation = NullTranslation
+    new = new,
+    load = load,
+    null = null
 }

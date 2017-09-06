@@ -3,7 +3,7 @@ local bytes = require 'validation.rules.bytes'
 local describe, it, assert = describe, it, assert
 
 describe('bytes rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
 
     describe('check min', function()
         local r = bytes{min=1}

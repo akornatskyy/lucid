@@ -1,25 +1,25 @@
-local defaulttable = require 'core.collections.defaulttable'
-
-
 local update_model
-local translation
+local null_translations
 
 do
     local i18n = require 'core.i18n'
     local model = require 'validation.model'
     update_model = model.update_model
-    translation = i18n.NullTranslation
+    null_translations = i18n.null
 end
 
 local Mixin = {
-    translation = defaulttable(function() return translation end)
+    translations = {}
 }
 
 function Mixin:update_model(model, values)
-    -- self.errors must exist
+    -- self.errors and self:get_locale() must exist
     local req = self.req
-    return update_model(model, values or req.body or req:parse_body(),
-                        self.errors, self.translation[self:get_locale()])
+    return update_model(
+        model,
+        values or req.body or req:parse_body(),
+        self.errors,
+        self.translations[self:get_locale()] or null_translations)
 end
 
 return Mixin

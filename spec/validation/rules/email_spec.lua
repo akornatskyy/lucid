@@ -3,7 +3,7 @@ local email = require 'validation.rules.email'
 local describe, it, assert = describe, it, assert
 
 describe('email rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
     local r = email()
 
     it('ignores nil value', function()

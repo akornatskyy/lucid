@@ -14,8 +14,10 @@ dependencies = {
     -- optional:
     -- 'lbase64',
     -- 'struct',
-    -- 'luacrypto',
-    -- 'lua-cjson'
+    -- 'luaossl',
+    -- 'lua-cjson',
+    -- 'luasocket'
+    -- 'utf8'
 }
 
 source = {
@@ -38,6 +40,7 @@ build = {
         ['core.encoding.messagepack'] = 'src/core/encoding/messagepack.lua',
         ['core.encoding.null'] = 'src/core/encoding/null.lua',
         ['core.i18n'] = 'src/core/i18n.lua',
+        ['core.i18n.plurals'] = 'src/core/i18n/plurals.lua',
         ['core.mixin'] = 'src/core/mixin.lua',
         ['core.pretty'] = 'src/core/pretty.lua',
 
@@ -82,6 +85,8 @@ build = {
         ['validation.rules.compare'] = 'src/validation/rules/compare.lua',
         ['validation.rules.email'] = 'src/validation/rules/email.lua',
         ['validation.rules.length'] = 'src/validation/rules/length.lua',
+        ['validation.rules.messages.en'] = 'src/validation/rules/message/en/length.lua',
+        ['validation.rules.messages.uk'] = 'src/validation/rules/message/uk/length.lua',
         ['validation.rules.pattern'] = 'src/validation/rules/pattern.lua',
         ['validation.rules.range'] = 'src/validation/rules/range.lua',
         ['validation.rules.required'] = 'src/validation/rules/required.lua',

@@ -3,7 +3,7 @@ local length = require 'validation.rules.length'
 local describe, it, assert = describe, it, assert
 
 describe('length rule', function()
-    local translations = i18n.NullTranslation
+    local translations = i18n.null
 
     describe('check min', function()
         local r = length{min=1}

@@ -1,0 +1,7 @@
+{
+    "Hello!\n": "Hello!\n",
+    "%s day": {
+        "one": "%s day",
+        "other": "%s days"
+    }
+}
