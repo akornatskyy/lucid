@@ -1,8 +1,5 @@
 language: c
 
-dist: trusty
-sudo: false
-
 env:
     - LUA_IMPL=lua LUA_VERSION=5.1.5
     - LUA_IMPL=lua LUA_VERSION=5.2.4
