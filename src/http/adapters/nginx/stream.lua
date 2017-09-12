@@ -5,7 +5,7 @@ local setmetatable = setmetatable
 
 local ResponseWriter = {__index = mixin(base.ResponseWriter, {
     write = function(self, c)
-        self.ngx.print(c)
+        return self.ngx.print(c)
     end
 })}
 

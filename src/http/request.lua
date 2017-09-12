@@ -6,15 +6,15 @@ return {
     -- assumes: self.method, self.path
 
     parse_query = function(self)
+        return self.query
     end,
 
     parse_headers = function(self)
+        return self.headers
     end,
 
     parse_body = function(self)
-    end,
-
-    server_parts = function(self)
+        return self.body
     end,
 
     parse_cookie = function(self)
@@ -38,5 +38,8 @@ return {
     is_ajax = function(self)
         local headers = self.headers or self:parse_headers()
         return headers['x-requested-with'] == 'XMLHttpRequest'
+    end,
+
+    server_parts = function(self)
     end
 }

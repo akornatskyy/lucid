@@ -18,7 +18,7 @@ mixin(ResponseWriter, {
     end,
 
     flush = function(self)
-        self.ngx.flush()
+        return self.ngx.flush()
     end
 })
 
@@ -48,8 +48,11 @@ mixin(Request, {
                 return nil
             end
             body = json_decode(body)
-        else
+        elseif t and t:find('application/x-www-form-urlencoded', 1, true) then
             body = r.get_post_args()
+        else
+            -- TODO: multipart/form-data
+            body = r.get_body_data()
         end
         self.body = body
         return body

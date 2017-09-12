@@ -60,7 +60,7 @@ describe('http.adapters.nginx.base', function()
                     get_headers = function()
                         return {}
                     end,
-                    get_post_args = function()
+                    get_body_data = function()
                         return body
                     end
                 }
