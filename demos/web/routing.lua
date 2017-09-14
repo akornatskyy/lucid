@@ -13,7 +13,8 @@ local UserHandler = class(BaseHandler, {})
 function UserHandler:get()
     assert('user' == self.req.route_args.route_name)
     assert('/de/user/1' == self:path_for('user', {locale='de', user_id='1'}))
-    assert('/en/user/2' == self:path_for('user', {user_id='2'}))
+    assert('/' .. self.req.route_args.locale .. '/user/2' ==
+        self:path_for('user', {user_id='2'}))
     assert(self.req.path == self:path_for('user'))
     self.w:write(self:absolute_url_for('user') .. '\n')
 end

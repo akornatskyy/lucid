@@ -6,9 +6,18 @@ local function test_cases(app)
 	assert.not_nil(app)
 
 	it('responds with absolute url for user', function()
-        local w, req = writer.new(), request.new {path = '/en/user/123'}
+		local paths = {'/en/user/123', '/de/user/234'}
+		for _, path in next, paths do
+	        local w, req = writer.new(), request.new {path = path}
+	        app(w, req)
+	        assert.same({'http://localhost:8080' .. path .. '\n'}, w.buffer)
+		end
+	end)
+
+	it('responds with not found if locale does not match', function()
+        local w, req = writer.new(), request.new {path = '/ru/user/123'}
         app(w, req)
-        assert.same({'http://localhost:8080/en/user/123\n'}, w.buffer)
+        assert.same(404, w.status_code)
 	end)
 
 	it('responds with not found', function()
