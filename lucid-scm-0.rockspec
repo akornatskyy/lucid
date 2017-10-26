@@ -75,6 +75,7 @@ build = {
 
         ['security.crypto.cipher'] = 'src/security/crypto/cipher.lua',
         ['security.crypto.digest'] = 'src/security/crypto/digest.lua',
+        ['security.crypto.rand'] = 'src/security/crypto/rand.lua',
         ['security.crypto.ticket'] = 'src/security/crypto/ticket.lua',
         ['security.principal'] = 'src/security/principal.lua',
 
