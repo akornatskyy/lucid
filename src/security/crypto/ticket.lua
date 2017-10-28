@@ -1,18 +1,19 @@
 local struct = require 'struct'
-local pack, unpack = struct.pack, struct.unpack
+local rand = require 'security.crypto.rand'
+local pack, unpack, rand_bytes = struct.pack, struct.unpack, rand.bytes
 local assert, type, random, time = assert, type, math.random, os.time
 local setmetatable = setmetatable
 
 
 local Ticket = {
     encode = function(self, s)
+        local b = rand_bytes(12)
         s = self.cipher:encrypt(
-            pack('<I4I4I4',
-                 random(-0x80000000, 0x7FFFFFFF),
-                 time() + self.max_age,
-                 random(-0x80000000, 0x7FFFFFFF)
-            ) .. s .. pack('<I4', random(-0x80000000, 0x7FFFFFFF))
-        )
+            b:sub(1, 4) ..
+            pack('<I4', time() + self.max_age) ..
+            b:sub(5, 8) ..
+            s ..
+            b:sub(9, 12))
         return self.encoder.encode(self.digest(s) .. s)
     end,
 
