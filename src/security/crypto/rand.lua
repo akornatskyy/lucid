@@ -1,4 +1,4 @@
-local type, error = type, error
+local error = error
 local bytes, uniform
 
 do

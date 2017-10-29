@@ -1,7 +1,7 @@
 local struct = require 'struct'
 local rand = require 'security.crypto.rand'
 local pack, unpack, rand_bytes = struct.pack, struct.unpack, rand.bytes
-local assert, type, random, time = assert, type, math.random, os.time
+local assert, type, time = assert, type, os.time
 local setmetatable = setmetatable
 
 
