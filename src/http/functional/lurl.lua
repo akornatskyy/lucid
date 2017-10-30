@@ -7,11 +7,20 @@ local function usage()
 Usage: lurl [options...] <app> <path>
 Options:
  -X COMMAND     Specify request command to use, e.g. POST
+ -I             Fetch the headers only
  -H LINE        Pass custom header LINE, e.g. 'Accept: application/json'
  -d DATA        Request body data, e.g. '{"msg":"hello"}', 'msg=hello'
  -b             Issue a number of requests through iterations
  -v             Make the operation more talkative
 ]])
+end
+
+local function table_keys(t)
+    local r = {}
+    for key in next, t do
+        table.insert(r, key)
+    end
+    return r
 end
 
 local function parse_qs(t, s)
@@ -41,6 +50,11 @@ local function parse_args()
         if o == '-X' and s then
             req.method = s
             i = i + 1
+        elseif o == '-I' then
+            args.headers_only = true
+            if not req.method then
+                req.method = 'HEAD'
+            end
         elseif o == '-H' and s then
             j = s:find(': ')
             req.headers[s:sub(1, j - 1):lower()] = s:sub(j+2)
@@ -104,12 +118,22 @@ return function()
         io.write('req: ')
         print(pp.dump(req, pp.spaces.indented))
         io.write('w: ')
+        if args.headers_only then
+            w.buffer = nil
+        end
         print(pp.dump(w, pp.spaces.indented))
     elseif args.bench then
         local clockit = require 'core.clockit'
         clockit.ptimes(function()
             app(writer.new(), request.new(d))
         end)
+    elseif args.headers_only then
+        print('HTTP/1.1 ' .. (w.status_code or '200 OK'))
+        local names = table_keys(w.headers)
+        table.sort(names)
+        for _, name in ipairs(names) do
+            print(name .. ': ' .. w.headers[name])
+        end
     else
         local b = w.buffer
         if type(b) == 'table' then
