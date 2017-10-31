@@ -2,16 +2,16 @@ local lurl = require 'http.functional.lurl'
 local describe, it, assert = describe, it, assert
 
 describe('http.functional.lurl', function()
-	it('shows usage', function()
+		it('shows usage', function()
         local saved = print
         local usage = nil
         _G['print'] = function(s)
             usage = s
         end
-		lurl()
+        lurl()
         _G['print'] = saved
         assert.not_nil(usage)
-	end)
+    end)
 
     it('calls app by path', function()
         local sarg = arg
@@ -78,6 +78,18 @@ describe('http.functional.lurl', function()
         _G['io'] = {write = function(s) c = s end}
         lurl()
         assert.equals('{"message":"Required field cannot be left blank."}', c)
+        _G['arg'] = sarg
+        _G['io'] = sio
+    end)
+
+		it('-I option', function()
+        local sarg = arg
+        local sio = io
+				local c = ''
+        _G['arg'] = {'-I', '-X', 'GET', 'demos.http.hello', '/'}
+				_G['print'] = function(s) c = s end
+        lurl()
+        assert.equals('HTTP/1.1 200 OK', c)
         _G['arg'] = sarg
         _G['io'] = sio
     end)
