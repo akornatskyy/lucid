@@ -2,7 +2,7 @@ local lurl = require 'http.functional.lurl'
 local describe, it, assert = describe, it, assert
 
 describe('http.functional.lurl', function()
-		it('shows usage', function()
+    it('shows usage', function()
         local saved = print
         local usage = nil
         _G['print'] = function(s)
@@ -41,9 +41,30 @@ describe('http.functional.lurl', function()
     it('path with query string', function()
         local sarg = arg
         local sio = io
-        _G['arg'] = {'demos.http.api', '/api/v1/tasks?status=1'}
+        local c = {}
+        _G['arg'] = {'-v', '-I', '-X', 'GET', 'demos.http.hello',
+         '/?q=test&page=1&page=2'}
         _G['io'] = {write = function(s) end}
+        _G['print'] = function(s) c[#c+1] = s end
         lurl()
+        assert.equals([[{
+    ["body"] = {},
+    ["headers"] = {
+        ["accept"] = "*/*",
+        ["host"] = "localhost:8080",
+        ["user-agent"] = "lurl/scm-0"
+    },
+    ["method"] = "GET",
+    ["path"] = "/",
+    ["query"] = {
+        ["page"] = {
+            "1",
+            "2"
+        },
+        ["q"] = "test"
+    },
+    ["route_args"] = {}
+}]], c[1])
         _G['arg'] = sarg
         _G['io'] = sio
     end)
@@ -82,12 +103,12 @@ describe('http.functional.lurl', function()
         _G['io'] = sio
     end)
 
-		it('-I option', function()
+    it('-I option', function()
         local sarg = arg
         local sio = io
-				local c = ''
+    local c = ''
         _G['arg'] = {'-I', '-X', 'GET', 'demos.http.hello', '/'}
-				_G['print'] = function(s) c = s end
+    _G['print'] = function(s) c = s end
         lurl()
         assert.equals('HTTP/1.1 200 OK', c)
         _G['arg'] = sarg

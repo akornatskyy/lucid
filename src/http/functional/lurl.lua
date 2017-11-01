@@ -26,7 +26,16 @@ end
 local function parse_qs(t, s)
     for kv in s:gmatch('([^&]+)') do
         local key, value = kv:match('([^=]*)=?(.*)')
-        t[key] = value
+        local v = t[key]
+        if v then
+            if type(v) == 'string' then
+                t[key] = {v, value}
+            else
+                v[#v+1] = value
+            end
+        else
+            t[key] = value
+        end
     end
 end
 
