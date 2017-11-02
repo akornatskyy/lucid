@@ -73,7 +73,7 @@ describe('http.functional.lurl', function()
         local sarg = arg
         local sio = io
         local c = ''
-        _G['arg'] = {'-X', 'POST', 'demos.http.api', '/api/v1/tasks'}
+        _G['arg'] = {'-X', 'post', 'demos.http.api', '/api/v1/tasks'}
         _G['io'] = {write = function(s) c = s end}
         lurl()
         assert.equals('{"title":"Required field cannot be left blank."}', c)

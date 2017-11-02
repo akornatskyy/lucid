@@ -57,7 +57,7 @@ local function parse_args()
     while i <= #arg - 2 do
         o, s = arg[i], arg[i+1]
         if o == '-X' and s then
-            req.method = s
+            req.method = s:upper()
             i = i + 1
         elseif o == '-I' then
             args.headers_only = true
