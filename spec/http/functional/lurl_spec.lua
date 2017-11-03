@@ -91,6 +91,36 @@ describe('http.functional.lurl', function()
         _G['io'] = sio
     end)
 
+    it('-H option with multiple values', function()
+        local sarg = arg
+        local sio = io
+        local c = {}
+        _G['arg'] = {'-v', '-I', '-X', 'GET', '-H', 'X: 1', '-H', 'X: 2',
+                     'demos.http.hello',
+         '/'}
+        _G['io'] = {write = function(s) end}
+        _G['print'] = function(s) c[#c+1] = s end
+        lurl()
+        assert.equals([[{
+    ["body"] = {},
+    ["headers"] = {
+        ["accept"] = "*/*",
+        ["host"] = "localhost:8080",
+        ["user-agent"] = "lurl/scm-0",
+        ["x"] = {
+            "1",
+            "2"
+        }
+    },
+    ["method"] = "GET",
+    ["path"] = "/",
+    ["query"] = {},
+    ["route_args"] = {}
+}]], c[1])
+        _G['arg'] = sarg
+        _G['io'] = sio
+    end)
+
     it('-d option', function()
         local sarg = arg
         local sio = io

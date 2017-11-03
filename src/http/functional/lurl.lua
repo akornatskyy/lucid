@@ -66,7 +66,17 @@ local function parse_args()
             end
         elseif o == '-H' and s then
             j = s:find(': ')
-            req.headers[s:sub(1, j - 1):lower()] = s:sub(j+2)
+            local name, value = s:sub(1, j - 1):lower(), s:sub(j+2)
+            local h = req.headers[name]
+            if h then
+                if type(h) == 'string' then
+                    req.headers[name] = {h, value}
+                else
+                    h[#h+1] = value
+                end
+            else
+                req.headers[name] = value
+            end
             i = i + 1
         elseif o == '-d' and s then
             local content_type = req.headers['content-type']
