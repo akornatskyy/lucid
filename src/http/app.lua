@@ -90,6 +90,7 @@ local function new(options)
         middlewares = {},
         ordered = {},
         mapping = {},
+        events = {}
     }, AppMeta)
 end
 
@@ -97,10 +98,30 @@ function App:use(middleware)
     self.middlewares[#self.middlewares+1] = middleware
 end
 
-function App:add(pattern, other_app)
+-- app:on('mounted', function(parent))
+function App:on(event_name, func)
+    local events = self.events[event_name]
+    if not events then
+        events = {}
+        self.events[event_name] = events
+    end
+    events[#events+1] = func
+end
+
+local function notify_listeners(listeners, ...)
+    if listeners then
+        for i = 1, #listeners do
+            listeners[i](...)
+        end
+    end
+end
+
+-- app:add('pattern', sub_app)
+function App:add(pattern, sub_app)
     local urls = self.options.urls
-    build_url_mapping(other_app)
-    urls[#urls+1] = {pattern, other_app.options.urls}
+    build_url_mapping(sub_app)
+    urls[#urls+1] = {pattern, sub_app.options.urls}
+    notify_listeners(sub_app.events['mounted'], self)
 end
 
 -- app:all('pattern', ['route_name',] [function(following), ...] function(w, req)
