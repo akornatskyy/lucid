@@ -12,10 +12,10 @@ local function test_cases(app)
 	end)
 end
 
-describe('demos.http.hello', function()
+describe('demos.http.composable', function()
     test_cases(require 'demos.http.composable')
 end)
 
-describe('demos.web.hello', function()
+describe('demos.web.composable', function()
     test_cases(require 'demos.web.composable')
 end)
