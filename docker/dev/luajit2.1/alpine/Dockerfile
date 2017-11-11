@@ -8,6 +8,7 @@ RUN set -ex \
         gcc \
         libc-dev \
         openssl-dev \
+        unzip \
         git \
     \
     && for rock in lbase64 lua-cjson luaossl struct utf8; do \
