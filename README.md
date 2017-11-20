@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/akornatskyy/lucid.svg?branch=master)](https://travis-ci.org/akornatskyy/lucid)
 [![Coverage Status](https://coveralls.io/repos/akornatskyy/lucid/badge.svg?branch=master&service=github)](https://coveralls.io/github/akornatskyy/lucid?branch=master)
 
-A web API toolkit playground for the [Lua](http://www.lua.org/) programming language.
+A web API toolkit playground for the [Lua](http://www.lua.org/) programming
+language.
 
 # Installation
 
@@ -36,16 +37,18 @@ return app()
 local class = require 'core.class'
 local web = require 'web'
 
-local WelcomeHandler = class({
+local WelcomeHandler = class {
     get = function(self)
         self.w:write('Hello World!\n')
     end
-})
+}
+
+local all_urls = {
+    {'', WelcomeHandler}
+}
 
 local options = {
-    urls = {
-        {'', WelcomeHandler}
-    }
+    urls = all_urls
 }
 
 return web.app({web.middleware.routing}, options)
@@ -68,7 +71,7 @@ alternative environments:
 
 ```sh
 make env LUA_VERSION=5.2.4
-make env LUA_IMPL=luajit LUA_VERSION=2.0.4
+make env LUA_IMPL=luajit LUA_VERSION=2.0.5
 make env LUA_IMPL=luajit LUA_VERSION=2.1.0-beta2
 ```
 
@@ -85,6 +88,13 @@ Serve files with a web server:
 ```sh
 export app=demos.http.hello ; make run
 curl -v http://localhost:8080
+```
+
+Use docker:
+
+```sh
+docker run -it --rm -p 8080:8080 -v `pwd`/demos:/app \
+    -e app=http.hello akorn/lucid:dev-luajit2.1-alpine
 ```
 
 Open your browser at [http://localhost:8080](http://localhost:8080)
