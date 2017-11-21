@@ -98,3 +98,58 @@ docker run -it --rm -p 8080:8080 -v `pwd`/demos:/app \
 ```
 
 Open your browser at [http://localhost:8080](http://localhost:8080)
+
+# HTTP API Reference
+
+## Application
+
+### http.app.new([options])
+
+The `app` object by convention corresponds to HTTP application. Create it by
+calling `http.app.new` function exported by the `http` module:
+
+```lua
+local http = require 'http'
+local app = http.app.new()
+```
+
+It also accepts optional table `options` that affects how the application
+behaves:
+
+```lua
+local app = http.app.new {
+    root_path = '/api/v1/'
+}
+```
+
+Later options can be accessed as `app.options`.
+
+> The same options are shared as a parameter to
+> [middleware](#functionfollowing-options) initialization and
+> available in HTTP request object as `req.options`.
+
+The `app` object has methods for configuring middleware:
+
+```lua
+app:use(http.middleware.routing)
+```
+
+and routing HTTP requests:
+
+```lua
+app:get('', function(w, req)
+    return w:write('Hello World!\n')
+end)
+```
+
+Here `app:get` function corresponds to HTTP GET verb, `app:post` to HTTP
+POST, etc.
+
+Finally you call `app` to build url mapping, chain middlewares and run it
+through initialization step.
+
+```lua
+return app()
+```
+
+This call returns the first middleware registered with `app:use`.
