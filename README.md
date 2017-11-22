@@ -153,3 +153,22 @@ return app()
 ```
 
 This call returns the first middleware registered with `app:use`.
+
+### Properties
+
+#### http.app.http_verbs
+
+The table of adapted HTTP verbs can be  accessed as
+`http.app.http_verbs`,
+which is an association between a function name and HTTP verb, e.g.
+`post = POST`, etc. The association happens during application initialization
+only, thus does not affect runtime.
+
+> HTTP verb *OPTIONS* is not in `http.app.http_verbs`.
+
+Use HTTP verb in upper case if is not in `http.app.http_verbs`.
+
+```lua
+app:OPTIONS('', function(w, req)
+end)
+```
