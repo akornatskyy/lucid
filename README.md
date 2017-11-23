@@ -172,3 +172,25 @@ Use HTTP verb in upper case if is not in `http.app.http_verbs`.
 app:OPTIONS('', function(w, req)
 end)
 ```
+
+#### app.options
+
+The `app.options` table has properties that are specific for the application.
+
+```lua
+app.options.root_path
+-- '/'
+```
+
+These options remain throughout the life of the application. You can access
+`options` during middleware initialization and in HTTP request object as
+`req.options`.
+
+> The `app` object is not supposed to be shared with request
+> [handlers](#functionw-req). Use `req.options` instead.
+
+The following table describes the properties of the `options` object.
+
+| Property | Description                              | Default |
+| :------- | ---------------------------------------- | ------- |
+| urls     | Keeps url path mapping to request handler | `{}`    |
