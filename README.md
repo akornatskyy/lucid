@@ -194,3 +194,34 @@ The following table describes the properties of the `options` object.
 | Property | Description                              | Default |
 | :------- | ---------------------------------------- | ------- |
 | urls     | Keeps url path mapping to request handler | `{}`    |
+
+### Events
+
+#### app.on('mounted', function(parent))
+
+The `mounted` event is fired on a sub-app, when it is mounted on a
+parent app. The `parent` app is passed to the function.
+
+> Sub-app will:
+> - Not inherit the value of `options` of the parent application.
+> - Keep own `options` unchanged.
+> - Use any values from the `parent` application as necessary.
+
+The following example shows the use of `mounted` event.
+
+```lua
+local http = require 'http'
+
+local greetings = http.app.new()
+greetings:on('mounted', function(parent)
+    print('mounted')
+end)
+greetings:get('hi', function(w)
+    return w:write('hi')
+end)
+
+local app = http.app.new()
+app:use(http.middleware.routing)
+app:add('greetings/', greetings)
+return app()
+```
