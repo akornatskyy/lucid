@@ -225,3 +225,71 @@ app:use(http.middleware.routing)
 app:add('greetings/', greetings)
 return app()
 ```
+
+### Methods
+
+#### app:add(pattern, sub_app)
+
+Mounts specified `sub_app` at the `pattern`: the application handles all
+requests that match url path according to pattern.
+
+> This allows you to build modular or composable applications.
+
+**Example: composable application**
+
+Here is *child* application that we could reuse later.
+
+```lua
+-- child.lua
+local http = require 'http'
+
+local app = http.app.new()
+app:get('hi', function(w, req)
+    return w:write('Hello World!\n')
+end)
+
+return app
+```
+
+> The child *app* object is returned without a call for initialization.
+
+The parent app builds url mapping for `sub_app` app.
+
+> The middlewares registered in `sub_app` are ignored.
+
+The route that matches any path that follows its path immediately after
+"/greetings/" will be handed to *child* application.
+
+``` lua
+-- main.lua
+local http = require 'http'
+
+local app = http.app.new()
+app:add('greetings/', require 'child')
+app:use(http.middleware.routing)
+
+return app()
+```
+
+The *child* application handles requests to */greetings/hi*.
+
+The *main* application can extend child application routing as necessary.
+
+```lua
+app:get('greetings/hallo', function(w, req)
+    return w:write('Hallo Welt!\n')
+end)
+```
+
+By default the *main* application can not override patterns (the routing
+middleware treats this as an  error, unless *allow_path_override* option).
+
+```lua
+local app = http.app.new {
+    allow_path_override = true
+}
+app:add('greetings/', require 'child')
+app:get('greetings/hi', function(w, req)
+    return w:write('hey!\n')
+end)
+```
