@@ -293,3 +293,30 @@ app:get('greetings/hi', function(w, req)
     return w:write('hey!\n')
 end)
 ```
+
+#### app:all(pattern \[, route_name] [, function(following, options), ...], function(w, req))
+
+Routes an HTTP request regardless HTTP verb.
+
+```lua
+app:all('hi', function(w)
+    return w:write('hi')
+end)
+```
+
+The actual HTTP verb can be obtained from request, e.g.:
+
+```lua
+app:all('hi', function(w, req)
+    return w:write(req.method)
+end)
+```
+
+The following table describes the arguments.
+
+| Argument                                 | Description                              |
+| :--------------------------------------- | ---------------------------------------- |
+| pattern                                  | The path for which the middleware function is invoked, it can be a string representing a path or a regular expression pattern. |
+| route_name                               | The name used to address this route in reverse URL lookup. Optional. |
+| [function (following, options)](#functionfollowing-options) | Middleware function. See below.          |
+| [function (w, req)](#functionw-req)      | Request handler function. See below.     |
