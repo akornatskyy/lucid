@@ -320,3 +320,31 @@ The following table describes the arguments.
 | route_name                               | The name used to address this route in reverse URL lookup. Optional. |
 | [function (following, options)](#functionfollowing-options) | Middleware function. See below.          |
 | [function (w, req)](#functionw-req)      | Request handler function. See below.     |
+
+##### function(following, options)
+
+Middleware function (interceptor) can be used to impose pre-conditions on a
+route handler.
+
+```lua
+local function middleware(following, options)
+    return function(w, req)
+        return following(w, req)
+    end
+end
+```
+
+The `following` object by convention corresponds to the next route handler,
+which is a `function(w, req)`; `options` is a table used to initialize
+application and holds properties that are specific to application and shared
+across.
+
+> The middleware function is called only once during application initialization,
+> while returning function for route handling on each request routed.
+
+The middleware function does not influence routing, that means if a call to
+`following` has not been made, the processing is still considered successful,
+an attempt to find a next matching route is not performed.
+
+A return value of middleware function is ignored, however
+`return following(w, req)` enables Lua's tail call, thus generally preferred.
