@@ -348,3 +348,44 @@ an attempt to find a next matching route is not performed.
 
 A return value of middleware function is ignored, however
 `return following(w, req)` enables Lua's tail call, thus generally preferred.
+
+**Example: middleware function**
+
+Here is an example that shows the use of multiple middleware functions:
+
+```lua
+local function interceptor1(following, options)
+  return function(w, req)
+    print('before1')
+    following(w, req)
+    print('after1')
+  end
+end
+
+local function interceptor2(following, options)
+  return function(w, req)
+    print('before2')
+    following(w, req)
+    print('after2')
+  end
+end
+
+app:all('hi', interceptor1, interceptor2, function(w, req)
+  print('hi')
+  return w:write(req.method)
+end)
+```
+
+The `interceptor1` and `interceptor2` middleware functions intercept all
+calls (one after another) to corresponding route handler function.
+
+You can use multiple middleware functions, the execution order is from left to
+right. The above example prints:
+
+```
+before1
+before2
+hi
+after2
+after1
+```
