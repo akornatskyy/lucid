@@ -389,3 +389,28 @@ hi
 after2
 after1
 ```
+
+##### function(w, req)
+
+HTTP route / request handler function processes application logic and writes
+response if any.
+
+```lua
+local function handler(w, req)
+    return w:write('hi')
+end
+```
+
+The [w](#response-writer) object by convention corresponds to HTTP response
+writer, [req](#request) to HTTP request. If `req` object is not used it can be
+safely omitted.
+
+```lua
+local function handler(w)
+    return w:write('hi')
+end
+```
+
+A return value of HTTP route handler function is ignored, however
+`return following(w, req)` enables Lua's tail call, thus generally
+preferred.
