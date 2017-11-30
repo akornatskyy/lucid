@@ -414,3 +414,28 @@ end
 A return value of HTTP route handler function is ignored, however
 `return following(w, req)` enables Lua's tail call, thus generally
 preferred.
+
+#### app:route(pattern [, route_name])
+
+Returns an instance of a route, which can be used to further handle HTTP verbs.
+
+```lua
+app:route('hi')
+:get(function(w, req)
+    -- respond to HTTP GET request
+end)
+:post(function(w)
+    -- respond to HTTP POST request
+end)
+```
+
+Use `app:route()` to specify HTTP verb that does not have a valid map in
+`http.app.http_verbs`.
+
+```lua
+app:route('hi')['OPTIONS'](function(w)
+end)
+```
+
+Use `app:route()` to avoid duplicate routing patterns and potential typo
+errors.
