@@ -439,3 +439,15 @@ end)
 
 Use `app:route()` to avoid duplicate routing patterns and potential typo
 errors.
+
+#### app:use(middleware)
+
+Mounts the specified [middleware](#functionfollowing-options) function. The
+middleware function is executed for each request served by the application.
+
+```lua
+local http = require 'http'
+
+local app = http.app.new()
+app:use(http.middleware.routing)
+```
