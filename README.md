@@ -451,3 +451,31 @@ local http = require 'http'
 local app = http.app.new()
 app:use(http.middleware.routing)
 ```
+
+## Request
+
+The `req` object represents the HTTP request and has properties for the
+request method, path, HTTP headers, and so on. By convention, the object is
+always referred to as `req`.
+
+### Properties
+
+#### req.options
+
+This property holds a reference to the instance of the application
+[app.options](#appoptions).
+
+#### req.method
+
+Contains a string corresponding to the HTTP method of the request: GET, POST,
+PATCH, and so on.
+
+#### req.path
+
+Contains the path part of the request URL.
+
+```lua
+-- http://blog.example.com/api/v1/posts?q=lua
+req.path
+-- "/api/v1/posts"
+```
