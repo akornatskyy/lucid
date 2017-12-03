@@ -479,3 +479,30 @@ Contains the path part of the request URL.
 req.path
 -- "/api/v1/posts"
 ```
+
+#### req.route_args
+
+This property is a table containing properties mapped to the named route
+“arguments” set by [routing](#routing) middleware.
+
+```lua
+app:get('{locale}/user/{user_id:i}', function(w, req)
+    return w:write(req:route_args.user_id)
+end)
+-- path: /en/user/123
+req.route_args
+-- {["locale"] = "en", ["user_id"] = "123"}
+```
+
+The `req.route_args` can have a reserved property `route_name`
+if there is an associated name with the request handler.
+
+```lua
+app:get('{locale}/user/{user_id:i}', 'user', function(w, req)
+end)
+-- path: /en/user/123
+req.route_args.route_name
+-- "user"
+```
+
+If there is no route arguments, it is the empty table, `{}`.
