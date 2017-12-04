@@ -506,3 +506,41 @@ req.route_args.route_name
 ```
 
 If there is no route arguments, it is the empty table, `{}`.
+
+#### req.query
+
+This property is a table containing a property for each query string parameter
+(case-sensitive) in the route.
+
+> The value is a `string` for a single occurrence of query parameter or a
+> `table` for multiple values.
+
+```lua
+-- http://blog.example.com/api/v1/posts?q=lua&page=2
+req.query
+-- {["q"] = "lua", ["page" = "2"]}
+req.query.q
+-- "lua"
+req.query.page
+-- "2"
+```
+
+Use `req.query` or `req:parse_query()`.
+
+```lua
+app:get('', function(w, req)
+    local qs = req.query or req:parse_query()
+    -- ...
+end)
+```
+
+If there is no query string, it is the empty table, `{}`.
+
+```lua
+-- http://blog.example.com/api/v1/posts
+req.query
+-- {}
+```
+
+> The `req.query` table is `nil` unless you call  `req:parse_query()`
+> first.
