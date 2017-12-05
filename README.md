@@ -544,3 +544,23 @@ req.query
 
 > The `req.query` table is `nil` unless you call  `req:parse_query()`
 > first.
+
+#### req.headers
+
+This property is a table containing a property for each HTTP header name
+(lowercase).
+
+> The value is a `string` for a single occurrence of HTTP header or a
+> `table` for multiple values.
+
+Use `req.headers` or `req:parse_headers()`.
+
+```lua
+app:get('', function(w, req)
+    local headers = req.headers or req:parse_headers()
+    -- ...
+end)
+```
+
+> The `req.headers` table is `nil` unless you call
+> `req:parse_headers()` first.
