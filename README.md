@@ -564,3 +564,51 @@ end)
 
 > The `req.headers` table is `nil` unless you call
 > `req:parse_headers()` first.
+
+#### req.cookies
+
+This property is a table that contains HTTP cookies (case-sensitive).
+
+Use `req.cookies` or `req:parse_cookie()`.
+
+```lua
+app:get('', function(w, req)
+    local cookies = req.cookies or req:parse_cookie()
+    -- ...
+end)
+```
+
+The `req:parse_cookie()` uses an empty name if not specified.
+
+```lua
+-- Cookie:
+req.cookies
+-- {['']=''}
+-- Cookie: abc
+req.cookies
+-- {['']='abc'}
+```
+
+Returns a table with mapped cookie name to value.
+
+```lua
+-- Cookie: a=1
+req.cookies
+-- {['a']='1'}
+-- Cookie: a=1; b=2
+req.cookies
+-- {a='1', b='2'}
+```
+
+Supports cookie value with spaces.
+
+```lua
+-- Cookie: c1=a b; c2= ; c3=a ; c4= b
+req.cookies
+-- {['c1']='a b', ['c2']=' ', ['c3']='a ', ['c4']=' b'}
+```
+
+If there is no cookies, it is the empty table, `{}`.
+
+> The `req.cookies` table is `nil` unless you call
+> `req:parse_cookies()` first.
