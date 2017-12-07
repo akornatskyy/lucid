@@ -612,3 +612,26 @@ If there is no cookies, it is the empty table, `{}`.
 
 > The `req.cookies` table is `nil` unless you call
 > `req:parse_cookies()` first.
+
+#### req.body
+
+This property type depends on *MIME type* of incoming HTTP request.
+
+| MIME Type                         | Value                                    |
+| --------------------------------- | ---------------------------------------- |
+| application/x-www-form-urlencoded | a table that contains all the current request POST query arguments. |
+| application/json                  | a table that corresponds to parsed JSON object, either array or map. |
+| multipart/form-data               | a string, in-memory request body data.   |
+
+Use `req.body` or `req:parse_body()`.
+
+```lua
+local values = req.body or req:parse_body()
+```
+
+> To force in-memory request bodies, set
+> [client_body_buffer_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_buffer_size)
+> to the same size value in
+> [client_max_body_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size).
+
+This function returns `nil` if the request body has zero size.
