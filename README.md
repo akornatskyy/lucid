@@ -635,3 +635,65 @@ local values = req.body or req:parse_body()
 > [client_max_body_size](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size).
 
 This function returns `nil` if the request body has zero size.
+
+### Methods
+
+#### req:parse_query()
+
+Parses HTTP query string.
+
+See [req.query](#reqquery).
+
+#### req:parse_headers()
+
+Parses HTTP headers.
+
+See [req.headers](#reqheaders).
+
+#### req:parse_cookie()
+
+Parses HTTP cookie header.
+
+See [req.headers](#reqheaders).
+
+#### req:parse_body()
+
+Parses HTTP body.
+
+See [req.body](#reqbody).
+
+#### req:get_cookie(name)
+
+DEPRECATED
+
+```lua
+local cookies = self.cookies or self:parse_cookie()
+local c = cookies[name]
+```
+
+#### req:is_ajax()
+
+DEPRECATED
+
+```lua
+local headers = self.headers or self:parse_headers()
+local is_ajax = headers['x-requested-with'] == 'XMLHttpRequest'
+```
+
+#### req:server_parts()
+
+Returns multiple values representing various server parts.
+
+```lua
+-- http://blog.example.com/api/v1/posts?q=lua
+local scheme, host, port = req:server_parts()
+-- "http", "blog.example.com", "80"
+```
+
+Use `req.server_parts()` to build request URL authority part.
+
+```lua
+local authority = scheme .. '://' .. host
+    .. (port == '80' and '' or ':' .. port)
+-- http://blog.example.com
+```
