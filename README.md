@@ -697,3 +697,37 @@ local authority = scheme .. '://' .. host
     .. (port == '80' and '' or ':' .. port)
 -- http://blog.example.com
 ```
+
+## Response Writer
+
+The `w` object represents the HTTP response and has properties for the
+response HTTP headers. By convention, the object is always referred to as `w`.
+
+### Properties
+
+#### w.headers
+
+This property is a table that contains HTTP headers. The keys of the returned
+table are the header names (case-insensitive) and the values are the respective
+header values.
+
+> The value is a `string` for a single occurrence of HTTP header or a
+> `table` for multiple values.
+
+```lua
+-- w.headers['X-Request-Count'] = '100'
+w.headers['X-Request-Count']
+-- "100"
+w.headers['x-request-count']
+-- "100"
+```
+
+Use table to set multiple values.
+
+```lua
+-- w.headers['Set-Cookie'] = {'a=1', 'b=2'}
+w.headers['set-cookie']
+-- {"a=1", "b=2"}
+```
+
+> Use value `nil` to remove corresponding HTTP response header.
