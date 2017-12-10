@@ -731,3 +731,20 @@ w.headers['set-cookie']
 ```
 
 > Use value `nil` to remove corresponding HTTP response header.
+
+### Methods
+
+#### w:get_status_code()
+
+Returns the status code which was sent to the client.
+
+> `nil` value indicates successful HTTP response.
+
+#### w:set_status_code(code)
+
+Controls the HTTP status code that will be sent to the client when the headers
+get flushed.
+
+```lua
+w:set_status_code(403)
+```
