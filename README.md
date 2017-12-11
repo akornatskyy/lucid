@@ -748,3 +748,21 @@ get flushed.
 ```lua
 w:set_status_code(403)
 ```
+
+#### w:write(c)
+
+Sends a chunk `c` of the response body. This method may be called multiple
+times to provide successive parts of the body.
+
+> The response body is omitted when the request is a HEAD request. The 204
+> and 304 responses must not include a body.
+
+The behavior of this method depends on adapter in use.
+
+| Adapter  | Behavior                                 |
+| -------- | ---------------------------------------- |
+| buffered | The `w:write()` calls are buffered. The headers and body is sent to the client  when application will finish processing request. |
+| stream   | The first time `w:write()` is called, it will send the headers and the first chunk of the body to the client. |
+
+> This method sends the raw HTTP body and do not perform any body
+> encodings.
