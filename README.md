@@ -766,3 +766,12 @@ The behavior of this method depends on adapter in use.
 
 > This method sends the raw HTTP body and do not perform any body
 > encodings.
+
+#### w:flush()
+
+Flushes response output to the client asynchronously.
+
+> This method returns immediately without waiting for output data to be
+> written into the system send buffer.
+
+> This function has no effect in case of buffered adapter in use.
