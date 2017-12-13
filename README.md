@@ -775,3 +775,14 @@ Flushes response output to the client asynchronously.
 > written into the system send buffer.
 
 > This function has no effect in case of buffered adapter in use.
+
+#### w:add_header(name, value)
+
+Adds a single string value for HTTP header.
+
+```lua
+w:addHeader('Set-Cookie', 'c=100')
+```
+
+> If this header already exists it will add value so multiple headers withthe same
+> name will be sent.
