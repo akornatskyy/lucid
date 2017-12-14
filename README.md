@@ -786,3 +786,23 @@ w:addHeader('Set-Cookie', 'c=100')
 
 > If this header already exists it will add value so multiple headers withthe same
 > name will be sent.
+
+#### w:set_cookie(s)
+
+Sets specified cookie string by adding `Set-Cookie` HTTP header.
+
+```lua
+w:set_cookie(http.cookie.dump {
+    name = 'c', value = '100', http_only = true
+})
+w.headers['Set-Cookie']
+-- c=100; HttpOnly
+```
+
+Use this method to delete cookie.
+
+```lua
+w:set_cookie(http.cookie.delete {name = 'c'})
+w.headers['Set-Cookie']
+-- c=; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+```
