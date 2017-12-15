@@ -806,3 +806,33 @@ w:set_cookie(http.cookie.delete {name = 'c'})
 w.headers['Set-Cookie']
 -- c=; Expires=Thu, 01 Jan 1970 00:00:00 GMT
 ```
+
+#### w:redirect(absolute_url[, status_code=302])
+
+Redirects to the absolute URL with specified status that corresponds to an HTTP
+status code. If not specified, status defaults to “302 “Found”.
+
+```lua
+w:redirect('http://example.com')
+```
+
+Use this method together with routing mixin to redirect to named routes.
+
+```lua
+local mixin = require 'core.mixin'
+local http = require 'http'
+
+mixin(http.Request, http.mixins.routing)
+
+app:get('', function(w, req)
+    return w:redirect(req:absolute_url_for('welcome'))
+end)
+
+app:get('welcome', 'welcome', function(w, req)
+    return w:write('Hello World!\n')
+end)
+```
+
+#### w:see_other(absolute_url)
+
+DEPRECATED
