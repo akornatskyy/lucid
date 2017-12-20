@@ -836,3 +836,61 @@ end)
 #### w:see_other(absolute_url)
 
 DEPRECATED
+
+## HTTP Cookie
+
+An HTTP cookie (browser cookie) is a small piece of data that a server sends to
+the user's web browser. The browser may store it and send it back with the next
+request to the same server.
+
+The `http.cookie` module represents the HTTP cookie.
+
+#### http.cookie.dump(options)
+
+Returns a string that represents the HTTP cookie per `options` provided.
+
+```lua
+http.cookie.dump {name='a', value='1'}
+-- "a=1"
+http.cookie.dump {name='a', value='1', path='/abc/'}
+-- "a=1; Path=/abc/"
+http.cookie.dump {name='a', value='1', domain='example.com'}
+-- "a=1; Domain=example.com"
+http.cookie.dump {name='a', value='1', expires=1423473707}
+-- "a=1; Expires=Mon, 09 Feb 2015 09:21:47 GMT"
+http.cookie.dump {name='a', value='1', max_age=600}
+-- "a=1; Max-Age=600"
+http.cookie.dump {name='a', value='1', same_site='Strict'}
+-- "a=1; SameSite=Strict"
+http.cookie.dump {name='a', value='1', http_only=true}
+-- "a=1; HttpOnly"
+http.cookie.dump {name='a', value='1', secure=true}
+-- "a=1; Secure"
+```
+
+The following table describes the options.
+
+| Property  | Type    | Description                              |
+| --------- | ------- | ---------------------------------------- |
+| name      | string  | Name of the cookie.                      |
+| value     | string  | Cookie value.                            |
+| path      | string  | Path for the cookie.                     |
+| domain    | string  | Domain name for the cookie.              |
+| expires   | number  | Expiry date of the cookie in GMT. If not specified creates a session cookie. |
+| max_age   | number  | The expiry time relative to the current time in milliseconds. |
+| same_site | string  | Can be used to disable third-party usage for a specific cookie. Either Lax or Strict. |
+| http_only | boolean | Flags the cookie to be accessible only by the web server. |
+| secure    | boolean | Marks the cookie to be used with HTTPS only. |
+
+#### http.cookie.delete(options)
+
+Returns a string that corresponds to an empty expired cookie.
+
+```lua
+http.cookie.delete {name='a'}
+-- a=; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+http.cookie.delete {name='a', path='/abc/'}
+-- a=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/abc/
+```
+
+See options in [http.cookie.dump](#httpcookiedump).
