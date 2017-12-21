@@ -894,3 +894,55 @@ http.cookie.delete {name='a', path='/abc/'}
 ```
 
 See options in [http.cookie.dump](#httpcookiedump).
+
+## Middlewares
+
+[Middleware](#functionfollowing-options) functions are functions that have
+access to the
+[response writer](#response-writer) object (`w`),
+the [request](#request) object (`req`), the
+[following](#functionw-req) function, and the application
+[options](#appoptions) in the application’s request processing lifecycle.
+
+The `following` function is a function, when invoked, executes the
+middleware succeeding the current one.
+
+> If the current middleware function does not end the request processing cycle,
+> it must call `following(w, req)` to pass control to the next middleware
+> function.
+
+**Configuration**
+
+Middleware function receives application [options](#appoptions) during
+initialization. However sometimes it is useful to override some settings per
+middleware without affecting application options.
+
+Use `http.middleware.opt` to override any middleware specific options over
+those in application options.
+
+```lua
+local http = require 'http'
+local opt = require 'http.middleware.opt'
+
+local app = http.app.new {
+    option1 = 'A'
+}
+
+local function my_middleware(following, options)
+    local option1 = options.option1
+    -- option1 == 'B'
+    return function(w, req)
+        return following(w, req)
+    end
+end
+
+app:use(opt(my_middleware, {
+    option1 = 'B' -- this will override default in app.options
+}))
+
+app:use(http.middleware.routing)
+app:get('', function(w, req)
+    -- req.options.option1 == 'A'
+end)
+return app()
+```
