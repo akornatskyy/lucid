@@ -946,3 +946,62 @@ app:get('', function(w, req)
 end)
 return app()
 ```
+
+### authcookie
+
+Authentication cookie middleware implements creation of signed and encrypted
+authentication session cookie.
+
+Use  response writer `w.principal` property to set or delete the security
+principal associated with request authentication.
+
+```lua
+local http = require 'http'
+local authcookie = http.middleware.authcookie
+
+app:get('signin', authcookie, function(w, req)
+    w.principal = {id = 'john.smith', roles = {admin = true}}
+end)
+
+app:get('signout', authcookie, function(w, req)
+    w.principal = nil
+end)
+```
+
+> The authentication cookie is set only on successful status code (2XX).
+
+Use `app.options` to configure middleware.
+
+```lua
+local ticket = require 'security.crypto.ticket'
+local digest = require 'security.crypto.digest'
+local cipher = require 'security.crypto.cipher'
+local http = require 'http'
+
+local app = http.app.new {
+    ticket = ticket.new {
+        -- digest = digest.new('sha256'),
+        digest = digest.hmac('ripemd160', 'key1'),
+        cipher = cipher.new {
+            cipher = 'aes128',
+            key = 'DK((-x=e[.2cLq]f',
+            iv = 'b#KXN>H9"j><f2N`'
+        }
+    },
+  	auth_cookie = {
+      name = '_a'
+  	},
+    principal = require 'security.principal'
+}
+```
+
+The following table describes the configuration options.
+
+| Property    | Type  | Description                              |
+| ----------- | ----- | ---------------------------------------- |
+| ticket      | table | Required. An object that provides secure string encoding, `ticket:encode(s)`. |
+| auth_cookie | table | Optional. Defaults to `{name='_a'}`. The `http_only` is always `true`. If `path` is not specified, fallbacks to `options.root_path` or `/`. See more [here](#cookie). |
+| principal   | table | Optional. An object that provides function `principal.dump(p)`, where `p` is a  table like: `{id='', roles={role1=true}, alias='', extra=''}`. Defaults to `require 'security.principal'`. |
+
+> Use `auth_cookie.max_age` to control timeout before authentication cookie
+> expires.
