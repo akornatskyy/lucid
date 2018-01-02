@@ -981,16 +981,16 @@ local http = require 'http'
 local app = http.app.new {
     ticket = ticket.new {
         -- digest = digest.new('sha256'),
-        digest = digest.hmac('ripemd160', 'key1'),
+        digest = digest.hmac('ripemd160', 'b`*>Z!P4pf99%p,)'),
         cipher = cipher.new {
             cipher = 'aes128',
             key = 'DK((-x=e[.2cLq]f',
             iv = 'b#KXN>H9"j><f2N`'
         }
     },
-  	auth_cookie = {
-      name = '_a'
-  	},
+    auth_cookie = {
+        name = '_a'
+    },
     principal = require 'security.principal'
 }
 ```
@@ -1005,3 +1005,28 @@ The following table describes the configuration options.
 
 > Use `auth_cookie.max_age` to control timeout before authentication cookie
 > expires.
+
+### authorize
+
+Authorization middleware implements verification of signed and encrypted
+authentication session cookie.
+
+Use  request `req.principal` property to get the security principal associated
+during request authentication.
+
+```lua
+app:get('secure', authorize, function(w, req)
+    if not req.principal.roles['admin'] then
+        return w:set_status_code(403)
+    end
+    -- req.principal.id
+end)
+```
+
+The middleware responds with HTTP status code 401 (Unauthorized) in case the
+authentication cookie is not in the request or cannot be decoded.
+
+> The authentication cookie lifetime is automatically extended once cookie time
+> left is less than a half of cookie max age.
+
+See configuration options in [authcookie](#authcookie) middleware.
