@@ -1030,3 +1030,43 @@ authentication cookie is not in the request or cannot be decoded.
 > left is less than a half of cookie max age.
 
 See configuration options in [authcookie](#authcookie) middleware.
+
+### caching
+
+TODO
+
+### cors
+
+This middleware implements [cross-origin resource sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
+
+```lua
+local http = require 'http'
+
+app:use(http.middleware.cors)
+```
+
+Use `app.options` to configure middleware.
+
+```lua
+local app = http.app.new {
+    cors = http.cors.new {
+        allow_credentials = true,    
+        allowed_origins = {'*'},
+        allowed_methods = {'GET', 'HEAD', 'POST', 'PUT', 'DELETE'},
+        allowed_headers = {'content-type', 'x-requested-with'},
+        exposed_headers = {'content-length', 'etag'},
+        max_age = 180
+    }
+}
+```
+
+The following table describes the configuration options.
+
+| Property          | Type    | Description                              |
+| ----------------- | ------- | ---------------------------------------- |
+| allow_credentials | boolean | Indicates whether the client is allowed to send credentials (cookies, authorization headers, etc) to the server. Defaults to `false`. |
+| allowed_origins   | table   | Required. Indicates whether the response can be shared with resources with the given origin. For requests without credentials, specify "\*" as a wildcard, thereby allowing any origin to access the resource. Otherwise, specify a URI that may access the resource. |
+| allowed_methods   | table   | Specifies the methods allowed when accessing the resource in response to a preflight request. Defaults to `{'GET', 'HEAD'}`. |
+| allowed_headers   | table   | Used in response to a preflight request to indicate which HTTP headers will be available via *Access-Control-Expose-Headers* when making the actual request. |
+| exposed_headers   | table   | Indicates which headers can be exposed as part of the response. Only [simple response headers](https://www.w3.org/TR/cors/#simple-response-header) are exposed. Use this property to allow clients to access other headers. |
+| max_age           | number  | How long the results of a preflight request (that is the information contained in the *Access-Control-Allow-Methods* and *Access-Control-Allow-Headers* headers) can be cached. |
