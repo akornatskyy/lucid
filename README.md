@@ -1070,3 +1070,116 @@ The following table describes the configuration options.
 | allowed_headers   | table   | Used in response to a preflight request to indicate which HTTP headers will be available via *Access-Control-Expose-Headers* when making the actual request. |
 | exposed_headers   | table   | Indicates which headers can be exposed as part of the response. Only [simple response headers](https://www.w3.org/TR/cors/#simple-response-header) are exposed. Use this property to allow clients to access other headers. |
 | max_age           | number  | How long the results of a preflight request (that is the information contained in the *Access-Control-Allow-Methods* and *Access-Control-Allow-Headers* headers) can be cached. |
+
+### routing
+
+Routing refers to the definition of endpoints (URI paths) and how they respond to
+client requests.
+
+```lua
+local http = require 'http'
+
+app:use(http.middleware.routing)
+```
+
+A route method is derived from one of the HTTP methods and is attached to the
+`app` object. Routing supports the following methods that correspond to HTTP
+verbs: `get`, `head`, `post`, `patch`, `put`, `delete`.
+
+Route path, in combination with a request method, define the endpoint at which
+requests can be dispatched. Route path can be string pattern.
+
+```lua
+app:post('signin', function(w, req)
+end)
+```
+
+There is a special routing method, `app:all()`, which is used to respond to all
+request methods.
+
+```lua
+app:all('', function(w, req)
+end)
+```
+
+Route arguments are named URL path segments that used to capture the values
+specified at their position in the URL path. The captured values are populated in
+the `req.route_args` table, with the name of the route arguments specified in
+the URL path as the respective keys in the table.
+
+```lua
+-- URL: /en/user/123
+-- route path: {locale}/user/{user_id:i}
+-- req.route_args: {['locale'] = "en", ['user_id'] = "123"}
+```
+
+Use route arguments in the path.
+
+```lua
+app:get('{locale}/user/{user_id:i}', function(w, req)
+end)
+```
+
+Because routing supports string patterns, specify type of the matching path
+segment.
+
+| Name                           | Pattern | Description                  |
+| ------------------------------ | ------- | ---------------------------- |
+| `i`, `int`, `number`, `digits` | `%d+`   | One or more digits.          |
+| `w`, `word`                    | `%w+`   | One or more word characters. |
+| `s`, `segment`, `part`         | `[^/]+` | Everything until `/`.        |
+| `*`, `a`, `any`, `rest`        | `.+`    | Any match.                   |
+
+Use named route to build URL from name.
+
+```lua
+-- URL: /en/user/123
+-- route path: {locale}/user/{user_id:i}
+req:path_for('user', {locale='de', user_id='1'})
+-- "/de/user/1"
+req:path_for('user', {user_id='1'})
+-- "/en/user/2"
+req:path_for('user')
+-- "/en/user/123"
+req:absolute_url_for('user')
+-- "http://localhost:8080/en/user/123"
+```
+
+> If route argument is not specified, it is inherited from `req.route_args`.
+
+Use routing mixin to build URL from name.
+
+```lua
+local mixin = require 'core.mixin'
+local http = require 'http'
+
+mixin(http.Request, http.mixins.routing)
+
+app:get('{locale}/user/{user_id:i}', 'user', function(w, req)
+    -- req:path_for('user', {user_id='1'})
+    -- req:absolute_url_for('user')
+end)
+```
+
+Use `app:route` to chain multiple request handlers to the same URL path.
+
+```lua
+app:route('users')
+:get(function(w, req)
+end)
+:post(function(w, req)
+end)
+```
+
+The following table describes the configuration options.
+
+| Property            | Type    | Description                              |
+| ------------------- | ------- | ---------------------------------------- |
+| root_path           | string  | The URL path on which a router instance to be mounted. Defaults to `/`. |
+| router              | object  | Defaults to `require 'routing.router'`.  |
+| urls                | table   | Holds all URL mapping for the application. |
+| allow_path_override | boolean | Specifies whenever allowed to override path that is already defined. Defaults to `false`. |
+
+The routing middleware responds with HTTP status 404 (Not Found) in case there
+is not match for `req.path`.
+
