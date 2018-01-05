@@ -1183,3 +1183,14 @@ The following table describes the configuration options.
 The routing middleware responds with HTTP status 404 (Not Found) in case there
 is not match for `req.path`.
 
+## Mixins
+
+A mixin is a special kind of multiple inheritance. Specifically, it is used to provide
+optional features or reuse of particular feature in different classes.
+
+The mixins are not made to stand on their own. Usually, mixins assume some
+context which they extend.
+
+```lua
+local mixin = require 'core.mixin'
+```
