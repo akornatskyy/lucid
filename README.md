@@ -1194,3 +1194,30 @@ context which they extend.
 ```lua
 local mixin = require 'core.mixin'
 ```
+
+### json mixin
+
+Extends response writer (`w`) with ability to send JSON.
+
+Use `mixin` to extend response writer:
+
+```lua
+local mixin = require 'core.mixin'
+local http = require 'http'
+mixin(http.ResponseWriter, http.mixins.json)
+```
+
+#### w:json(obj)
+
+Sends a JSON response. This method sends a response (with the content-type
+*application/json*) that is the `obj` parameter converted to a JSON string
+using `core.encoding` module.
+
+```lua
+app:get('', function(w, req)
+    return w:json({message = 'Hello World!'})
+end)
+```
+
+The parameter can be any JSON type, including `table`, `string`, `boolean`,
+or `number`, and `nil`.
