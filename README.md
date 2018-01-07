@@ -1221,3 +1221,42 @@ end)
 
 The parameter can be any JSON type, including `table`, `string`, `boolean`,
 or `number`, and `nil`.
+
+### routing mixin
+
+Extends request (`req`) with ability to resolve named routes.
+
+Use `mixin` to extend request:
+
+```lua
+local mixin = require 'core.mixin'
+local http = require 'http'
+mixin(http.Request, http.mixins.routing)
+```
+
+#### req:path_for(name[, args])
+
+Returns URL path part for route `name`, optionally substituting path named
+segments with `args` table.
+
+```lua
+-- URL: /en/user/123
+-- route path: {locale}/user/{user_id:i}
+req:path_for('user', {user_id='1'})
+-- "/en/user/1"
+```
+
+> Any route argument not provided by `args` is taken from `req.route_args`.
+
+#### req:absolute_url_for(name[, args])
+
+Returns URL for route `name`.
+
+```lua
+-- URL: http://localhost:8080/en/user/123
+-- route path: {locale}/user/{user_id:i}
+req:path_for('user', {user_id='1'})
+-- "http://localhost:8080/en/user/1"
+```
+
+See [req:path_for](#reqpath_forname-args).
