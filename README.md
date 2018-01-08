@@ -1260,3 +1260,28 @@ req:path_for('user', {user_id='1'})
 ```
 
 See [req:path_for](#reqpath_forname-args).
+
+## Nginx Adapters
+
+Provides integration with Nginx HTTP service using [lua-nginx-module](https://github.com/openresty/lua-nginx-module).
+
+### buffered
+
+This adapter buffers each chunk of `w:write()`, flushes once application finishes processing HTTP request.
+
+```nginx
+http {
+    init_by_lua '
+        local adapter = require "http.adapters.nginx.buffered"
+        main = adapter(require(os.getenv("app") or "demos.http.hello"))
+    ';
+    server {
+        listen       8080;
+        server_name  127.0.0.1;
+        location / {
+            default_type 'text/plain';
+            content_by_lua 'main(ngx)';
+        }
+    }
+}
+```
