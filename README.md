@@ -1285,3 +1285,25 @@ http {
     }
 }
 ```
+
+### stream
+
+This adapter asynchronously writes data and will return immediately without
+waiting for all the data to be written into the system send buffer.
+
+```nginx
+http {
+    init_by_lua '
+        local adapter = require "http.adapters.nginx.stream"
+        main = adapter(require(os.getenv("app") or "demos.http.hello"))
+    ';
+    server {
+        listen       8080;
+        server_name  127.0.0.1;
+        location / {
+            default_type 'text/plain';
+            content_by_lua 'main(ngx)';
+        }
+    }
+}
+```
