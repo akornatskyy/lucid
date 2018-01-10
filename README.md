@@ -1307,3 +1307,51 @@ http {
     }
 }
 ```
+
+# Tools
+
+## lurl
+
+lurl is a tool that allows sending a request to an application and display response.
+
+```
+Usage: lurl [options...] <app> <path>
+Options:
+ -X COMMAND     Specify request command to use, e.g. POST
+ -I             Fetch the headers only
+ -H LINE        Pass custom header LINE, e.g. 'Accept: application/json'
+ -d DATA        Request body data, e.g. '{"msg":"hello"}', 'msg=hello'
+ -b             Issue a number of requests through iterations
+ -v             Make the operation more talkative
+```
+
+Basic usage:
+
+```
+lurl -v demos/http/hello.lua /
+```
+
+Output:
+
+```
+req: {
+    ["body"] = {},
+    ["headers"] = {
+        ["accept"] = "*/*",
+        ["host"] = "localhost:8080",
+        ["user-agent"] = "lurl/scm-0"
+    },
+    ["method"] = "GET",
+    ["path"] = "/",
+    ["query"] = {},
+    ["route_args"] = {}
+}
+w: {
+    ["buffer"] = {
+        "Hello World!\
+"
+    },
+    ["headers"] = {}
+}
+```
+
