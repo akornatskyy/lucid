@@ -11,7 +11,8 @@ local Mixin = {}
 function Mixin:parse_auth_cookie()
     local req = self.req
     local o = req.options
-    local c = req:get_cookie(o.auth_cookie.name)
+    local cookies = req.cookies or req:parse_cookie()
+    local c = cookies[o.auth_cookie.name]
     if not c then
         return nil
     end

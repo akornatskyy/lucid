@@ -654,22 +654,13 @@ See [req.headers](#reqheaders).
 
 Parses HTTP cookie header.
 
-See [req.headers](#reqheaders).
+See [req.cookies](#reqcookies).
 
 #### req:parse_body()
 
 Parses HTTP body.
 
 See [req.body](#reqbody).
-
-#### req:get_cookie(name)
-
-DEPRECATED
-
-```lua
-local cookies = self.cookies or self:parse_cookie()
-local c = cookies[name]
-```
 
 #### req:is_ajax()
 
@@ -1354,4 +1345,3 @@ w: {
     ["headers"] = {}
 }
 ```
-

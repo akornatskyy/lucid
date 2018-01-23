@@ -20,7 +20,8 @@ return function(following, options)
     end
 
     return function(w, req)
-        local c = req:get_cookie(name)
+        local cookies = req.cookies or req:parse_cookie()
+        local c = cookies[name]
         if not c then
             return w:set_status_code(401)
         end

@@ -7,23 +7,23 @@ describe('web.mixins.authcookie', function()
 	it('extends time left', function()
 		local c = setmetatable({
             req = request.new {
+				headers = {
+					cookie = '_a=cookie'
+				},
                 options = {
                     auth_cookie = {name = '_a'},
                     ticket = {
-                        max_age = 15,
-                        decode = function(self, c)
-                            assert.equals('cookie', c)
-                            return '1', 5
-                        end,
-                        encode = function(self, p)
-                            assert.equals('1', p)
-                            return '2'
-                        end
-                    }
-                },
-                get_cookie = function()
-                    return 'cookie'
-                end
+						max_age = 15,
+						decode = function(self, c)
+							assert.equals('cookie', c)
+							return '1', 5
+						end,
+						encode = function(self, p)
+							assert.equals('1', p)
+							return '2'
+						end
+					}
+                }
             },
             w = writer.new()
         }, {__index=authcookie})

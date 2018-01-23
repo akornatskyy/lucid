@@ -23,9 +23,9 @@ describe('http.middleware.authorize', function()
         local app = authorize(function() end, options)
         local w = writer.new()
         local req = request.new {
-            get_cookie = function()
-                return 'cookie'
-            end
+            headers = {
+				cookie = '_a=cookie'
+			}
         }
         app(w, req)
         assert.equals('_a=2; Path=/; HttpOnly', w.headers['Set-Cookie'])
