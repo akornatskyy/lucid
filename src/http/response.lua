@@ -36,10 +36,5 @@ return {
     redirect = function(self, absolute_url, status_code)
         self:set_status_code(status_code or 302)
         self.headers['Location'] = absolute_url
-    end,
-
-    see_other = function(self, absolute_url)
-        self:set_status_code(303)
-        self.headers['Location'] = absolute_url
     end
 }

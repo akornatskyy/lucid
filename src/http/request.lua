@@ -30,11 +30,6 @@ return {
         return cookies
     end,
 
-    is_ajax = function(self)
-        local headers = self.headers or self:parse_headers()
-        return headers['x-requested-with'] == 'XMLHttpRequest'
-    end,
-
     server_parts = function(self)
     end
 }

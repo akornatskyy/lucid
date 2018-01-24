@@ -17,13 +17,11 @@ function Mixin:absolute_url_for(name, args)
 end
 
 function Mixin:redirect_for(name, args)
+    local req = self.req
+    local headers = req.headers or req:parse_headers()
+    local is_ajax = headers['x-requested-with'] == 'XMLHttpRequest'
     return self.w:redirect(self:absolute_url_for(name, args),
-                           self.req:is_ajax() and 207 or 302)
-end
-
-function Mixin:see_other_for(name, args)
-    return self.w:redirect(self:absolute_url_for(name, args),
-                           self.req:is_ajax() and 207 or 303)
+                           is_ajax and 207 or 302)
 end
 
 return Mixin

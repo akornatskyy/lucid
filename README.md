@@ -565,6 +565,13 @@ end)
 > The `req.headers` table is `nil` unless you call
 > `req:parse_headers()` first.
 
+Use `req.headers` to determine whenever the request is AJAX.
+
+```lua
+local headers = self.headers or self:parse_headers()
+local is_ajax = headers['x-requested-with'] == 'XMLHttpRequest'
+```
+
 #### req.cookies
 
 This property is a table that contains HTTP cookies (case-sensitive).
@@ -661,15 +668,6 @@ See [req.cookies](#reqcookies).
 Parses HTTP body.
 
 See [req.body](#reqbody).
-
-#### req:is_ajax()
-
-DEPRECATED
-
-```lua
-local headers = self.headers or self:parse_headers()
-local is_ajax = headers['x-requested-with'] == 'XMLHttpRequest'
-```
 
 #### req:server_parts()
 
@@ -823,10 +821,6 @@ app:get('welcome', 'welcome', function(w, req)
     return w:write('Hello World!\n')
 end)
 ```
-
-#### w:see_other(absolute_url)
-
-DEPRECATED
 
 ## HTTP Cookie
 
