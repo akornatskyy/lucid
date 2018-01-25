@@ -822,7 +822,7 @@ app:get('welcome', 'welcome', function(w, req)
 end)
 ```
 
-## HTTP Cookie
+## Cookie
 
 An HTTP cookie (browser cookie) is a small piece of data that a server sends to
 the user's web browser. The browser may store it and send it back with the next
@@ -1292,6 +1292,28 @@ http {
     }
 }
 ```
+
+# Web API Reference
+
+## Application
+
+## Middlewares
+
+### routing
+
+## Mixins
+
+### authcookie
+
+### json
+
+### locale
+
+### model
+
+### principal
+
+### routing
 
 # Tools
 
