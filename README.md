@@ -1293,6 +1293,36 @@ http {
 }
 ```
 
+# Validation API Reference
+
+## Model Binder
+
+## Validator
+
+## Mixins
+
+### set_error
+
+### validation
+
+## Rules
+
+### bytes
+
+### compare
+
+### email
+
+### length
+
+### pattern
+
+### range
+
+### required
+
+### succeed
+
 # Web API Reference
 
 ## Application
