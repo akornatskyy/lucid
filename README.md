@@ -6,6 +6,38 @@
 A web API toolkit playground for the [Lua](http://www.lua.org/) programming
 language.
 
+# Table of Contents
+
+<!-- TOC depthFrom:1 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Lua Web API Toolkit](#lua-web-api-toolkit)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Overview](#overview)
+- [Setup](#setup)
+- [Run](#run)
+- [HTTP API Reference](#http-api-reference)
+	- [Application](#application)
+	- [Request](#request)
+	- [Response Writer](#response-writer)
+	- [Cookie](#cookie)
+	- [Middlewares](#middlewares)
+	- [Mixins](#mixins)
+	- [Nginx Adapters](#nginx-adapters)
+- [Validation API Reference](#validation-api-reference)
+	- [Model Binder](#model-binder)
+	- [Validator](#validator)
+	- [Mixins](#mixins)
+	- [Rules](#rules)
+- [Web API Reference](#web-api-reference)
+	- [Application](#application)
+	- [Middlewares](#middlewares)
+	- [Mixins](#mixins)
+- [Tools](#tools)
+	- [lurl](#lurl)
+
+<!-- /TOC -->
+
 # Installation
 
 ```sh
