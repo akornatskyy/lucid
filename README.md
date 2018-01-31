@@ -1327,9 +1327,78 @@ http {
 
 # Validation API Reference
 
+Data validation ensures data quality, that they are both correct and useful.
+
 ## Model Binder
 
+The model binder converts a table of string values to corresponding Lua type
+per target model attribute type. For example, if there is a model with an
+attribute `message_id` and it defaults to numeric value 0, the model binder
+attempts to convert source value to number.
+
+**Example: binding a message model**
+
+```lua
+local binder = require 'validation.binder'
+
+app:put('', function(w, req)
+    local m = {message_id=0, message=''}
+    local b = binder.new()
+    local values = req.body or req:parse_body()
+    if not b:bind(m, values) then
+        w:set_status_code(400)
+        return w:json(b.errors)
+    end
+end)
+```
+
+There are several model value adapters accessible in
+`validation.model.adapters` table.
+
+The following table describes behavior of corresponding model value adapter.
+
+| Name    | Description                              |
+| ------- | ---------------------------------------- |
+| boolean | The `nil` and empty string `""` values are converted to `nil`. If source value type is not `boolean` , the adapter converts it to string and checks whenever it equals to `1` or `true`. |
+| number  | The `nil` and empty string `""` values are converted to `nil`. Uses lua `tonumber` function for conversion. Adds an error message in case the input is not in numeric format. |
+| string  | The `nil` returned as `nil`. If source value type is not `string`, the adapter uses `tostring` function for conversion. Trims returned value. |
+
+> If source value is a table with multiple values, the last one is used.
+
+Model value adapter is a function that satisfies the following contract:
+
+```lua
+local function my_adapter(value, translations)
+    if value == nil then
+        return nil, translations:gettext("My error message.")
+    end
+    return value
+end
+```
+
+Where `value` - the original value, can be a table or a string or any JSON
+compatible type.
+
+The model can define specific adapters by using `adapters` attribute, which is a table per
+attribute to adapt.
+
+> Any attributes that have no corresponding name in the model are ignored.
+
+### binder.new([translations])
+
+### Properties
+
+#### b.errors
+
+### Methods
+
+#### b:bind(model, values)
+
+#### b:validate(model, validator)
+
 ## Validator
+
+### validator.new(mapping)
 
 ## Mixins
 
@@ -1339,17 +1408,17 @@ http {
 
 ## Rules
 
-### bytes
+### bytes{min, max}
 
-### compare
+### compare{equal, not_equal}
 
 ### email
 
-### length
+### length{min, max}
 
-### pattern
+### pattern{pattern, plain, negated}
 
-### range
+### range{min, max}
 
 ### required
 
