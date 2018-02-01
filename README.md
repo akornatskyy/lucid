@@ -1386,6 +1386,23 @@ attribute to adapt.
 
 ### binder.new([translations])
 
+The `b` object by convention corresponds to an intance of the model binder.
+Create it by calling `binder.new` function exported by the `validation.binder`
+module.
+
+```lua
+local binder = require 'validation.binder'
+
+app:post('', function(w, req)
+    local b = binder.new()
+end)
+```
+
+It also accepts an optional parameter `translations`.
+
+> The binder object cannot be shared between request because it maintains its
+> state in the `errors` property.
+
 ### Properties
 
 #### b.errors
