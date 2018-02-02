@@ -1407,6 +1407,32 @@ It also accepts an optional parameter `translations`.
 
 #### b.errors
 
+This property is a table containing any errors reported either by model value
+adapters or validators.
+
+The data contract for `errors` table uses attribute name as a key and a table
+of strings for multiple error messages.
+
+```json
+{
+  "message": ["Required field cannot be left blank."]
+}
+```
+
+**Example: report binding errors in JSON**
+
+```lua
+app:post('', function(w, req)
+    local m = {message=''}
+    local b = binder.new()
+    local values = req.body or req:parse_body()
+    if not b:bind(m, values) then
+        w:set_status_code(400)
+        return w:json(b.errors)
+    end
+end)
+```
+
 ### Methods
 
 #### b:bind(model, values)
