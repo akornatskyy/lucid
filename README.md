@@ -1437,6 +1437,12 @@ end)
 
 #### b:bind(model, values)
 
+Binds `values` to `model`. Returns a `boolean` value indicating whenever the
+binding succeeds or not. In the later case the `b.errors` table contains any
+errors reported.
+
+> The `b.errors` table is populated with all errors per model attributes.
+
 #### b:validate(model, validator)
 
 ## Validator
