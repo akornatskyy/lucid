@@ -1445,6 +1445,39 @@ errors reported.
 
 #### b:validate(model, validator)
 
+Validates `model` using `validator`. Returns a `boolean` value if validation is
+passed or not. Similar to `bind` method, the `b.errors` table contains
+validation errors.
+
+**Example: bind model to request body and validate**
+
+```lua
+local binder = require 'validation.binder'
+local validator = require 'validation.validator'
+local length = require 'validation.rules.length'
+local required = require 'validation.rules.required'
+
+local greeting_validator = validator.new {
+    author = {required, length{max=20}},
+    message = {required, length{min=5}, length{max=512}}
+}
+
+-- ...
+
+app:post('', function(w, req)
+    local m = {author='', message=''}
+    local b = binder.new()
+    local values = req.body or req:parse_body()
+    if not b:bind(m, values) or
+            not b:validate(m, greeting_validator) then
+        w:set_status_code(400)
+        return w:json(b.errors)
+    end
+end)
+```
+
+> Combine several calls to `b.validate` to reuse validators between models.
+
 ## Validator
 
 ### validator.new(mapping)
