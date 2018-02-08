@@ -1482,6 +1482,53 @@ end)
 
 ### validator.new(mapping)
 
+The object with suffix `_validator` by convention corresponds to the model
+validator. Create it by calling `validator.new` function exported by the
+`validation.validator` module:
+
+```lua
+local validator = require 'validation.validator'
+
+local greeting_validator = validator.new {
+}
+```
+
+It accepts the table `mapping` which designates which model attributes to be
+validated by particular validation rules.
+
+**Example: greeting validator**
+
+```lua
+local validator = require 'validation.validator'
+local length = require 'validation.rules.length'
+local required = require 'validation.rules.required'
+
+local greeting_validator = validator.new {
+    message = {required, length{min=5}, length{max=512}}
+}
+```
+
+You can reuse domain validation rules between validators.
+
+```lua
+local message_rules = {required, length{min=5}, length{max=512}}
+
+local greeting_validator = validator.new {
+    message = message_rules
+}
+```
+
+Use validator object by passing it to binder `validate` method.
+
+```lua
+local b = binder.new()
+if not b:validate(m, greeting_validator) then
+    -- see b.errors
+end
+```
+
+> The validator object is stateless and can be reused.
+
 ## Mixins
 
 ### set_error
