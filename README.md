@@ -1533,6 +1533,52 @@ end
 
 ### set_error
 
+Extends with ability to set validation error, assumes `self.errors`.
+
+**Example: create account**
+
+```lua
+local mixin = require 'core.mixin'
+local validation = require 'validation'
+
+local MembershipService = mixin({}, validation.mixins.set_error)
+
+function MembershipService:create_account(r)
+    if self:has_account(r.username) then
+        return self:set_error(
+            'The user with such username is already registered.',
+            'username')
+    end
+    if not self:add_account(r) then
+        return self:set_error(
+            'The system was unable to create an account for you.')
+    end
+    return true
+end
+```
+
+The `self.errors` is populated with the field error in the first case.
+
+```json
+{
+  "username": ["The user with such username is already registered."]
+}
+```
+
+and with general error in the later one.
+
+```json
+{
+  "__ERROR__": ["The system was unable to create an account for you."]
+}
+```
+
+The use of `__ERROR__` key is solely by convention.
+
+> The `self.errors` table can be encoded to json so UI can display the error
+> to the user. For example, the field error displayed below the input box,
+> while general error as a message at the top part of the input form.
+
 ### validation
 
 ## Rules
