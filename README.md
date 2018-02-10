@@ -1581,6 +1581,31 @@ The use of `__ERROR__` key is solely by convention.
 
 ### validation
 
+Extends with ability to perform model validation, assumes `self.errors` and
+`self:get_locale()`.
+
+```lua
+local class = require 'core.class'
+local mixin = require 'core.mixin'
+local web = require 'web'
+
+mixin(BaseHandler, web.mixins.validation)
+
+local MessageHandler = class(BaseHandler, {
+  post = function(self)
+      local m = {author='', message=''}
+      self.errors = {}
+      if not self:update_model(m) or
+              not self:validate(m, greeting_validator) then
+          return self:json_errors()
+      end
+      return self:json(m)
+  end
+})
+```
+
+see a complete example [here](https://github.com/akornatskyy/lucid/blob/master/demos/web/validation.lua).
+
 ## Rules
 
 ### bytes{min, max}
