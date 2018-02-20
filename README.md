@@ -1608,6 +1608,40 @@ see a complete example [here](https://github.com/akornatskyy/lucid/blob/master/d
 
 ## Rules
 
+Validation rule is a module that satisfies the following contract:
+
+```lua
+local mt = {__index = {
+    msg = 'My validation error message.',
+    validate = function(self, value, model, translations)
+        if not value then
+            return translations:gettext(self.msg)
+        end
+        return nil
+    end
+}}
+
+return function (options)
+    return setmetatable(options, mt)
+end
+```
+
+Where `value` - the value to be validated, like string, number, etc. Returns
+`nil` if there is no error, otherwise an error message.
+
+Use an optional parameter `msg` in table `options` to override the default
+error message.
+
+Combine several validation rules using a table.
+
+```lua
+local greeting_validator = validator.new {
+    message = {required, length{min=5}, length{max=512}}
+}
+```
+
+> Validation rules are checked from left to right until a first fail.
+
 ### bytes{min, max}
 
 ### compare{equal, not_equal}
