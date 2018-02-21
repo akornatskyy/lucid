@@ -1644,6 +1644,20 @@ local greeting_validator = validator.new {
 
 ### bytes{min, max}
 
+The length of the raw byte `string` value of the model attribute must match the
+specified boundaries.
+
+```lua
+local validator = require 'validation.validator'
+local bytes = require 'validation.rules.bytes'
+
+local message_validator = validator.new {
+    message = {bytes{max=512}}
+}
+```
+
+Use one of the optional `min` or `max` to specify the boundaries.
+
 ### compare{equal, not_equal}
 
 ### email
