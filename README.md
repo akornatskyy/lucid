@@ -1660,6 +1660,20 @@ Use one of the optional `min` or `max` to specify the boundaries.
 
 ### compare{equal, not_equal}
 
+Compares value of the model with the one named as an argument.
+
+```lua
+local validator = require 'validation.validator'
+local compare = require 'validation.rules.compare'
+
+local password_validator = validator.new {
+    password = {compare{equal='confirm_password'}}
+}
+```
+
+Use one of the optional `equal` or `not_equal` to specify the model attribute to
+compare.
+
 ### email
 
 ### length{min, max}
