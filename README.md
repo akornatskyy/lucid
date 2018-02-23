@@ -1676,6 +1676,19 @@ compare.
 
 ### email
 
+Checks whenever the value corresponds to a valid email address.
+
+```lua
+local validator = require 'validation.validator'
+local email = require 'validation.rules.email'
+
+local password_validator = validator.new {
+    alternate_email = {email()}
+}
+```
+
+Use an optional parameter `msg` to override the error message.
+
 ### length{min, max}
 
 ### pattern{pattern, plain, negated}
