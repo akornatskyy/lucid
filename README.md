@@ -1691,6 +1691,20 @@ Use an optional parameter `msg` to override the error message.
 
 ### length{min, max}
 
+The length of the UTF8 `string` value of the model attribute must match the
+specified boundaries.
+
+```lua
+local validator = require 'validation.validator'
+local length = require 'validation.rules.length'
+
+local message_validator = validator.new {
+    message = {length{max=512}}
+}
+```
+
+Use one of the optional `min` or `max` to specify the boundaries.
+
 ### pattern{pattern, plain, negated}
 
 ### range{min, max}
