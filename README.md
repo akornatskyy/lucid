@@ -1707,6 +1707,19 @@ Use one of the optional `min` or `max` to specify the boundaries.
 
 ### pattern{pattern, plain, negated}
 
+The value must match the Lua pattern expression.
+
+```lua
+local validator = require 'validation.validator'
+local pattern = require 'validation.rules.pattern'
+
+local id_validator = validator.new {
+    id = {pattern{"%s+"}}
+}
+```
+
+Use one of the optional `plain` or `negated` to specify desired behavor.
+
 ### range{min, max}
 
 ### required
