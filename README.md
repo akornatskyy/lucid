@@ -1718,9 +1718,22 @@ local id_validator = validator.new {
 }
 ```
 
-Use one of the optional `plain` or `negated` to specify desired behavor.
+Use one of the optional `plain` or `negated` to specify desired behavior.
 
 ### range{min, max}
+
+The numeric value must match the specified boundaries.
+
+```lua
+local validator = require 'validation.validator'
+local range = require 'validation.rules.range'
+
+local age_validator = validator.new {
+    age = {length{min=21}}
+}
+```
+
+Use one of the optional `min` or `max` to specify the boundaries.
 
 ### required
 
