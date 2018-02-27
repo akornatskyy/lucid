@@ -1737,6 +1737,19 @@ Use one of the optional `min` or `max` to specify the boundaries.
 
 ### required
 
+The value must not be null, an empty string or zero.
+
+```lua
+local validator = require 'validation.validator'
+local required = require 'validation.rules.required'
+
+local user_validator = validator.new {
+    username = {required}
+}
+```
+
+Use an optional parameter `msg` to override the error message.
+
 ### succeed
 
 # Web API Reference
