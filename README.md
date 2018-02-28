@@ -1752,6 +1752,8 @@ Use an optional parameter `msg` to override the error message.
 
 ### succeed
 
+Always succeeds regardless value supplied.
+
 # Web API Reference
 
 ## Application
