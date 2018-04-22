@@ -6,8 +6,8 @@ ENV=$(shell pwd)/env
 LUA_IMPL=lua
 LUA_VERSION=5.1.5
 LUAROCKS_VERSION=2.4.4
-NGINX_VERSION=1.13.9
-NGINX_LUA_MODULE_VERSION=0.10.11
+NGINX_VERSION=1.14.0
+NGINX_LUA_MODULE_VERSION=0.10.12
 
 ifeq (Darwin,$(shell uname -s))
   PLATFORM?=macosx
@@ -15,14 +15,20 @@ else
   PLATFORM?=linux
 endif
 
+ifeq ($(LUA_VERSION), 5.2.4)
+  LUA_CJSON="lua-cjson 2.1.0-1"
+else
+  LUA_CJSON=lua-cjson
+endif
+
 clean:
 	find src/ -name '*.o' -delete && \
 	rm -rf luacov.* luac.out .luacheckcache *.so
 
 env: luarocks
-	for rock in lbase64 luaossl lua-cjson luasocket struct utf8 \
+	for rock in lbase64 luaossl $(LUA_CJSON) luasocket struct utf8 \
 			busted luacov luacheck ; do \
-		$(ENV)/bin/luarocks --deps-mode=one install $$rock ; \
+		$(ENV)/bin/luarocks install $$rock ; \
 	done
 
 test:

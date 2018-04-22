@@ -7,6 +7,10 @@ describe('core.encoding.json', function()
         assert.same(t, json.decode(json.encode(t)))
     end)
 
+    it('encode empty table as object', function()
+        assert.equals('{}', json.encode({}))
+    end)
+
     describe('not implemented', function()
         it('raises an error', function()
             local saved = require

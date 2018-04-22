@@ -1,24 +1,24 @@
-local encode, decode
+local ok, l = pcall(require, 'cjson')
+if ok then
+    return {
+        encode = l.encode,
+        decode = l.decode
+    }
+end
 
-do
-    for _, lib in next, {'cjson', 'json'} do
-        local ok, l = pcall(require, lib)
-        if ok then
-            encode = l.encode
-            decode = l.decode
-            break
-        else
-            encode = function()
-                error('json encode is not implemented')
-            end
-            decode = function()
-                error('json decode is not implemented')
-            end
-        end
-    end
+ok, l = pcall(require, 'json')
+if ok then
+    return {
+        encode = l.encode,
+        decode = l.decode
+    }
 end
 
 return {
-    encode = encode,
-    decode = decode
+    encode = function()
+        error('json encode is not implemented')
+    end,
+    decode = function()
+        error('json decode is not implemented')
+    end
 }
