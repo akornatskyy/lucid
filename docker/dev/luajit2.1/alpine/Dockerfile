@@ -1,6 +1,6 @@
 FROM akorn/nginx:stable-luajit2.1-alpine
 
-MAINTAINER Andriy Kornatskyy <andriy.kornatskyy@live.com>
+LABEL maintainer="Andriy Kornatskyy <andriy.kornatskyy@live.com>"
 
 RUN set -ex \
     \
