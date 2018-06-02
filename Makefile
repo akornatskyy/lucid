@@ -26,7 +26,7 @@ clean:
 	rm -rf luacov.* luac.out .luacheckcache *.so
 
 env: luarocks
-	for rock in lbase64 luaossl $(LUA_CJSON) luasocket struct utf8 \
+	for rock in lbase64 luaossl $(LUA_CJSON) lua-cmsgpack luasocket struct utf8 \
 			busted luacov luacheck ; do \
 		$(ENV)/bin/luarocks install $$rock ; \
 	done

@@ -16,6 +16,9 @@ dependencies = {
     -- 'struct',
     -- 'luaossl',
     -- 'lua-cjson',
+    -- 'lua-messagepack',
+    -- 'lua-cmsgpack',
+    -- 'MessagePack'
     -- 'luasocket'
     -- 'utf8'
 }
