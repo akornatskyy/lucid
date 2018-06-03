@@ -45,37 +45,37 @@ debian:
 		libssl-dev
 
 rm: clean
-	rm -rf $(ENV)
+	rm -rf $(ENV) lua luajit luarocks
 
 lua: rm
+	mkdir lua && cd lua && \
 	wget -c https://www.lua.org/ftp/lua-$(LUA_VERSION).tar.gz \
-		-O - | tar -xzf - && \
-	cd lua-$(LUA_VERSION) && \
+		-O - | tar -xzC . --strip-components=1 && \
 	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h && \
 	sed -i.bak s%./?.lua\;%./?.lua\;./src/?.lua\;%g src/luaconf.h && \
 	unset LUA_PATH && unset LUA_CPATH && \
 	make -s $(PLATFORM) install INSTALL_TOP=$(ENV) && \
-	cd .. && rm -rf lua-$(LUA_VERSION)
+	cd .. && rm -rf lua
 
 luajit: rm
+	mkdir luajit && cd luajit && \
 	wget -c https://github.com/LuaJIT/LuaJIT/archive/v$(LUA_VERSION).tar.gz \
-		-O - | tar xzf - && \
-  	cd LuaJIT-$(LUA_VERSION) && \
-  	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h && \
+		-O - | tar -xzC . --strip-components=1 && \
+ 	sed -i.bak s%/usr/local%$(ENV)%g src/luaconf.h && \
 	sed -i.bak s%./?.lua\"%./?.lua\;./src/?.lua\"%g src/luaconf.h && \
 	export MACOSX_DEPLOYMENT_TARGET=10.10 && \
 	unset LUA_PATH && unset LUA_CPATH && \
-    make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include && \
-	ln -sf luajit-$(LUA_VERSION) $(ENV)/bin/lua && \
-	cd .. && rm -rf LuaJIT-$(LUA_VERSION)
+	make -s install PREFIX=$(ENV) INSTALL_INC=$(ENV)/include && \
+	ln -sf $(ENV)/bin/luajit-* $(ENV)/bin/lua && \
+	cd .. && rm -rf luajit
 
 luarocks: $(LUA_IMPL)
+	mkdir luarocks && cd luarocks && \
 	wget -qc https://luarocks.org/releases/luarocks-$(LUAROCKS_VERSION).tar.gz \
-		-O - | tar -xzf - && \
-	cd luarocks-$(LUAROCKS_VERSION) && \
+		-O - | tar -xzC . --strip-components=1 && \
 	./configure --prefix=$(ENV) --with-lua=$(ENV) --force-config && \
 	make -s build install && \
-	cd .. && rm -rf luarocks-$(LUAROCKS_VERSION)
+	cd .. && rm -rf luarocks
 
 nginx:
 	WDIR=`pwd` && \
