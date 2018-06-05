@@ -5,6 +5,7 @@ env:
     - LUA_IMPL=lua LUA_VERSION=5.2.4
     - LUA_IMPL=luajit LUA_VERSION=2.0.5
     - LUA_IMPL=luajit LUA_VERSION=2.1.0-beta3
+    - LUA_IMPL=luajit LUA_VERSION=2.1
 
 install:
     - make env LUA_IMPL=$LUA_IMPL LUA_VERSION=$LUA_VERSION
