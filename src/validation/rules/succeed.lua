@@ -1,5 +1,5 @@
-return {__index = {
+return {
     validate = function()
         return nil
     end
-}}
+}

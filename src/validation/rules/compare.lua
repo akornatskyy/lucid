@@ -1,4 +1,5 @@
 local succeed = require 'validation.rules.succeed'
+
 local setmetatable = setmetatable
 
 
@@ -28,6 +29,6 @@ return function(o)
     elseif o.not_equal then
         return setmetatable(o, check_not_equal)
     else
-        return setmetatable(o, succeed)
+        return succeed
     end
 end

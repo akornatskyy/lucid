@@ -1,11 +1,11 @@
 local validate = function(self, value, model, translations)
-    if value == nil then
+    if value == '' then
         return translations:gettext(self.msg)
     end
     return nil
 end
 
-local required = {
+local empty = {
     msg = 'Required field cannot be left blank.',
     validate = validate
 }
@@ -15,5 +15,5 @@ return function(o)
         o.validate = validate
         return o
     end
-    return required
+    return empty
 end

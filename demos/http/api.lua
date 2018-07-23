@@ -1,9 +1,10 @@
 local mixin = require 'core.mixin'
 
 local binder = require 'validation.binder'
-local validator = require 'validation.validator'
 local length = require 'validation.rules.length'
+local nonempty = require 'validation.rules.nonempty'
 local required = require 'validation.rules.required'
+local validator = require 'validation.validator'
 
 local http = require 'http'
 
@@ -25,7 +26,7 @@ app:use(http.middleware.routing)
 -- validation
 
 local task_validator = validator.new {
-    title = {required, length{min=4}, length{max=250}},
+    title = {required, nonempty, length{min=4}, length{max=250}},
     status = {required}
 }
 
@@ -99,7 +100,7 @@ end)
 :post(function(w, req)
     local m = {title='', status=1}
     local b = binder.new()
-    local values = req.body or req:parse_body()
+    local values = req.body or req:parse_body() or {}
     if not b:bind(m, values) or
             not b:validate(m, task_validator) then
         w:set_status_code(400)

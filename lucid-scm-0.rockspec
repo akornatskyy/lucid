@@ -18,7 +18,7 @@ dependencies = {
     -- 'lua-cjson',
     -- 'lua-messagepack',
     -- 'lua-cmsgpack',
-    -- 'MessagePack'
+    -- 'lua-messagepack'
     -- 'luasocket'
     -- 'utf8'
 }
@@ -82,21 +82,33 @@ build = {
         ['security.crypto.ticket'] = 'src/security/crypto/ticket.lua',
         ['security.principal'] = 'src/security/principal.lua',
 
-        ['validation'] = 'src/validation.lua',
         ['validation.binder'] = 'src/validation/binder.lua',
         ['validation.mixins.set_error'] = 'src/validation/mixins/set_error.lua',
         ['validation.mixins.validation'] = 'src/validation/mixins/validation.lua',
         ['validation.model'] = 'src/validation/model.lua',
+        ['validation.rules.allof'] = 'src/validation/rules/allof.lua',
+        ['validation.rules.anyof'] = 'src/validation/rules/anyof.lua',
+        ['validation.rules.bytes'] = 'src/validation/rules/bytes.lua',
         ['validation.rules.compare'] = 'src/validation/rules/compare.lua',
         ['validation.rules.email'] = 'src/validation/rules/email.lua',
+        ['validation.rules.empty'] = 'src/validation/rules/empty.lua',
+        ['validation.rules.fields'] = 'src/validation/rules/fields.lua',
+        ['validation.rules.initialize_rules'] = 'src/validation/rules/initialize_rules.lua',
+        ['validation.rules.items'] = 'src/validation/rules/items.lua',
         ['validation.rules.length'] = 'src/validation/rules/length.lua',
         ['validation.rules.messages.en'] = 'src/validation/rules/messages/en.lua',
         ['validation.rules.messages.uk'] = 'src/validation/rules/messages/uk.lua',
+        ['validation.rules.nilable'] = 'src/validation/rules/nilable.lua',
+        ['validation.rules.nonempty'] = 'src/validation/rules/nonempty.lua',
+        ['validation.rules.optional'] = 'src/validation/rules/optional.lua',
         ['validation.rules.pattern'] = 'src/validation/rules/pattern.lua',
         ['validation.rules.range'] = 'src/validation/rules/range.lua',
         ['validation.rules.required'] = 'src/validation/rules/required.lua',
+        ['validation.rules.rule'] = 'src/validation/rules/rule.lua',
         ['validation.rules.succeed'] = 'src/validation/rules/succeed.lua',
+        ['validation.rules.typeof'] = 'src/validation/rules/typeof.lua',
         ['validation.validator'] = 'src/validation/validator.lua',
+        ['validation'] = 'src/validation.lua',
 
         ['web'] = 'src/web.lua',
         ['web.app'] = 'src/web/app.lua',

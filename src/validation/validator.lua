@@ -1,4 +1,6 @@
-local assert, type, next, setmetatable = assert, type, next, setmetatable
+local initialize_rules = require 'validation.rules.initialize_rules'
+
+local next, setmetatable = next, setmetatable
 
 
 local function validate(self, model, errors, translations)
@@ -48,16 +50,7 @@ local new = function(mapping)
             nested = true
             v[name] = rules
         else
-            local r = {}
-            for _, rule in next, rules do
-                if 'function' == type(rule) then
-                    rule = rule()
-                end
-                assert('function' == type(rule.validate),
-                       'No validate function')
-                r[#r+1] = rule
-            end
-            m[name] = r
+            m[name] = initialize_rules(rules)
         end
     end
     if nested then

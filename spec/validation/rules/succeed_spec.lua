@@ -1,10 +1,11 @@
 local succeed = require 'validation.rules.succeed'
-local describe, it, assert, setmetatable = describe, it, assert, setmetatable
+
+local describe, it, assert = describe, it, assert
 
 describe('succeed validate', function()
 
     it('returns nil', function()
-        local r = setmetatable({}, succeed)
+        local r = succeed
         assert.is_nil(r:validate())
     end)
 end)

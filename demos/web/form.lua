@@ -2,6 +2,7 @@ local class = require 'core.class'
 local mixin = require 'core.mixin'
 
 local length = require 'validation.rules.length'
+local nonempty = require 'validation.rules.nonempty'
 local required = require 'validation.rules.required'
 local validator = require 'validation.validator'
 
@@ -11,8 +12,8 @@ local web = require 'web'
 -- validation
 
 local greeting_validator = validator.new {
-    author = {required, length{max=20}},
-    message = {required, length{min=5}, length{max=512}}
+    author = {required, nonempty, length{max=20}},
+    message = {required, nonempty, length{min=5}, length{max=512}}
 }
 
 -- handlers

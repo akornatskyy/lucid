@@ -1,9 +1,10 @@
 local mixin = require 'core.mixin'
 
 local binder = require 'validation.binder'
-local validator = require 'validation.validator'
 local length = require 'validation.rules.length'
+local nonempty = require 'validation.rules.nonempty'
 local required = require 'validation.rules.required'
+local validator = require 'validation.validator'
 
 local http = require 'http'
 
@@ -16,8 +17,8 @@ app:use(http.middleware.routing)
 -- validation
 
 local greeting_validator = validator.new {
-    author = {required, length{max=20}},
-    message = {required, length{min=5}, length{max=512}}
+    author = {required, nonempty, length{max=20}},
+    message = {required, nonempty, length{min=5}, length{max=512}}
 }
 
 --[[

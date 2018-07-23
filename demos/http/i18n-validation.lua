@@ -2,8 +2,9 @@ local mixin = require 'core.mixin'
 local i18n = require 'core.i18n'
 
 local binder = require 'validation.binder'
-local validator = require 'validation.validator'
+local nonempty = require 'validation.rules.nonempty'
 local required = require 'validation.rules.required'
+local validator = require 'validation.validator'
 
 local http = require 'http'
 
@@ -33,7 +34,7 @@ local app = http.app.new {
 app:use(http.middleware.routing)
 
 local greeting_validator = validator.new {
-    message = {required}
+    message = {required, nonempty}
 }
 
 -- lurl -X POST -H 'Cookie: l=uk' demos/http/i18n-validation.lua /

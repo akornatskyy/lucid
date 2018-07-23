@@ -2,13 +2,14 @@ local class = require 'core.class'
 local mixin = require 'core.mixin'
 local i18n = require 'core.i18n'
 
-local validator = require 'validation.validator'
+local nonempty = require 'validation.rules.nonempty'
 local required = require 'validation.rules.required'
+local validator = require 'validation.validator'
 
 local web = require 'web'
 
 local greeting_validator = validator.new {
-    message = {required}
+    message = {required, nonempty}
 }
 
 local function load_translations(locales)

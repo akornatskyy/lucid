@@ -1,4 +1,5 @@
 local succeed = require 'validation.rules.succeed'
+
 local setmetatable = setmetatable
 
 
@@ -58,6 +59,6 @@ return function(o)
     elseif o.max then
         return setmetatable(o, check_max)
     else
-        return setmetatable(o, succeed)
+        return succeed
     end
 end

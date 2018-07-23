@@ -1,16 +1,17 @@
 local class = require 'core.class'
 local mixin = require 'core.mixin'
 
-local validator = require 'validation.validator'
 local length = require 'validation.rules.length'
+local nonempty = require 'validation.rules.nonempty'
 local required = require 'validation.rules.required'
+local validator = require 'validation.validator'
 
 local web = require 'web'
 
 -- validation
 
 local task_validator = validator.new {
-    title = {required, length{min=4}, length{max=250}},
+    title = {required, nonempty, length{min=4}, length{max=250}},
     status = {required}
 }
 

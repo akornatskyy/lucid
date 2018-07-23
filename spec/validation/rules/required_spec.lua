@@ -13,12 +13,10 @@ describe('required rule', function()
     it('fails', function()
         local r = required()
         assert(r:validate(nil, nil, translations))
-        assert(r:validate(false, nil, translations))
-        assert(r:validate('', nil, translations))
     end)
 
     it('allows customize an error message', function()
-        local r = required{msg = 'error'}
+        local r = required {msg = 'error'}
         assert.equals('error', r:validate(nil, nil, translations))
     end)
 end)
