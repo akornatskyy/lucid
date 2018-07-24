@@ -8,7 +8,7 @@ language.
 
 # Table of Contents
 
-<!-- TOC depthFrom:1 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:1 depthTo:3 -->
 
 - [Lua Web API Toolkit](#lua-web-api-toolkit)
 - [Table of Contents](#table-of-contents)
@@ -17,24 +17,90 @@ language.
 - [Setup](#setup)
 - [Run](#run)
 - [HTTP API Reference](#http-api-reference)
-	- [Application](#application)
-	- [Request](#request)
-	- [Response Writer](#response-writer)
-	- [Cookie](#cookie)
-	- [Middlewares](#middlewares)
-	- [Mixins](#mixins)
-	- [Nginx Adapters](#nginx-adapters)
+  - [Application](#application)
+    - [http.app.new([options])](#httpappnewoptions)
+    - [Properties](#properties)
+    - [Events](#events)
+    - [Methods](#methods)
+  - [Request](#request)
+    - [Properties](#properties-1)
+    - [Methods](#methods-1)
+  - [Response Writer](#response-writer)
+    - [Properties](#properties-2)
+    - [Methods](#methods-2)
+  - [Cookie](#cookie)
+  - [Middlewares](#middlewares)
+    - [authcookie](#authcookie)
+    - [authorize](#authorize)
+    - [caching](#caching)
+    - [cors](#cors)
+    - [routing](#routing)
+  - [Mixins](#mixins)
+    - [json mixin](#json-mixin)
+    - [routing mixin](#routing-mixin)
+  - [Nginx Adapters](#nginx-adapters)
+    - [buffered](#buffered)
+    - [stream](#stream)
 - [Validation API Reference](#validation-api-reference)
-	- [Model Binder](#model-binder)
-	- [Validator](#validator)
-	- [Mixins](#mixins)
-	- [Rules](#rules)
+  - [Model Binder](#model-binder)
+    - [binder.new([translations])](#bindernewtranslations)
+    - [Properties](#properties-3)
+    - [Methods](#methods-3)
+  - [Validator](#validator)
+    - [validator.new(mapping)](#validatornewmapping)
+  - [Mixins](#mixins-1)
+    - [set_error](#set_error)
+    - [validation](#validation)
+  - [Rules](#rules)
+    - [allof{rules}](#allofrules)
+    - [anyof{rules}](#anyofrules)
+    - [bytes{min, max}](#bytesmin-max)
+    - [compare{equal, not_equal}](#compareequal-not_equal)
+    - [email](#email)
+    - [empty](#empty)
+    - [fields](#fields)
+    - [items{rules}](#itemsrules)
+    - [length{min, max}](#lengthmin-max)
+    - [nilable](#nilable)
+    - [nonempty](#nonempty)
+    - [optional{rules}](#optionalrules)
+    - [pattern{pattern, plain, negated}](#patternpattern-plain-negated)
+    - [range{min, max}](#rangemin-max)
+    - [required](#required)
+    - [rule(function(value, model, translations))](#rulefunctionvalue-model-translations)
+    - [succeed](#succeed)
+    - [typeof{type}](#typeoftype)
+- [Security API Reference](#security-api-reference)
+  - [cipher](#cipher)
+    - [cipher.new{cipher[, key, iv]}](#ciphernewcipher-key-iv)
+    - [c:encrypt(s)](#cencrypts)
+    - [c:decrypt(s)](#cdecrypts)
+  - [digest](#digest)
+    - [digest.new(digest_type)](#digestnewdigest_type)
+    - [digest.hmac(digest_type, key)](#digesthmacdigest_type-key)
+  - [rand](#rand)
+    - [rand.bytes(count)](#randbytescount)
+    - [rand.uniform([n])](#randuniformn)
+  - [ticket](#ticket)
+    - [ticket.new{digest, cipher[, encoder,  max_age]}](#ticketnewdigest-cipher-encoder--max_age)
+    - [t:encode(s)](#tencodes)
+    - [t:decode(s)](#tdecodes)
+  - [principal](#principal)
+    - [principal.parse(s)](#principalparses)
+    - [principal.dump{id[, roles, alias, extra]}](#principaldumpid-roles-alias-extra)
 - [Web API Reference](#web-api-reference)
-	- [Application](#application)
-	- [Middlewares](#middlewares)
-	- [Mixins](#mixins)
+  - [Application](#application-1)
+  - [Middlewares](#middlewares-1)
+    - [routing](#routing-1)
+  - [Mixins](#mixins-2)
+    - [authcookie](#authcookie-1)
+    - [json](#json)
+    - [locale](#locale)
+    - [model](#model)
+    - [principal](#principal-1)
+    - [routing](#routing-2)
 - [Tools](#tools)
-	- [lurl](#lurl)
+  - [lurl](#lurl)
 
 <!-- /TOC -->
 
@@ -985,6 +1051,8 @@ app:get('signout', authcookie, function(w, req)
 end)
 ```
 
+Read more about a [principal](#principal) object in security section.
+
 > The authentication cookie is set only on successful status code (2XX).
 
 Use `app.options` to configure middleware.
@@ -1028,8 +1096,8 @@ The following table describes the configuration options.
 Authorization middleware implements verification of signed and encrypted
 authentication session cookie.
 
-Use  request `req.principal` property to get the security principal associated
-during request authentication.
+Use  request `req.principal` property to get a security
+[principal](#principal) associated during request authentication.
 
 ```lua
 app:get('secure', authorize, function(w, req)
@@ -1067,7 +1135,7 @@ Use `app.options` to configure middleware.
 ```lua
 local app = http.app.new {
     cors = http.cors.new {
-        allow_credentials = true,    
+        allow_credentials = true,
         allowed_origins = {'*'},
         allowed_methods = {'GET', 'HEAD', 'POST', 'PUT', 'DELETE'},
         allowed_headers = {'content-type', 'x-requested-with'},
@@ -1529,6 +1597,22 @@ end
 
 > The validator object is stateless and can be reused.
 
+**Example: composite validation
+
+```
+local greeting_validator = validator.new {
+    author = validator.new {
+        name = {required}
+    }
+}
+```
+
+
+> The composite validation does not stack model attributes, for example
+> in case author name is empty, the `errors` object will contain validation
+> error for attribute `name`, not `author.name`.
+
+
 ## Mixins
 
 ### set_error
@@ -1642,6 +1726,28 @@ local greeting_validator = validator.new {
 
 > Validation rules are checked from left to right until a first fail.
 
+### allof{rules}
+
+Ensures if all of the provided rules validates the field.
+
+This rule is analogue to logical *and*, it checks each rule until a first fails.
+
+### anyof{rules}
+
+Ensures if any of the provided rules validates the field.
+
+```lua
+local validator = require 'validation.validator'
+local anyof = require 'validation.rules.anyof'
+
+local message_validator = validator.new {
+    nbr = {anyof{range{min=0, max=5}, range{min=10, max=20}}}
+}
+```
+
+This rule is analogue to logical *or*, it checks each rule until a first succeeds. If none
+of the rules succeeds returns the first error.
+
 ### bytes{min, max}
 
 The length of the raw byte `string` value of the model attribute must match the
@@ -1671,8 +1777,8 @@ local password_validator = validator.new {
 }
 ```
 
-Use one of the optional `equal` or `not_equal` to specify the model attribute to
-compare.
+Use one of the optional `equal` or `not_equal` to specify the model attribute
+to compare.
 
 ### email
 
@@ -1689,6 +1795,54 @@ local password_validator = validator.new {
 
 Use an optional parameter `msg` to override the error message.
 
+### empty
+
+The value must be an empty string.
+
+Use an optional parameter `msg` to override the error message.
+
+### fields
+
+The model must contain only specified fields.
+
+```lua
+local validator = require 'validation.validator'
+local fields = require 'validation.rules.fields'
+
+local place_validator = validator.new {
+    __ERROR__ = {fields {'x', 'y'}}
+}
+```
+
+Use an optional parameter `msg` to override the error message.
+
+```lua
+local place_validator = validator.new {
+    __ERROR__ = {
+        fields {allowed = {'x', 'y'}, msg = 'Unknown field %s.'}
+    }
+}
+```
+
+> The rule stops on a first unknown field encountered. The field name is truncated
+> to the first 9 characters.
+
+### items{rules}
+
+The value must be of type *table*, the rules are applied to each item.
+
+```lua
+local validator = require 'validation.validator'
+local typeof = require 'validation.rules.typeof'
+local items = require 'validation.rules.items'
+
+local coords_validator = validator.new {
+    coords = {items{typeof 'number'}}
+}
+```
+
+> The rule stops on a first error.
+
 ### length{min, max}
 
 The length of the UTF8 `string` value of the model attribute must match the
@@ -1704,6 +1858,42 @@ local message_validator = validator.new {
 ```
 
 Use one of the optional `min` or `max` to specify the boundaries.
+
+### nilable
+
+The value must be *nil*.
+
+Use an optional parameter `msg` to override the error message.
+
+### nonempty
+
+The value must not be an empty string.
+
+```lua
+local validator = require 'validation.validator'
+local nonempty = require 'validation.rules.nonempty'
+
+local user_validator = validator.new {
+    username = {nonempty}
+}
+```
+
+Use an optional parameter `msg` to override the error message.
+
+### optional{rules}
+
+The value must be either *nil* or all rules must succeed.
+
+```lua
+local validator = require 'validation.validator'
+local optional = require 'validation.rules.nonempty'
+
+local user_validator = validator.new {
+    username = {optional{length{min=6, max=20}}}
+}
+```
+
+Use an optional parameter `msg` to override the error message.
 
 ### pattern{pattern, plain, negated}
 
@@ -1729,7 +1919,7 @@ local validator = require 'validation.validator'
 local range = require 'validation.rules.range'
 
 local age_validator = validator.new {
-    age = {length{min=21}}
+    age = {range{min=21}}
 }
 ```
 
@@ -1737,7 +1927,7 @@ Use one of the optional `min` or `max` to specify the boundaries.
 
 ### required
 
-The value must not be null, an empty string or zero.
+The value must not be null.
 
 ```lua
 local validator = require 'validation.validator'
@@ -1750,9 +1940,239 @@ local user_validator = validator.new {
 
 Use an optional parameter `msg` to override the error message.
 
+### rule(function(value, model, translations))
+
+Call a custom function for validation.
+
+```lua
+local validator = require 'validation.validator'
+local rule = require 'validation.rules.required'
+
+local coords_validator = validator.new {
+    coords = {
+        rule(function(value)
+            if value % 2 ~= 0 then
+                return 'Must be an even number.'
+            end
+        end)
+    }
+}
+```
+
 ### succeed
 
 Always succeeds regardless value supplied.
+
+### typeof{type}
+
+The value must not be of given type.
+
+```lua
+local validator = require 'validation.validator'
+local typeof = require 'validation.rules.typeof'
+
+local user_validator = validator.new {
+    username = {typeof 'string'},
+    age = {typeof {'integer', msg = 'Must be an integer number.'}},
+    agreed = {typeof {type = 'boolean', msg = 'You must agree to terms.'}}
+}
+```
+
+Use an optional parameter `msg` to override the error message.
+
+> This validator besides standard Lua types also supports integer type.
+
+# Security API Reference
+
+Provides integration with [luaossl](https://github.com/wahern/luaossl) library.
+
+## cipher
+
+### cipher.new{cipher[, key, iv]}
+
+Returns a new cipher instance. `cipher` is a string suitable for passing to the
+OpenSSL, typically of a form similar to "AES-128-CBC", "aes256",  etc. `key`
+and `iv` are optional binary strings with lengths equal to that required by
+the cipher.
+
+```lua
+local cipher = require 'security.crypto.cipher'
+
+local c = cipher.new {
+    cipher = 'aes128',
+    key = 'DK((-x=e[.2cLq]f',
+    iv = 'b#KXN>H9"j><f2N`'
+}
+```
+
+To get a list of available cipher algorithms use the following.
+
+```sh
+openssl list -cipher-algorithms
+```
+
+### c:encrypt(s)
+
+Returns the encrypted string on success, or `nil` and an error message on
+failure.
+
+```lua
+local s, err = c:encrypt('test')
+```
+
+### c:decrypt(s)
+
+Returns the decrypted string on success, or `nil` and an error message on
+failure.
+
+```lua
+local msg, err = c:decrypt(s)
+```
+
+## digest
+
+### digest.new(digest_type)
+
+Returns a new digest instance using the specified algorithm type. `digest_type`
+is a string suitable for passing to the OpenSSL, typically of form "SHA1",
+"ripemd160", etc.
+
+```lua
+local digest = require 'security.crypto.digest'
+
+local md5 = digest.new 'md5'
+```
+
+Returns the final message digest as a binary string.
+
+```lua
+local s = md5('test')
+```
+
+To get a list of available digest algorithms use the following.
+
+```sh
+openssl list -digest-algorithms
+```
+
+### digest.hmac(digest_type, key)
+
+Returns a new instance that represents a cryptographic HMAC algorithm using
+the specified `digest_type` and `key`.
+
+```lua
+local hmac = require 'security.crypto.hmac'
+
+local d = digest.hmac('ripemd160', '6xZxzaP)C2d5LRnw')
+```
+
+Returns the final message digest as a binary string.
+
+```lua
+local s = d('test')
+```
+
+## rand
+
+### rand.bytes(count)
+
+Returns `count` cryptographically-strong bytes as a single string.
+
+```lua
+local rand = require 'security.crypto.rand'
+
+local r = rand.bytes(16)
+```
+
+### rand.uniform([n])
+
+Returns a cryptographically strong uniform random integer in the interval
+[0, n). If `n` is omitted, the interval is [0, 2^64 − 1].
+
+```lua
+local rand = require 'security.crypto.rand'
+
+local i = rand.uniform(100)
+```
+
+> The number returned is in range from zero (including) to n (exclusive).
+
+## ticket
+
+Provides access to the ticket used to cryptographically secure sensitive
+information.
+
+### ticket.new{digest, cipher[, encoder,  max_age]}
+
+Returns a new instance that represents a cryptographically secure ticket. The
+content of the ticket is secured using `cipher` and signed by `digest`
+(supplied either as a string or a function), `encoder` (a table with functions
+encode and decode) specifies character encoding to apply to raw string and
+defaults to base64 encoding. The ticket lifetime is limited per `max_age` and
+defaults to 900 seconds from the time of encoding.
+
+```lua
+local cipher = require 'security.crypto.cipher'
+local digest = require 'security.crypto.digest'
+local ticket = require 'security.crypto.ticket'
+
+local t = ticket.new {
+    --digest = 'sha256',
+    --digest = digest.new 'sha256',
+    digest = digest.hmac('ripemd160', '6xZxzaP)C2d5LRnw'),
+    cipher = cipher.new {
+        cipher = 'aes128',
+        key = 'DK((-x=e[.2cLq]f',
+        iv = 'b#KXN>H9"j><f2N`'
+    },
+    encoder = require 'core.encoding.base64',
+    max_age = 900
+}
+```
+
+### t:encode(s)
+
+Returns a secured string on success, or `nil` and an error message on
+failure.
+
+```lua
+local secured, err = t:encode('some secret string')
+```
+
+### t:decode(s)
+
+Returns a decoded string on success, or `nil` and an error message on
+failure.
+
+```lua
+local text, err = t:decode(secured)
+```
+
+## principal
+
+A principal table represents the security context of the user on whose behalf
+the code is running, including that user's identity (name) and any roles to
+which the user belongs.
+
+``` lua
+local user = {
+    id = 'bob',
+    roles = {
+        staff = true,
+        operator = true
+    },
+    alias = 'Bob',
+    extra = 'any arbitrary string'
+}
+```
+
+### principal.parse(s)
+
+Returns a principle table parsed out from string.
+
+### principal.dump{id[, roles, alias, extra]}
+
+Dumps a principle table into a string representation.
 
 # Web API Reference
 
