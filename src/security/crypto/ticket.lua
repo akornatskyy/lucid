@@ -1,5 +1,6 @@
 local struct = require 'struct'
 local rand = require 'security.crypto.rand'
+
 local pack, unpack, rand_bytes = struct.pack, struct.unpack, rand.bytes
 local assert, type, time = assert, type, os.time
 local setmetatable = setmetatable
@@ -49,7 +50,7 @@ local new = function(self)
         error('digest: string or function expected', 2)
     end
     if not self.encoder then
-        self.encoder = require('core.encoding').new('base64')
+        self.encoder = require 'core.encoding.base64'
     end
     assert(self.cipher)
     assert(self.cipher.encrypt)

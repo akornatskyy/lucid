@@ -8,7 +8,7 @@ describe('security.crypto.digest', function()
             assert.error(digest.new, 'string expected')
         end)
 
-        local b64 = encoding.new('base64')
+        local b64 = encoding.new 'base64'
         local cases = {
             sha1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M=',
             ripemd160 = 'XlL+5H5rBwVl90NyRozcaZ3okQc=',
@@ -41,7 +41,7 @@ describe('security.crypto.digest', function()
             assert.error(f, 'key: string expected')
         end)
 
-        local b64 = encoding.new('base64')
+        local b64 = encoding.new 'base64'
         local cases = {
             sha1 = 'qUqP5cyxm6YcTAhz05Hph5gvu9M=',
             ripemd160 = 'XlL+5H5rBwVl90NyRozcaZ3okQc=',
