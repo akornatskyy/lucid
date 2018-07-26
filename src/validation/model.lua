@@ -91,6 +91,9 @@ local adapters = {
 }
 
 local function update_model(model, values, errors, translations)
+    if not values then
+        return true
+    end
     local ok = true
     local name_adapters = model.adapters or {}
     local type_adapters = adapters
