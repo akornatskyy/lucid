@@ -9,10 +9,12 @@ env:
 
 install:
     - make env LUA_IMPL=$LUA_IMPL LUA_VERSION=$LUA_VERSION
+    - make nginx
 
 script:
     - make test
     - make qa
+    - make e2e
 
 after_success:
     - eval "$(env/bin/luarocks path --bin)"

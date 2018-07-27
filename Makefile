@@ -1,12 +1,12 @@
-.SILENT: clean env test qa run debian rm lua luajit luarocks nginx
-.PHONY: clean env test qa run debian rm lua luajit luarocks nginx
+.SILENT: clean env test qa run e2e debian rm lua luajit luarocks nginx
+.PHONY: clean env test qa run e2e debian rm lua luajit luarocks nginx
 
 ENV=$(shell pwd)/env
 # lua | luajit
-LUA_IMPL=lua
-LUA_VERSION=5.1.5
+LUA_IMPL=luajit
+LUA_VERSION=2.1
 LUAROCKS_VERSION=2.4.4
-NGINX_VERSION=1.14.0
+NGINX_VERSION=1.15.1
 NGINX_LUA_MODULE_VERSION=0.10.13
 
 ifeq (Darwin,$(shell uname -s))
@@ -26,13 +26,13 @@ clean:
 	rm -rf luacov.* luac.out .luacheckcache *.so
 
 env: luarocks
-	for rock in lbase64 luaossl $(LUA_CJSON) lua-cmsgpack luasocket struct utf8 \
-			busted luacov luacheck ; do \
+	for rock in luasec lbase64 luaossl $(LUA_CJSON) lua-cmsgpack luasocket \
+			struct utf8 busted cluacov luacheck lua-requests ; do \
 		$(ENV)/bin/luarocks install $$rock ; \
 	done
 
 test:
-	$(ENV)/bin/busted
+	$(ENV)/bin/busted -v
 
 qa:
 	$(ENV)/bin/luacheck -q src/ spec/ demos/
@@ -40,9 +40,15 @@ qa:
 run:
 	$(ENV)/bin/nginx -c conf/nginx.conf
 
+e2e:
+	($(ENV)/bin/nginx -c conf/nginx.conf &) ; \
+	sleep 0.1 ; \
+	$(ENV)/bin/busted -v -o TAP e2e.lua ; \
+	killall nginx
+
 debian:
 	apt-get install build-essential unzip libncurses5-dev libreadline6-dev \
-		libssl-dev
+		libssl-dev wget
 
 rm: clean
 	rm -rf $(ENV) lua luajit luarocks
