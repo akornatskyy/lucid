@@ -3,11 +3,11 @@
 
 ENV=$(shell pwd)/env
 # lua | luajit
-LUA_IMPL=luajit
-LUA_VERSION=2.1
-LUAROCKS_VERSION=2.4.4
-NGINX_VERSION=1.15.1
-NGINX_LUA_MODULE_VERSION=0.10.13
+LUA_IMPL?=luajit
+LUA_VERSION?=2.1
+LUAROCKS_VERSION?=2.4.4
+NGINX_VERSION?=1.15.1
+NGINX_LUA_MODULE_VERSION?=0.10.13
 
 ifeq (Darwin,$(shell uname -s))
   PLATFORM?=macosx
@@ -104,7 +104,8 @@ nginx:
 		export LUA_INC=$(ENV)/include ; \
 	fi && \
 	./configure --prefix=$(ENV) --without-http_rewrite_module --without-pcre \
-		--add-module=./lua-nginx-module && \
+		--add-module=./lua-nginx-module \
+		--with-ld-opt="-Wl,-rpath,$$LUAJIT_LIB$$LUA_LIB" ; \
 	make -j4 && \
 	\
 	cd .. && \
