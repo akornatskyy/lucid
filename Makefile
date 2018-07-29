@@ -112,4 +112,8 @@ nginx:
 	cp nginx/objs/nginx bin/ && \
 	cp nginx/conf/mime.types conf/ && \
 	ln -sf $$WDIR/etc/nginx.conf conf/nginx.conf && \
-	rm -rf nginx
+	rm -rf nginx && \
+	\
+	mkdir -p lua-resty-websocket && \
+	wget -c https://github.com/openresty/lua-resty-websocket/archive/v0.06.tar.gz \
+		-O - | tar -xzC lua-resty-websocket --strip-components=1

@@ -13,13 +13,14 @@ dependencies = {
     'lua >= 5.1',
     -- optional:
     -- 'lbase64',
-    -- 'struct',
-    -- 'luaossl',
     -- 'lua-cjson',
-    -- 'lua-messagepack',
     -- 'lua-cmsgpack',
     -- 'lua-messagepack'
+    -- 'lua-messagepack',
+    -- 'lua-resty-websocket'
+    -- 'luaossl',
     -- 'luasocket'
+    -- 'struct',
     -- 'utf8'
 }
 
@@ -63,6 +64,7 @@ build = {
         ['http.middleware.caching'] = 'src/http/middleware/caching.lua',
         ['http.middleware.cors'] = 'src/http/middleware/cors.lua',
         ['http.middleware.routing'] = 'src/http/middleware/routing.lua',
+        ['http.middleware.websocket'] = 'src/http/middleware/websocket.lua',
         ['http.mixins.json'] = 'src/http/mixins/json.lua',
         ['http.mixins.routing'] = 'src/http/mixins/routing.lua',
         ['http.request'] = 'src/http/request.lua',

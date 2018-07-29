@@ -7,8 +7,12 @@ files['spec/'].read_globals = {
   'assert',
   'before_each',
   'describe',
+  'insulate',
   'it',
-  'spy'
+  'setup',
+  'spy',
+  'stub',
+  'teardown'
 }
 unused_args = false
 ignore = {

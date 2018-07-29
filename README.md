@@ -35,6 +35,7 @@ language.
     - [caching](#caching)
     - [cors](#cors)
     - [routing](#routing)
+    - [websocket](#websocket)
   - [Mixins](#mixins)
     - [json mixin](#json-mixin)
     - [routing mixin](#routing-mixin)
@@ -1268,10 +1269,53 @@ The following table describes the configuration options.
 The routing middleware responds with HTTP status 404 (Not Found) in case there
 is not match for `req.path`.
 
+### websocket
+
+Provides integration with
+[lua-resty-websocket](https://github.com/openresty/lua-resty-websocket) library.
+
+Usage example:
+
+```lua
+local http = require 'http'
+local websocket = require 'http.middleware.websocket'
+
+local app = http.app.new {
+    websocket = {
+        timeout = 30000
+    }
+}
+app:use(http.middleware.routing)
+
+app:get('echo', websocket, function(ws, req)
+    ws:on('text', function(message)
+        ws:send_text(message)
+    end)
+    ws:on('timeout', function()
+        ws:close()
+    end)
+
+    ws:loop()
+end)
+
+return app()
+```
+
+The following table describes the configuration options.
+
+| Property        | Type    | Description                                                  |
+| --------------- | ------- | ------------------------------------------------------------ |
+| timeout         | number  | The network timeout threshold in milliseconds.               |
+| max_payload_len | number  | The maximal length of payload allowed when sending and receiving WebSocket frames.  Defaults to `65535`. |
+| send_masked     | boolean | Specifies whether to send out masked WebSocket frames. When it is `true`, masked frames are always sent. Default to `false`. |
+
+The websocket middleware responds with HTTP status 400 (Bad Request) in case
+there is an error.
+
 ## Mixins
 
-A mixin is a special kind of multiple inheritance. Specifically, it is used to provide
-optional features or reuse of particular feature in different classes.
+A mixin is a special kind of multiple inheritance. Specifically, it is used to
+provide optional features or reuse of particular feature in different classes.
 
 The mixins are not made to stand on their own. Usually, mixins assume some
 context which they extend.
