@@ -1,0 +1,79 @@
+[{
+  "description": "email",
+  "rule": "email",
+  "args": [],
+  "tests": [{
+    "description": "ignores nil value",
+    "samples": [null]
+  }, {
+    "description": "accepts a valid email address",
+    "samples": ["x@somewhere.com"]
+  }, {
+    "description": "contains dot in the address field is valid",
+    "samples": ["x.14@somewhere.org"]
+  }, {
+    "description": "digits in address is valid",
+    "samples": ["14@somewhere.org"]
+  }, {
+    "description": "underscore in address is valid",
+    "samples": ["__@somewhere.org"]
+  }, {
+    "description": "dash in address is valid",
+    "samples": ["a-b@somewhere.org"]
+  }, {
+    "description": "contains dot with subdomain is valid",
+    "samples": ["x@sub.somewhere.org"]
+  }, {
+    "description": "dash in domain name is valid",
+    "samples": ["x@some-where.org"]
+  }, {
+    "description": "plus sign is considered valid character",
+    "samples": ["a+b@somewhere.org"]
+  }, {
+    "description": "has domain as ip address is valid",
+    "samples": ["a@123.123.123.123"]
+  }, {
+    "description": "an empty value is invalid",
+    "samples": [""],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "missing @ sign and domain is invalid",
+    "samples": ["somewhere.com"],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "missing @ is invalid",
+    "samples": ["abc"],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "two @ is invalid",
+    "samples": ["x@x@abc.com"],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "garbage is invalid",
+    "samples": ["#@%^%#$@#$@#.com"],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "missing username is invalid",
+    "samples": ["@somewhere.com"],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "encoded within email is invalid",
+    "samples": ["John <j@somewhere.com>"],
+    "err": "Required to be a valid email address."
+  }, {
+    "description": "missing top level domain is invalid",
+    "samples": ["x@somewhere"],
+    "err": "Required to be a valid email address."
+  }]
+}, {
+  "description": "email with a custom error message",
+  "rule": "email",
+  "args": [{
+    "msg": "invalid email"
+  }],
+  "tests": [{
+    "description": "an empty value is invalid",
+    "samples": [""],
+    "err": "invalid email"
+  }]
+}]

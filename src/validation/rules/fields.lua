@@ -15,6 +15,7 @@ local check_fields = {
 }
 
 return function(t)
+    assert(type(t) == 'table')
     local allowed = {}
     local msg
     if t.allowed then

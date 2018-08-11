@@ -4,7 +4,7 @@ local find = string.find
 local validate = function(self, value, model, translations)
     if value and not find(
             value,
-            '[A-Za-z0-9%.%%%+%-]+@[A-Za-z0-9%.%%%+%-]+%.%w%w%w?%w?') then
+            '^[A-Za-z0-9%.%%%+%-%_]+@[A-Za-z0-9%.%%%+%-]+%.%w%w%w?%w?') then
         return translations:gettext(self.msg)
     end
     return nil

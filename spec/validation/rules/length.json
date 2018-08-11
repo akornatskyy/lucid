@@ -1,0 +1,161 @@
+[{
+    "description": "length without min or max",
+    "rule": "length",
+    "args": [{}],
+    "tests": [{
+      "description": "ignores any value",
+      "samples": [null, "", "x"]
+    }]
+  }, {
+    "description": "length with min only",
+    "rule": "length",
+    "args": [{
+      "min": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "longer is valid",
+        "samples": ["yes", "hello", "早上好", "привіт"]
+      },
+      {
+        "description": "exact length is valid",
+        "samples": ["ok", "你好", "ні"]
+      },
+      {
+        "description": "too short is invalid",
+        "samples": ["", "x"],
+        "err": "Required to be a minimum of 2 characters in length."
+      }
+    ]
+  }, {
+    "description": "length with max only",
+    "rule": "length",
+    "args": [{
+      "max": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "shorter is valid",
+        "samples": ["", "x", "嗨", "я"]
+      },
+      {
+        "description": "exact length is valid",
+        "samples": ["ok", "你好", "ні"]
+      },
+      {
+        "description": "too long is invalid",
+        "samples": ["yes", "hello", "早上好", "привіт"],
+        "err": "Exceeds maximum length of 2."
+      }
+    ]
+  }, {
+    "description": "length with min equals max",
+    "rule": "length",
+    "args": [{
+      "min": 2,
+      "max": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "shorter is invalid",
+        "samples": ["", "x", "嗨", "я"],
+        "err": "The length must be exactly 2 characters."
+      },
+      {
+        "description": "exact length is valid",
+        "samples": ["ok", "你好", "ні"]
+      },
+      {
+        "description": "too long is invalid",
+        "samples": ["yes", "hello", "早上好", "привіт"],
+        "err": "The length must be exactly 2 characters."
+      }
+    ]
+  },
+  {
+    "description": "length in range from min to max",
+    "rule": "length",
+    "args": [{
+      "min": 1,
+      "max": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "shorter is invalid",
+        "samples": [""],
+        "err": "The length must fall within the range 1 - 2 characters."
+      },
+      {
+        "description": "fits boundaries is valid",
+        "samples": ["x", "嗨", "я", "ok", "你好", "ні"]
+      },
+      {
+        "description": "does not fit boundaries is invalid",
+        "samples": ["", "yes", "hello", "早上好", "привіт"],
+        "err": "The length must fall within the range 1 - 2 characters."
+      }
+    ]
+  }, {
+    "description": "length with a custom min characters error message",
+    "rule": "length",
+    "args": [{
+      "min": 2,
+      "msg": "Min %d charactres."
+    }],
+    "tests": [{
+      "description": "too short is invalid",
+      "samples": ["", "x"],
+      "err": "Min 2 charactres."
+    }]
+  }, {
+    "description": "length with a custom max characters error message",
+    "rule": "length",
+    "args": [{
+      "max": 2,
+      "msg": "Max %d charactres."
+    }],
+    "tests": [{
+      "description": "too long is invalid",
+      "samples": ["yes", "hello", "早上好", "привіт"],
+      "err": "Max 2 charactres."
+    }]
+  }, {
+    "description": "length with a custom exact characters error message",
+    "rule": "length",
+    "args": [{
+      "min": 2,
+      "max": 2,
+      "msg": "Exactly %d charactres."
+    }],
+    "tests": [{
+      "description": "too long is invalid",
+      "samples": ["", "yes", "hello", "早上好", "привіт"],
+      "err": "Exactly 2 charactres."
+    }]
+  }, {
+    "description": "length with a custom range characters error message",
+    "rule": "length",
+    "args": [{
+      "min": 1,
+      "max": 2,
+      "msg": "In range %d - %d charactres."
+    }],
+    "tests": [{
+      "description": "too long is invalid",
+      "samples": ["", "yes", "hello", "早上好", "привіт"],
+      "err": "In range 1 - 2 charactres."
+    }]
+  }
+]

@@ -1,0 +1,24 @@
+[{
+  "description": "nilable",
+  "rule": "nilable",
+  "args": [],
+  "tests": [{
+    "description": "a nil value is valid",
+    "samples": [null]
+  }, {
+    "description": "any not nil value is invalid",
+    "samples": ["", "x", 1, 1.5, true, false],
+    "err": "Must be left to nil."
+  }]
+}, {
+  "description": "nilable with a custom error message",
+  "rule": "nilable",
+  "args": [{
+    "msg": "it is nilable"
+  }],
+  "tests": [{
+    "description": "a not nil value is invalid",
+    "samples": [""],
+    "err": "it is nilable"
+  }]
+}]

@@ -1,0 +1,24 @@
+[{
+  "description": "required",
+  "rule": "required",
+  "args": [],
+  "tests": [{
+    "description": "ignores any not nil value",
+    "samples": ["", "x", 1, 1.5, true, false]
+  }, {
+    "description": "a nil value is invalid",
+    "samples": [null],
+    "err": "Required field cannot be left blank."
+  }]
+}, {
+  "description": "required with a custom error message",
+  "rule": "required",
+  "args": [{
+    "msg": "it is required"
+  }],
+  "tests": [{
+    "description": "a nil value is invalid",
+    "samples": [null],
+    "err": "it is required"
+  }]
+}]

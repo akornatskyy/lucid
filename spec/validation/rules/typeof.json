@@ -1,0 +1,72 @@
+[{
+    "description": "typeof with a string as parameter",
+    "rule": "typeof",
+    "args": ["number"],
+    "tests": [{
+      "description": "type matches is valid",
+      "samples": [-100, -1.5, 0, 1, 1.5, 100]
+    }, {
+      "description": "type mismatches is invalid",
+      "samples": ["", true],
+      "err": "Required to match number type."
+    }]
+  },
+  {
+    "description": "typeof with a type as table parameter",
+    "rule": "typeof",
+    "args": [{
+      "type": "string"
+    }],
+    "tests": [{
+      "description": "type matches is valid",
+      "samples": ["", "x"]
+    }, {
+      "description": "type mismatches is invalid",
+      "samples": [0, 1.5, true],
+      "err": "Required to match string type."
+    }]
+  },
+  {
+    "description": "typeof with a type as a first element in table",
+    "rule": "typeof",
+    "args": [
+      [
+        "boolean"
+      ]
+    ],
+    "tests": [{
+      "description": "type matches is valid",
+      "samples": [true, false]
+    }, {
+      "description": "type mismatches is invalid",
+      "samples": [0, "", 1.5],
+      "err": "Required to match boolean type."
+    }]
+  },
+  {
+    "description": "typeof with integer",
+    "rule": "typeof",
+    "args": ["integer"],
+    "tests": [{
+      "description": "type matches is valid",
+      "samples": [-100, -1, 0, 1, 1, 100]
+    }, {
+      "description": "type mismatches is invalid",
+      "samples": ["", true, 1.5, -1.5],
+      "err": "Required to match integer type."
+    }]
+  },
+  {
+    "description": "typeof with a custom error message",
+    "rule": "typeof",
+    "args": [{
+      "type": "number",
+      "msg": "must be numeric"
+    }],
+    "tests": [{
+      "description": "a nil value is invalid",
+      "samples": [null],
+      "err": "must be numeric"
+    }]
+  }
+]

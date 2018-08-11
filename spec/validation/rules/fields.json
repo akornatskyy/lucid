@@ -1,0 +1,69 @@
+[{
+  "description": "fields",
+  "rule": "fields",
+  "args": [
+    ["a", "b"]
+  ],
+  "tests": [{
+      "description": "too few fields is valid",
+      "samples": [
+        [null, {}],
+        [null, {
+          "a": 1
+        }],
+        [null, {
+          "a": 1,
+          "b": 1
+        }]
+      ]
+    }, {
+      "description": "unknown fields are valid",
+      "samples": [
+        [null, {
+          "c": 1
+        }],
+        [null, {
+          "a": 1,
+          "c": 1
+        }],
+        [null, {
+          "a": 1,
+          "b": 1,
+          "c": 1
+        }]
+      ],
+      "err": "Unknown field name [c]."
+    },
+    {
+      "description": "truncates a long field name",
+      "samples": [
+        [null, {
+          "123456789": 1
+        }],
+        [null, {
+          "1234567890": 1
+        }],
+        [null, {
+          "1234567890A": 1
+        }]
+      ],
+      "err": "Unknown field name [123456789]."
+    }
+  ]
+}, {
+  "description": "fields with a custom error message",
+  "rule": "fields",
+  "args": [{
+    "allowed": ["a", "b"],
+    "msg": "has unknown fields"
+  }],
+  "tests": [{
+    "description": "a nil value is invalid",
+    "samples": [
+      [null, {
+        "c": 1
+      }]
+    ],
+    "err": "has unknown fields"
+  }]
+}]

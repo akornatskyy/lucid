@@ -12,10 +12,10 @@ local check_generic_type = {__index = {
 }}
 
 local check_integer_type = {__index = {
-    msg = 'Required to match integer type.',
+    msg = 'Required to match %s type.',
     validate = function(self, value, model, translations)
         if type(value) ~= 'number' or value % 1 ~= 0 then
-            return translations:gettext(self.msg)
+            return translations:gettext(self.msg):format(self.type)
         end
         return nil
     end

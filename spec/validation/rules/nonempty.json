@@ -1,0 +1,24 @@
+[{
+  "description": "nonempty",
+  "rule": "nonempty",
+  "args": [],
+  "tests": [{
+    "description": "ignores any nonempty value",
+    "samples": [null, "x", 1, 1.5, true, false]
+  }, {
+    "description": "an empty value is invalid",
+    "samples": [""],
+    "err": "Required field cannot be left blank."
+  }]
+}, {
+  "description": "nonempty with a custom error message",
+  "rule": "nonempty",
+  "args": [{
+    "msg": "it is nonempty"
+  }],
+  "tests": [{
+    "description": "an empty value is invalid",
+    "samples": [""],
+    "err": "it is nonempty"
+  }]
+}]

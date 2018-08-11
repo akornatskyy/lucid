@@ -1,0 +1,161 @@
+[{
+    "description": "bytes without min or max",
+    "rule": "bytes",
+    "args": [{}],
+    "tests": [{
+      "description": "ignores any value",
+      "samples": [null, "", "x"]
+    }]
+  }, {
+    "description": "bytes with min only",
+    "rule": "bytes",
+    "args": [{
+      "min": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "longer is valid",
+        "samples": ["yes", "hello", "早上好", "привіт"]
+      },
+      {
+        "description": "exact bytes is valid",
+        "samples": ["ok", "你好", "ні"]
+      },
+      {
+        "description": "too short is invalid",
+        "samples": ["", "x"],
+        "err": "Required to be a minimum of 2 bytes in length."
+      }
+    ]
+  }, {
+    "description": "bytes with max only",
+    "rule": "bytes",
+    "args": [{
+      "max": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "shorter is valid",
+        "samples": ["", "x", "я"]
+      },
+      {
+        "description": "exact bytes is valid",
+        "samples": ["ok"]
+      },
+      {
+        "description": "too long is invalid",
+        "samples": ["yes", "hello", "早上好", "привіт"],
+        "err": "Exceeds maximum length of 2."
+      }
+    ]
+  }, {
+    "description": "bytes with min equals max",
+    "rule": "bytes",
+    "args": [{
+      "min": 2,
+      "max": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "shorter is invalid",
+        "samples": ["", "x"],
+        "err": "The length must be exactly 2 bytes."
+      },
+      {
+        "description": "exact bytes is valid",
+        "samples": ["ok"]
+      },
+      {
+        "description": "too long is invalid",
+        "samples": ["yes", "hello", "早上好", "привіт"],
+        "err": "The length must be exactly 2 bytes."
+      }
+    ]
+  },
+  {
+    "description": "bytes in range from min to max",
+    "rule": "bytes",
+    "args": [{
+      "min": 1,
+      "max": 2
+    }],
+    "tests": [{
+        "description": "ignores nil value",
+        "samples": [null]
+      },
+      {
+        "description": "shorter is invalid",
+        "samples": [""],
+        "err": "The length must fall within the range 1 - 2 bytes."
+      },
+      {
+        "description": "fits boundaries is valid",
+        "samples": ["x", "я", "ok"]
+      },
+      {
+        "description": "does not fit boundaries is invalid",
+        "samples": ["", "yes", "hello", "早上好", "привіт"],
+        "err": "The length must fall within the range 1 - 2 bytes."
+      }
+    ]
+  }, {
+    "description": "bytes with a custom min bytes error message",
+    "rule": "bytes",
+    "args": [{
+      "min": 2,
+      "msg": "Min %d bytes."
+    }],
+    "tests": [{
+      "description": "too short is invalid",
+      "samples": ["", "x"],
+      "err": "Min 2 bytes."
+    }]
+  }, {
+    "description": "bytes with a custom max bytes error message",
+    "rule": "bytes",
+    "args": [{
+      "max": 2,
+      "msg": "Max %d bytes."
+    }],
+    "tests": [{
+      "description": "too long is invalid",
+      "samples": ["yes", "hello", "早上好", "привіт"],
+      "err": "Max 2 bytes."
+    }]
+  }, {
+    "description": "bytes with a custom exact bytes error message",
+    "rule": "bytes",
+    "args": [{
+      "min": 2,
+      "max": 2,
+      "msg": "Exactly %d bytes."
+    }],
+    "tests": [{
+      "description": "too long is invalid",
+      "samples": ["", "yes", "hello", "早上好", "привіт"],
+      "err": "Exactly 2 bytes."
+    }]
+  }, {
+    "description": "bytes with a custom range bytes error message",
+    "rule": "bytes",
+    "args": [{
+      "min": 1,
+      "max": 2,
+      "msg": "In range %d - %d bytes."
+    }],
+    "tests": [{
+      "description": "too long is invalid",
+      "samples": ["", "yes", "hello", "早上好", "привіт"],
+      "err": "In range 1 - 2 bytes."
+    }]
+  }
+]

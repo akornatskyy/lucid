@@ -35,8 +35,6 @@ return {
         'Обов\'язково має не відповідати шаблону перевірки.',
     ['Required to match %s type.'] =
         'Обов\'язково має відповідати типу %s.',
-    ['Required to match integer type.'] =
-        'Обов\'язково має відповідати типу integer.',
     ['Must be left to nil.'] =
         'Має залишатись nil.',
     ['Unknown field name [%s].'] =

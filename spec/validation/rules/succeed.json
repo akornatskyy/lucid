@@ -1,0 +1,9 @@
+[{
+  "description": "succeed",
+  "rule": "succeed",
+  "args": [],
+  "tests": [{
+    "description": "any value is valid",
+    "samples": [null, "", "x", 1, 1.5, true, false, {}]
+  }]
+}]

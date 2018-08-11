@@ -1,0 +1,151 @@
+[{
+    "description": "compare equal",
+    "rule": "compare",
+    "args": [{
+      "equal": "confirm_password"
+    }],
+    "tests": [{
+        "description": "value is exactly the same as the other property is valid",
+        "samples": [
+          [
+            "",
+            {
+              "confirm_password": ""
+            }
+          ],
+          [
+            "x",
+            {
+              "confirm_password": "x"
+            }
+          ],
+          [
+            "早上好",
+            {
+              "confirm_password": "早上好"
+            }
+          ]
+        ]
+      },
+      {
+        "description": "value is not the same is invalid",
+        "samples": [
+          [
+            "",
+            {
+              "confirm_password": "x"
+            }
+          ],
+          [
+            "x",
+            {
+              "confirm_password": ""
+            }
+          ],
+          [
+            "你好",
+            {
+              "confirm_password": "早上好"
+            }
+          ]
+        ],
+        "err": "The value failed equality comparison with \"confirm_password\"."
+      }
+    ]
+  },
+  {
+    "description": "compare equal with a custom error message",
+    "rule": "compare",
+    "args": [{
+      "equal": "confirm_password",
+      "msg": "passwords do not match"
+    }],
+    "tests": [{
+      "description": "value is not the same is invalid",
+      "samples": [
+        [
+          "",
+          {
+            "confirm_password": "x"
+          }
+        ]
+      ],
+      "err": "passwords do not match"
+    }]
+  },
+  {
+    "description": "compare not equal",
+    "rule": "compare",
+    "args": [{
+      "not_equal": "previous_password"
+    }],
+    "tests": [{
+        "description": "value is exactly the same as the other property is invalid",
+        "samples": [
+          [
+            "",
+            {
+              "previous_password": ""
+            }
+          ],
+          [
+            "x",
+            {
+              "previous_password": "x"
+            }
+          ],
+          [
+            "早上好",
+            {
+              "previous_password": "早上好"
+            }
+          ]
+        ],
+        "err": "The value failed not equal comparison with \"previous_password\"."
+      },
+      {
+        "description": "value is not the same is valid",
+        "samples": [
+          [
+            "",
+            {
+              "previous_password": "x"
+            }
+          ],
+          [
+            "x",
+            {
+              "previous_password": ""
+            }
+          ],
+          [
+            "你好",
+            {
+              "previous_password": "早上好"
+            }
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "description": "compare not equal with a custom error message",
+    "rule": "compare",
+    "args": [{
+      "not_equal": "previous_password",
+      "msg": "should not match a previous password"
+    }],
+    "tests": [{
+      "description": "value is the same is invalid",
+      "samples": [
+        [
+          "",
+          {
+            "previous_password": ""
+          }
+        ]
+      ],
+      "err": "should not match a previous password"
+    }]
+  }
+]

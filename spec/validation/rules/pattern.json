@@ -1,0 +1,99 @@
+[{
+  "description": "pattern found",
+  "rule": "pattern",
+  "args": [{
+    "pattern": "%d+"
+  }],
+  "tests": [{
+    "description": "ignores nil value",
+    "samples": [null]
+  }, {
+    "description": "digits only is valid",
+    "samples": ["1", "123"]
+  }, {
+    "description": "with some digits is valid",
+    "samples": ["X1", "123X"]
+  }, {
+    "description": "with no digits is invalid",
+    "samples": ["x", "abc"],
+    "err": "Required to match validation pattern."
+  }]
+}, {
+  "description": "pattern found negated",
+  "rule": "pattern",
+  "args": [{
+    "pattern": "%d+",
+    "negated": true
+  }],
+  "tests": [{
+    "description": "ignores nil value",
+    "samples": [null]
+  }, {
+    "description": "digits only is invalid",
+    "samples": ["1", "123"],
+    "err": "Required to not match validation pattern."
+  }, {
+    "description": "with some digits is invalid",
+    "samples": ["X1", "123X"],
+    "err": "Required to not match validation pattern."
+  }, {
+    "description": "with no digits is valid",
+    "samples": ["x", "abc"]
+  }]
+}, {
+  "description": "plain pattern found",
+  "rule": "pattern",
+  "args": [{
+    "pattern": "fox",
+    "plain": true
+  }],
+  "tests": [{
+    "description": "ignores nil value",
+    "samples": [null]
+  }, {
+    "description": "exact match is valid",
+    "samples": ["fox"]
+  }, {
+    "description": "substring is valid",
+    "samples": ["firefox", "foxes"]
+  }, {
+    "description": "with no match is invalid",
+    "samples": ["x", "abc"],
+    "err": "Required to match validation pattern."
+  }]
+}, {
+  "description": "plain pattern found negated",
+  "rule": "pattern",
+  "args": [{
+    "pattern": "fox",
+    "plain": true,
+    "negated": true
+  }],
+  "tests": [{
+    "description": "ignores nil value",
+    "samples": [null]
+  }, {
+    "description": "exact match is invalid",
+    "samples": ["fox"],
+    "err": "Required to not match validation pattern."
+  }, {
+    "description": "substring is invalid",
+    "samples": ["firefox", "foxes"],
+    "err": "Required to not match validation pattern."
+  }, {
+    "description": "with no match is valid",
+    "samples": ["x", "abc"]
+  }]
+}, {
+  "description": "pattern with a custom error message",
+  "rule": "pattern",
+  "args": [{
+    "pattern": "abc",
+    "msg": "invalid pattern"
+  }],
+  "tests": [{
+    "description": "an empty value is invalid",
+    "samples": [""],
+    "err": "invalid pattern"
+  }]
+}]

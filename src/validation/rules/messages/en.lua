@@ -35,8 +35,6 @@ return {
         'Required to not match validation pattern.',
     ['Required to match %s type.'] =
         'Required to match %s type.',
-    ['Required to match integer type.'] =
-        'Required to match integer type.',
     ['Must be left to nil.'] =
         'Must be left to nil.',
     ['Unknown field name [%s].'] =

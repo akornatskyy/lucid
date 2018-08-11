@@ -29,6 +29,6 @@ return function(o)
     elseif o.not_equal then
         return setmetatable(o, check_not_equal)
     else
-        return succeed
+        return succeed()
     end
 end

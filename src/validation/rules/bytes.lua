@@ -59,6 +59,6 @@ return function(o)
     elseif o.max then
         return setmetatable(o, check_max)
     else
-        return succeed
+        return succeed()
     end
 end
