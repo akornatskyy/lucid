@@ -1,4 +1,26 @@
 [{
+    "description": "compare",
+    "rule": "compare",
+    "args": [{}],
+    "tests": [{
+      "description": "if no condition is always valid",
+      "samples": [
+        [
+          "",
+          {
+            "confirm_password": ""
+          }
+        ],
+        [
+          "a",
+          {
+            "confirm_password": "b"
+          }
+        ]
+      ]
+    }]
+  },
+  {
     "description": "compare equal",
     "rule": "compare",
     "args": [{

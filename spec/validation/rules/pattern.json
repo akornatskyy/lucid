@@ -1,9 +1,9 @@
 [{
   "description": "pattern found",
   "rule": "pattern",
-  "args": [{
-    "pattern": "%d+"
-  }],
+  "args": [[
+    "%d+"
+  ]],
   "tests": [{
     "description": "ignores nil value",
     "samples": [null]
