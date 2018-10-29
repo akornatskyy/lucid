@@ -2,7 +2,8 @@ local ok, l = pcall(require, 'cjson')
 if ok then
     return {
         encode = l.encode,
-        decode = l.decode
+        decode = l.decode,
+        null = l.null
     }
 end
 
