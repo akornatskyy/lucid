@@ -27,7 +27,7 @@ clean:
 
 env: luarocks
 	for rock in luasec lbase64 luaossl $(LUA_CJSON) lua-cmsgpack luasocket \
-			struct utf8 busted cluacov luacheck lua-requests ; do \
+			struct utf8 busted cluacov luacheck "lua-requests 1.2-0" ; do \
 		$(ENV)/bin/luarocks install $$rock ; \
 	done
 
