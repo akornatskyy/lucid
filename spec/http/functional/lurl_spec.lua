@@ -15,7 +15,7 @@ describe('http.functional.lurl', function()
 
     it('calls app by path', function()
         local sarg = arg
-        local sio = io
+        local swrite = io.write
         local cases = {
             'demos/http/hello.lua',
             'demos.http.hello',
@@ -25,26 +25,24 @@ describe('http.functional.lurl', function()
         for _, c in next, cases do
             local write_called = false
             _G['arg'] = {c, '/'}
-            _G['io'] = {
-                write = function(s)
-                    write_called = true
-                    assert.equals('Hello World!\n', s)
-                end
-            }
+            _G['io'].write = function(s)
+                write_called = true
+                assert.equals('Hello World!\n', s)
+            end
             lurl()
             assert(write_called)
         end
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 
     it('path with query string', function()
         local sarg = arg
-        local sio = io
+        local swrite = io.write
         local c = {}
         _G['arg'] = {'-v', '-I', '-X', 'GET', 'demos.http.hello',
          '/?q=test&page=1&page=2'}
-        _G['io'] = {write = function(s) end}
+        _G['io'].write = function(s) end
         _G['print'] = function(s) c[#c+1] = s end
         lurl()
         assert.equals([[{
@@ -66,39 +64,39 @@ describe('http.functional.lurl', function()
     ["route_args"] = {}
 }]], c[1])
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 
     it('-X option', function()
         local sarg = arg
-        local sio = io
+        local swrite = io.write
         local c = ''
         _G['arg'] = {'-X', 'post', 'demos.http.api', '/api/v1/tasks'}
-        _G['io'] = {write = function(s) c = s end}
+        _G['io'].write = function(s) c = s end
         lurl()
         assert.equals('{"title":"Required field cannot be left blank."}', c)
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 
     it('-H option', function()
         local sarg = arg
-        local sio = io
+        local swrite = io.write
         _G['arg'] = {'-H', 'Cookie: _a=', 'demos.http.auth', '/signout'}
-        _G['io'] = {write = function(s) end}
+        _G['io'].write = function(s) end
         lurl()
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 
     it('-H option with multiple values', function()
         local sarg = arg
-        local sio = io
+        local swrite = io.write
         local c = {}
         _G['arg'] = {'-v', '-I', '-X', 'GET', '-H', 'X: 1', '-H', 'X: 2',
                      'demos.http.hello',
          '/'}
-        _G['io'] = {write = function(s) end}
+        _G['io'].write = function(s) end
         _G['print'] = function(s) c[#c+1] = s end
         lurl()
         assert.equals([[{
@@ -118,30 +116,30 @@ describe('http.functional.lurl', function()
     ["route_args"] = {}
 }]], c[1])
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 
     it('-d option', function()
         local sarg = arg
-        local sio = io
+        local swrite = io.write
         local c = ''
         _G['arg'] = {'-d', '{"author":"Jack"}', 'demos.http.form', '/'}
-        _G['io'] = {write = function(s) c = s end}
+        _G['io'].write = function(s) c = s end
         lurl()
         assert.equals('{"message":"Required field cannot be left blank."}', c)
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 
     it('-I option', function()
         local sarg = arg
-        local sio = io
-    local c = ''
+        local swrite = io.write
+        local c = ''
         _G['arg'] = {'-I', '-X', 'GET', 'demos.http.hello', '/'}
-    _G['print'] = function(s) c = s end
+        _G['print'] = function(s) c = s end
         lurl()
         assert.equals('HTTP/1.1 200 OK', c)
         _G['arg'] = sarg
-        _G['io'] = sio
+        _G['io'].write = swrite
     end)
 end)
