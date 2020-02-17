@@ -11,7 +11,8 @@ for version in dev ; do
     for os in alpine ; do
       image=akorn/lucid:${version}-${module}-${os}
       echo building $image ...
-      docker build -q -t ${image} ${module}/${os}
+      docker build -q -t ${image} -f ${module}/${os}/Dockerfile ..
+      docker run --rm ${image} nginx -v
       echo lucid version: `docker run --rm ${image} luarocks show --mversion lucid`
     done
   done

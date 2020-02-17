@@ -15,7 +15,7 @@ RUN set -ex \
          luarocks install --no-doc $rock ; \
        done \
     \
-    && luarocks install --no-doc --server=http://luarocks.org/dev lucid \
+    && luarocks install --no-doc --dev lucid \
     \
     && rm -rf ~/.cache \
     && apk del .build-deps \
