@@ -16,7 +16,6 @@ dependencies = {
     -- 'lua-cjson',
     -- 'lua-cmsgpack',
     -- 'lua-messagepack'
-    -- 'lua-messagepack',
     -- 'lua-resty-websocket'
     -- 'luaossl',
     -- 'luasocket'
