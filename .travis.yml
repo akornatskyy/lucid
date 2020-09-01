@@ -1,10 +1,24 @@
 language: c
 
-env:
-    - LUA_IMPL=lua LUA_VERSION=5.1.5
-    - LUA_IMPL=luajit LUA_VERSION=2.0.5
-    - LUA_IMPL=luajit LUA_VERSION=2.1.0-beta3
-    - LUA_IMPL=luajit LUA_VERSION=2.1
+services:
+    - docker
+
+matrix:
+    include:
+        - env: LUA_IMPL=lua LUA_VERSION=5.1.5
+        - env: LUA_IMPL=luajit LUA_VERSION=2.0.5
+        - env: LUA_IMPL=luajit LUA_VERSION=2.1.0-beta3
+        - env: LUA_IMPL=luajit LUA_VERSION=2.1
+        - install:
+            - docker version
+          script:
+            - bash docker/update.sh
+          after_success:
+            - echo "$DOCKER_PASSWORD" |
+              docker login -u "$DOCKER_USERNAME" --password-stdin
+            - docker images --format "{{.Repository}}:{{.Tag}}" |
+              awk '/akorn\/lucid/ && !/none/' |
+              xargs -I {} docker push {}
 
 install:
     - make env
