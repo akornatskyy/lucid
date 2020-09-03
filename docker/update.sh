@@ -17,3 +17,5 @@ for version in dev ; do
     done
   done
 done
+
+docker images
