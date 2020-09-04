@@ -5,8 +5,8 @@ ENV=$(shell pwd)/env
 # lua | luajit
 LUA_IMPL?=luajit
 LUA_VERSION?=2.1
-LUAROCKS_VERSION?=3.3.1
-NGINX_VERSION?=1.17.9
+LUAROCKS_VERSION?=3.4.0
+NGINX_VERSION?=1.18.0
 NGINX_LUA_MODULE_VERSION?=0.10.13
 
 ifeq (Darwin,$(shell uname -s))
