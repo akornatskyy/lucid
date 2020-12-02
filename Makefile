@@ -27,7 +27,7 @@ clean:
 
 env: luarocks
 	for rock in luasec lbase64 luaossl $(LUA_CJSON) lua-cmsgpack luasocket \
-			struct utf8 busted cluacov luacheck "lua-requests 1.2-0" ; do \
+			struct utf8 busted cluacov luacheck lua-requests ; do \
 		$(ENV)/bin/luarocks install $$rock ; \
 	done
 
@@ -115,5 +115,5 @@ nginx:
 	rm -rf nginx && \
 	\
 	mkdir -p lua-resty-websocket && \
-	wget -c https://github.com/openresty/lua-resty-websocket/archive/v0.06.tar.gz \
+	wget -c https://github.com/openresty/lua-resty-websocket/archive/v0.08.tar.gz \
 		-O - | tar -xzC lua-resty-websocket --strip-components=1
