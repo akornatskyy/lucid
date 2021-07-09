@@ -2,7 +2,7 @@ FROM openresty/openresty:alpine
 
 LABEL maintainer="Andriy Kornatskyy <andriy.kornatskyy@live.com>"
 
-ENV LUAROCKS_VERSION=3.4.0
+ENV LUAROCKS_VERSION=3.7.0
 
 RUN set -ex \
     \
