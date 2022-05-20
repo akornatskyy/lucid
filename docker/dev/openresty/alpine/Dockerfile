@@ -2,7 +2,7 @@ FROM openresty/openresty:alpine
 
 LABEL maintainer="Andriy Kornatskyy <andriy.kornatskyy@live.com>"
 
-ENV LUAROCKS_VERSION=3.7.0
+ENV LUAROCKS_VERSION=3.9.0
 
 RUN set -ex \
     \
@@ -15,6 +15,7 @@ RUN set -ex \
         openssl-dev \
         outils-md5 \
         unzip \
+        wget \
     \
     && curl https://luarocks.github.io/luarocks/releases/luarocks-${LUAROCKS_VERSION}.tar.gz \
          | tar -xzf - \
